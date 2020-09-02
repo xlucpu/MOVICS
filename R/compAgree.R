@@ -104,6 +104,8 @@ compAgree <- function(moic.res  = NULL,
          ggtitle("")
 
     # generate alluvial diagram
+    StatStratum <- ggalluvial::StatStratum
+
     col = clust.col[1:length(unique(dat$Subtype))]
     var1 <- var[1]
 
@@ -282,9 +284,3 @@ compAgree <- function(moic.res  = NULL,
   }
   return(outTab)
 }
-
-#' @title StatStratum
-#' @name StatStratum
-#' @import ggalluvial
-#' @keywords internal
-StatStratum <- ggalluvial::StatStratum
