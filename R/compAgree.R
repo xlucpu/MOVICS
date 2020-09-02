@@ -119,7 +119,7 @@ compAgree <- function(moic.res  = NULL,
                       axis1 = Subtype,
                       axis2 = Subtype1)) +
         scale_fill_manual(values = col) +
-        ggalluvial::geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
+        geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
         geom_stratum(width = 1/8, reverse = T) +
         geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = T) +
         scale_x_continuous(breaks = 1:n.var, labels = c(var1, var2)) +
@@ -150,7 +150,7 @@ compAgree <- function(moic.res  = NULL,
                       axis2 = Subtype1,
                       axis3 = Subtype2)) +
         scale_fill_manual(values = col) +
-        ggalluvial::geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
+        geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
         geom_stratum(width = box.width, reverse = T) +
         geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = T) +
         scale_x_continuous(breaks = 1:n.var, labels = c(var1, var2, var3)) +
@@ -183,7 +183,7 @@ compAgree <- function(moic.res  = NULL,
                       axis3 = Subtype2,
                       axis4 = Subtype3)) +
         scale_fill_manual(values = col) +
-        ggalluvial::geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
+        geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
         geom_stratum(width = 1/8, reverse = T) +
         geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = T) +
         scale_x_continuous(breaks = 1:n.var, labels = c(var1, var2, var3, var4)) +
@@ -218,7 +218,7 @@ compAgree <- function(moic.res  = NULL,
                       axis4 = Subtype3,
                       axis5 = Subtype4)) +
         scale_fill_manual(values = col) +
-        ggalluvial::geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
+        geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
         geom_stratum(width = 1/8, reverse = T) +
         geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = T) +
         scale_x_continuous(breaks = 1:n.var, labels = c(var1, var2, var3, var4, var5)) +
@@ -255,7 +255,7 @@ compAgree <- function(moic.res  = NULL,
                       axis5 = Subtype4,
                       axis6 = Subtype5)) +
         scale_fill_manual(values = col) +
-        ggalluvial::geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
+        geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
         geom_stratum(width = 1/8, reverse = T) +
         geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = T) +
         scale_x_continuous(breaks = 1:n.var, labels = c(var1, var2, var3, var4, var5, var6)) +
@@ -285,5 +285,6 @@ compAgree <- function(moic.res  = NULL,
 
 #' @title StatStratum
 #' @name StatStratum
+#' @import ggalluvial
 #' @keywords internal
 StatStratum <- ggalluvial::StatStratum
