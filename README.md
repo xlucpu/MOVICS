@@ -1,23 +1,24 @@
----
-title: "MOVICS: <br>Multi-Omics integration and VIsualization in Cancer Subtyping"
-author:
-  name: "<b>Xiaofan Lu</b>"
-  affiliation: "<b>State Key Laboratory of Natural Medicines, <br>Research Center of Biostatistics and Computational Pharmacy, <br>China Pharmaceutical University, Nanjing, China</b>"
-  email: "<b>xlu.cpu@foxmail.com</b>"
-output: 
-  prettydoc::html_pretty:
-    theme: tactile
-    highlight: github
----
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
+# MOVICS
+
+Multi-Omics integration and VIsualization in Cancer Subtyping
+
 ## Introduction
-The goal of MOVICS is to provide a unified interface for 10 state-of-the-art multi-omics clustering algorithms, and standardizes the output for each algorithm so as to form a pipeline for downstream analyses. For cancer subtyping studies, MOVICS forms a pipeline for most commonly used downstream analyses in cancer subtyping researches and to create feature rich customizable visualzations with minimal effort.
+
+The goal of MOVICS is to provide a unified interface for 10
+state-of-the-art multi-omics clustering algorithms, and standardizes the
+output for each algorithm so as to form a pipeline for downstream
+analyses. For cancer subtyping studies, MOVICS forms a pipeline for most
+commonly used downstream analyses in cancer subtyping researches and to
+create feature rich customizable visualzations with minimal effort.
 
 ## Installation
-```{r}
+
+``` {r}
 if (!require("remotes")) {
   install.packages("remotes")
 } 
@@ -25,12 +26,23 @@ remotes::install_github("xlucpu/MOVICS")
 ```
 
 ## Guidance
-A detailed guide of how to use MOVICS could be find in the HTML vignette. If you have any questions, bug reports, or suggestions for improving MOVICS, please email them to xlu.cpu@foxmail.com.
+
+A detailed guide of how to use MOVICS could be find in the HTML
+vignette. If you have any questions, bug reports, or suggestions for
+improving MOVICS, please email them to <xlu.cpu@foxmail.com>.
 
 ## Citation
+
 If you use MOVICS R package in published research, please cite:
 
-+ HAVE NOT BEEN PUBLISHED
+  - HAVE NOT BEEN PUBLISHED
 
 ## Acknowledgement
-I would like to express my gratitude to Dr. Morgane Pierre-Jean for the inspiration brought by the study of evaluating unsupervised methods for multi-omics data integration. I also want to thank Dr. Enyu Lin for the helping in calculation and visualization of fraction genome altered, and to thank Dr. Rongfang Shen for the assistance in visualization of Transitions and Transversions. At last, sincere thanks to the brilliant contributors of all the functions incorporated in MOVICS package.
+
+I would like to express my gratitude to Dr. Morgane Pierre-Jean for the
+inspiration brought by the study of evaluating unsupervised methods for
+multi-omics data integration. I also want to thank Dr. Enyu Lin for the
+helping in calculation and visualization of fraction genome altered, and
+to thank Dr. Rongfang Shen for the assistance in visualization of
+Transitions and Transversions. At last, sincere thanks to the brilliant
+contributors of all the functions incorporated in MOVICS package.
