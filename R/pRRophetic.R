@@ -5,7 +5,6 @@
 #'
 #' @importFrom genefilter rowttests
 #' @import ridge
-#'
 #' @param trainingExprData Gene expression matrix for samples for which we the phenotype is already known.
 #' @param trainingPtype The known phenotype, a vector in the same order as the columns of "trainingExprData" or with the same names as colnames of "trainingExprData".
 #' @param testExprData Gene expression matrix for samples on which we wish to predict a phenotype. Gene names as rows, samples names as columns.
@@ -16,7 +15,8 @@
 #' @param numSens The number of sensitive cell lines to be fit in the logistic regression model.
 #' @param numRes The number of resistant cell lines fit in the logistic regression model.
 #' @param minNumSamples The minimum number of test samples, print an error if the number of columns of "testExprData" is below this threshold. A large number of test samples may be necessary to correct for batch effects.
-#'
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 classifySamples <- function(trainingExprData, trainingPtype, testExprData, batchCorrect="eb", minNumSamples=10, selection=-1, printOutput=TRUE, numGenesSelected=1000, numSens=15, numRes=55)
 {
   sensInd <- order(trainingPtype)[1:numSens]
@@ -51,7 +51,6 @@ classifySamples <- function(trainingExprData, trainingPtype, testExprData, batch
 #' the known phenotype and provides several other options for flexible and powerful prediction
 #' from a gene expression matrix.
 #'
-#'
 #' @param trainingExprData The training data. A matrix of expression levels, rows contain genes and columns contain samples, "rownames()" must be specified and must contain the same type of gene ids as "testExprData"
 #' @param trainingPtype The known phenotype for "trainingExprData". A numeric vector which MUST be the same length as the number of columns of "trainingExprData".
 #' @param testExprData The test data where the phenotype will be estimted. It is a matrix of expression levels, rows contain genes and columns contain samples, "rownames()" must be specified and must contain the same type of gene ids as "trainingExprData".
@@ -63,12 +62,11 @@ classifySamples <- function(trainingExprData, trainingPtype, testExprData, batch
 #' @param printOutput Set to FALSE to supress output
 #' @param removeLowVaringGenesFrom what kind of genes should be removed
 #' @return A vector of the estimated phenotype, in the same order as the columns of "testExprData".
-#'
 #' @import sva
 #' @import ridge
 #' @importFrom car powerTransform
-#'
-#' @keywords predict, phenotype
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 calcPhenotype <- function(trainingExprData, trainingPtype, testExprData, batchCorrect="eb", powerTransformPhenotype=TRUE, removeLowVaryingGenes=.2, minNumSamples=10, selection=-1, printOutput=TRUE, removeLowVaringGenesFrom="homogenizeData")
 {
 
@@ -170,8 +168,6 @@ calcPhenotype <- function(trainingExprData, trainingPtype, testExprData, batchCo
   return(preds)
 }
 
-
-
 #' Cross validation on training dataset
 #'
 #' This function does cross validation on a training set to estimate prediction accuracy on a training set.
@@ -187,13 +183,12 @@ calcPhenotype <- function(trainingExprData, trainingPtype, testExprData, batchCo
 #' @param removeLowVaryingGenes What proportion of low varying genes should be removed? 20 precent be default
 #' @param minNumSamples How many training and test samples are requried. Print an error if below this threshold
 #' @param selection How should duplicate gene ids be handled. Default is -1 which asks the user. 1 to summarize by their or 2 to disguard all duplicates.
-#'
 #' @return An object of class "pRRopheticCv", which is a list with two members, "cvPtype" and "realPtype", which correspond to the cross valiation predicted phenotype and the  user provided measured phenotype respectively.
 #' @import ridge
 #' @importFrom sva ComBat
 #' @importFrom car powerTransform
-#'
-#' @keywords predict phenotype
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 predictionAccuracyByCv <- function(trainingExprData, trainingPtype, testExprData=-1, cvFold=-1, powerTransformPhenotype=TRUE, batchCorrect="eb", removeLowVaryingGenes=.2, minNumSamples=10, selection=1)
 {
 
@@ -268,7 +263,6 @@ predictionAccuracyByCv <- function(trainingExprData, trainingPtype, testExprData
   return(finalData)
 }
 
-
 #' R^2 from "pRRopheticCv" object.
 #'
 #' Given an object of class "pRRopheticCv", i.e. the output of cross validation, calculate
@@ -276,11 +270,10 @@ predictionAccuracyByCv <- function(trainingExprData, trainingPtype, testExprData
 #'
 #' @param cvOutData an object of class "pRRopheticCv", i.e. the outpout of the "predictionAccuracyByCv()" function
 #' @param powerTranform powerTranform phenotype or not.
-#'
 #' @return a numeric vector containing the R squared value from the cross validation.
-#'
-#' @keywords r-squared
+#' @keywords internal
 #' @importFrom car powerTransform
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 estimateRsqr.pRRopheticCv <- function(cvOutData, powerTranform=TRUE)
 {
   # calculate the R^2
@@ -295,11 +288,9 @@ estimateRsqr.pRRopheticCv <- function(cvOutData, powerTranform=TRUE)
 #'
 #' @param cvOutData an object of class "pRRopheticCv", i.e. the outpout of the "predictionAccuracyByCv()" function
 #' @param conf the confidence interval required, by default 95 precent confidence interval.
-#'
 #' @return a numeric vector containing the average upper and lower confidence interval.
-#'
-#'
-#' @keywords confidence interval
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 estimateCI.pRRopheticCv <- function(cvOutData, conf=.95)
 {
 
@@ -318,10 +309,9 @@ estimateCI.pRRopheticCv <- function(cvOutData, conf=.95)
 #' i.e. the mean difference between the predicted and measured phenotype.
 #'
 #' @param cvOutData an object of class "pRRopheticCv", i.e. the outpout of the "predictionAccuracyByCv()" function
-#'
 #' @return a numeric vector containing the mean prediction error from the cross validation.
-#'
-#' @keywords prediction error
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 estimateMeanPredictionError.pRRopheticCv <- function(cvOutData)
 {
   allDeviationsRaw <- abs(cvOutData$cvPtype - cvOutData$realPtype)
@@ -334,10 +324,9 @@ estimateMeanPredictionError.pRRopheticCv <- function(cvOutData)
 #' i.e. the median difference between the predicted and measured phenotype.
 #'
 #' @param cvOutData an object of class "pRRopheticCv", i.e. the outpout of the "predictionAccuracyByCv()" function
-#'
 #' @return a numeric vector containing the median prediction error from the cross validation.
-#'
-#' @keywords prediction error
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 estimateMedianPredictionError.pRRopheticCv <- function(cvOutData)
 {
   allDeviationsRaw <- abs(cvOutData$cvPtype - cvOutData$realPtype)
@@ -349,10 +338,9 @@ estimateMedianPredictionError.pRRopheticCv <- function(cvOutData)
 #'
 #' Given an object of class "pRRopheticCv", print various metrics that
 #' summarize the performance of the cross validataion analysis
-#'
 #' @param cvOutData an object of class "pRRopheticCv", i.e. the outpout of the "predictionAccuracyByCv()" function
-#'
-#' @keywords summary
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 summary.pRRopheticCv <- function(cvOutData)
 {
   cat("\nSummary of cross-validation results:\n\n")
@@ -372,8 +360,8 @@ summary.pRRopheticCv <- function(cvOutData)
 #' line.
 #'
 #' @param cvOutData an object of class "pRRopheticCv", i.e. the outpout of the "predictionAccuracyByCv()" function
-#'
-#' @keywords plot
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 plot.pRRopheticCv <- function(cvOutData)
 {
   coefs <- coef(lm(cvOutData$realPtype~cvOutData$cvPtype))
@@ -388,8 +376,9 @@ plot.pRRopheticCv <- function(cvOutData)
 #'
 #' @param exprMat a matrix of expression levels, rows contain genes and columns contain samples.
 #' @param removeLowVaryingGenes the proportion of low varying genes to be removed.
-#'
 #' @return a vector of row ids to keep
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 doVariableSelection <- function(exprMat, removeLowVaryingGenes)
 {
   vars <- apply(exprMat, 1, var)
@@ -408,13 +397,11 @@ doVariableSelection <- function(exprMat, removeLowVaryingGenes)
 #' @param batchCorrect The type of batch correction to be used. Options are "eb" for Combat, "none", or "qn" for quantile normalization.
 #' @param selection parameter can be used to specify how duplicates are handled, by default value -1 means ask the user. 1 means summarize duplictes by their mean and 2 means to disguard all duplicate genes.
 #' @param printOutput Set to FALSE to supress output
-#'
 #' @return a list containing two entries $train and $test, which are the homogenized input matrices.
-#'
 #' @importFrom sva ComBat
 #' @importFrom preprocessCore normalize.quantiles
-#'
-#' @keywords homogenize expression data
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 homogenizeData <- function(testExprMat, trainExprMat, batchCorrect="eb", selection=-1, printOutput=TRUE)
 {
   # Check batchCorrect paramter
@@ -570,10 +557,9 @@ homogenizeData <- function(testExprMat, trainExprMat, batchCorrect="eb", selecti
 #' @param printOutput Set to FALSE to supress output
 #' @param removeLowVaringGenesFrom what kind of genes should be removed
 #' @param dataset version of GDSC dataset
-#'
 #' @return a gene expression matrix that does not contain duplicate gene ids
-#'
-#' @keywords summarize duplicate gene ids by their mean.
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 pRRopheticPredict <- function(testMatrix, drug, tissueType="all", batchCorrect="eb", powerTransformPhenotype=TRUE, removeLowVaryingGenes=.2, minNumSamples=10, selection=-1, printOutput=TRUE, removeLowVaringGenesFrom="homogenizeData", dataset="cgp2014")
 {
   cgpTrainData <- getCGPinfo(drug, tissueType, dataset) # get the IC50 and expression data for this drug/tissueType
@@ -601,13 +587,12 @@ pRRopheticPredict <- function(testMatrix, drug, tissueType="all", batchCorrect="
 #' @param removeLowVaryingGenes What proportion of low varying genes should be removed? 20 percent by default.
 #' @param minNumSamples How many training and test samples are requried. Print an error if below this threshold
 #' @param selection How should duplicate gene ids be handled. Default is -1 which asks the user. 1 to summarize by their or 2 to disguard all duplicates.
-#'
 #' @return An object of class "pRRopheticCv", which is a list with two members, "cvPtype" and "realPtype", which correspond to the cross valiation predicted phenotype and the  user provided measured phenotype respectively.
 #' @import ridge
 #' @importFrom sva ComBat
 #' @importFrom car powerTransform
-#'
-#' @keywords predict, phenotype
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 pRRopheticCV <- function(drug, tissueType="all", testExprData=NULL, cvFold=-1, powerTransformPhenotype=TRUE, batchCorrect="eb", removeLowVaryingGenes=.2, minNumSamples=10, selection=1)
 {
   cgpTrainData <- getCGPinfo(drug, tissueType) # get the IC50 and expression data for this drug/tissueType
@@ -617,7 +602,6 @@ pRRopheticCV <- function(drug, tissueType="all", testExprData=NULL, cvFold=-1, p
   return(cvOut)
 }
 
-
 #' Given a drug and tissue type, return CGP expression and drug sensitivity data.
 #'
 #' Given a drug and tissue type, return CGP expression and drug sensitivity data.
@@ -625,8 +609,9 @@ pRRopheticCV <- function(drug, tissueType="all", testExprData=NULL, cvFold=-1, p
 #' @param drug The name of the drug for which you would like to predict sensitivity, one of A.443654, A.770041, ABT.263, ABT.888, AG.014699, AICAR, AKT.inhibitor.VIII, AMG.706, AP.24534, AS601245, ATRA, AUY922, Axitinib, AZ628, AZD.0530, AZD.2281, AZD6244, AZD6482, AZD7762, AZD8055, BAY.61.3606, Bexarotene, BI.2536, BIBW2992, Bicalutamide, BI.D1870, BIRB.0796, Bleomycin, BMS.509744, BMS.536924, BMS.708163, BMS.754807, Bortezomib, Bosutinib, Bryostatin.1, BX.795, Camptothecin, CCT007093, CCT018159, CEP.701, CGP.082996, CGP.60474, CHIR.99021, CI.1040, Cisplatin, CMK, Cyclopamine, Cytarabine, Dasatinib, DMOG, Docetaxel, Doxorubicin, EHT.1864, Elesclomol, Embelin, Epothilone.B, Erlotinib, Etoposide, FH535, FTI.277, GDC.0449, GDC0941, Gefitinib, Gemcitabine, GNF.2, GSK269962A, GSK.650394, GW.441756, GW843682X, Imatinib, IPA.3, JNJ.26854165, JNK.9L, JNK.Inhibitor.VIII, JW.7.52.1, KIN001.135, KU.55933, Lapatinib, Lenalidomide, LFM.A13, Metformin, Methotrexate, MG.132, Midostaurin, Mitomycin.C, MK.2206, MS.275, Nilotinib, NSC.87877, NU.7441, Nutlin.3a, NVP.BEZ235, NVP.TAE684, Obatoclax.Mesylate, OSI.906, PAC.1, Paclitaxel, Parthenolide, Pazopanib, PD.0325901, PD.0332991, PD.173074, PF.02341066, PF.4708671, PF.562271, PHA.665752, PLX4720, Pyrimethamine, QS11, Rapamycin, RDEA119, RO.3306, Roscovitine, Salubrinal, SB.216763, SB590885, Shikonin, SL.0101.1, Sorafenib, S.Trityl.L.cysteine, Sunitinib, Temsirolimus, Thapsigargin, Tipifarnib, TW.37, Vinblastine, Vinorelbine, Vorinostat, VX.680, VX.702, WH.4.023, WO2009093972, WZ.1.84, X17.AAG, X681640, XMD8.85, Z.LLNle.CHO, ZM.447439.
 #' @param tissueType Specify if you would like to traing the models on only a subset of the CGP cell lines (based on the tissue type from which the cell lines originated). This be one any of "all" (for everything, default option), "allSolidTumors" (everything except for blood), "blood", "breast", "CNS", "GI tract" ,"lung", "skin", "upper aerodigestive"
 #' @param dataset The dataset from which you wish to build the predictive models. Default is "cgp2012", also available "cgp2016", comming soon "ctrp".
-#'
 #' @return a list with two entries, trainDataOrd the ordered expression data and ic50sOrd the drug sensitivity data.
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 getCGPinfo <-  function(drug, tissueType="all", dataset="cgp2014")
 {
   # list of possible datasets that can be used.
@@ -737,10 +722,9 @@ getCGPinfo <-  function(drug, tissueType="all", dataset="cgp2014")
 #' @param numSens The number of sensitive cell lines to be fit in the logistic regression model.
 #' @param numRes The number of resistant cell lines fit in the logistic regression model.
 #' @param minNumSamples The minimum number of test samples, print an error if the number of columns of "testExprData" is below this threshold. A large number of test samples may be necessary to correct for batch effects.
-#'
 #' @return A predicted probability of sensitive or resistant from the logistic regression model.
-#'
-#' @keywords summarize duplicate gene ids by their mean.
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 pRRopheticLogisticPredict <- function(testMatrix, drug, tissueType="all", batchCorrect="eb", minNumSamples=10, selection=-1, printOutput=TRUE, numGenesSelected=1000, numSens=15, numRes=55)
 {
   cgpTrainData <- getCGPinfo(drug, tissueType) # get the IC50 and expression data for this drug/tissueType
@@ -755,9 +739,10 @@ pRRopheticLogisticPredict <- function(testMatrix, drug, tissueType="all", batchC
 #'
 #' Visualize the distribution of the transformed IC50 data for a drug of interest using a QQ plot. If the distribution of the IC50 values deviates wildly from a normal distribtion, it is likely not suitalbe for prediction using a linear model (like linear ridge regression). This drug may be more suitable to constructing a model using a logistic or other type of model.
 #
-#' @param drug the name of the drug for which you would like to predict sensitivity, one of A.443654, A.770041, ABT.263, ABT.888, AG.014699, AICAR, AKT.inhibitor.VIII, AMG.706, AP.24534, AS601245, ATRA, AUY922, Axitinib, AZ628, AZD.0530, AZD.2281, AZD6244, AZD6482, AZD7762, AZD8055, BAY.61.3606, Bexarotene, BI.2536, BIBW2992, Bicalutamide, BI.D1870, BIRB.0796, Bleomycin, BMS.509744, BMS.536924, BMS.708163, BMS.754807, Bortezomib, Bosutinib, Bryostatin.1, BX.795, Camptothecin, CCT007093, CCT018159, CEP.701, CGP.082996, CGP.60474, CHIR.99021, CI.1040, Cisplatin, CMK, Cyclopamine, Cytarabine, Dasatinib, DMOG, Docetaxel, Doxorubicin, EHT.1864, Elesclomol, Embelin, Epothilone.B, Erlotinib, Etoposide, FH535, FTI.277, GDC.0449, GDC0941, Gefitinib, Gemcitabine, GNF.2, GSK269962A, GSK.650394, GW.441756, GW843682X, Imatinib, IPA.3, JNJ.26854165, JNK.9L, JNK.Inhibitor.VIII, JW.7.52.1, KIN001.135, KU.55933, Lapatinib, Lenalidomide, LFM.A13, Metformin, Methotrexate, MG.132, Midostaurin, Mitomycin.C, MK.2206, MS.275, Nilotinib, NSC.87877, NU.7441, Nutlin.3a, NVP.BEZ235, NVP.TAE684, Obatoclax.Mesylate, OSI.906, PAC.1, Paclitaxel, Parthenolide, Pazopanib, PD.0325901, PD.0332991, PD.173074, PF.02341066, PF.4708671, PF.562271, PHA.665752, PLX4720, Pyrimethamine, QS11, Rapamycin, RDEA119, RO.3306, Roscovitine, Salubrinal, SB.216763, SB590885, Shikonin, SL.0101.1, Sorafenib, S.Trityl.L.cysteine, Sunitinib, Temsirolimus, Thapsigargin, Tipifarnib, TW.37, Vinblastine, Vinorelbine, Vorinostat, VX.680, VX.702, WH.4.023, WO2009093972, WZ.1.84, X17.AAG, X681640, XMD8.85, Z.LLNle.CHO, ZM.447439.
-#
+#' @param drug the name of the drug for which you would like to predict sensitivity, one of A.443654, A.770041, ABT.263, ABT.888, AG.014699, AICAR, AKT.inhibitor.VIII, AMG.706, AP.24534, AS601245, ATRA, AUY922, Axitinib, AZ628, AZD.0530, AZD.2281, AZD6244, AZD6482, AZD7762, AZD8055, BAY.61.3606, Bexarotene, BI.2536, BIBW2992, Bicalutamide, BI.D1870, BIRB.0796, Bleomycin, BMS.509744, BMS.536924, BMS.708163, BMS.754807, Bortezomib, Bosutinib, Bryostatin.1, BX.795, Camptothecin, CCT007093, CCT018159, CEP.701, CGP.082996, CGP.60474, CHIR.99021, CI.1040, Cisplatin, CMK, Cyclopamine, Cytarabine, Dasatinib, DMOG, Docetaxel, Doxorubicin, EHT.1864, Elesclomol, Embelin, Epothilone.B, Erlotinib, Etoposide, FH535, FTI.277, GDC.0449, GDC0941, Gefitinib, Gemcitabine, GNF.2, GSK269962A, GSK.650394, GW.441756, GW843682X, Imatinib, IPA.3, JNJ.26854165, JNK.9L, JNK.Inhibitor.VIII, JW.7.52.1, KIN001.135, KU.55933, Lapatinib, Lenalidomide, LFM.A13, Metformin, Methotrexate, MG.132, Midostaurin, Mitomycin.C, MK.2206, MS.275, Nilotinib, NSC.87877, NU.7441, Nutlin.3a, NVP.BEZ235, NVP.TAE684, Obatoclax.Mesylate, OSI.906, PAC.1, Paclitaxel, Parthenolide, Pazopanib, PD.0325901, PD.0332991, PD.173074, PF.02341066, PF.4708671, PF.562271, PHA.665752, PLX4720, Pyrimethamine, QS11, Rapamycin, RDEA119, RO.3306, Roscovitine, Salubrinal, SB.216763, SB590885, Shikonin, SL.0101.1, Sorafenib, S.Trityl.L.cysteine, Sunitinib, Temsirolimus, Thapsigargin, Tipifarnib, TW.37, Vinblastine, Vinorelbine, Vorinostat, VX.680, VX.702, WH.4.023, WO2009093972, WZ.1.84, X17.AAG, X681640, XMD8.85, Z.LLNle.CHO, ZM.447439
 #' @importFrom car powerTransform
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 pRRopheticQQplot <- function(drug)
 {
   possibleDrugs <- c("A.443654", "A.770041", "ABT.263", "ABT.888", "AG.014699", "AICAR", "AKT.inhibitor.VIII", "AMG.706", "AP.24534", "AS601245", "ATRA", "AUY922", "Axitinib", "AZ628", "AZD.0530", "AZD.2281", "AZD6244", "AZD6482", "AZD7762", "AZD8055", "BAY.61.3606", "Bexarotene", "BI.2536", "BIBW2992", "Bicalutamide", "BI.D1870", "BIRB.0796", "Bleomycin", "BMS.509744", "BMS.536924", "BMS.708163", "BMS.754807", "Bortezomib", "Bosutinib", "Bryostatin.1", "BX.795", "Camptothecin", "CCT007093", "CCT018159", "CEP.701", "CGP.082996", "CGP.60474", "CHIR.99021", "CI.1040", "Cisplatin", "CMK", "Cyclopamine", "Cytarabine", "Dasatinib", "DMOG", "Docetaxel", "Doxorubicin", "EHT.1864", "Elesclomol", "Embelin", "Epothilone.B", "Erlotinib", "Etoposide", "FH535", "FTI.277", "GDC.0449", "GDC0941", "Gefitinib", "Gemcitabine", "GNF.2", "GSK269962A", "GSK.650394", "GW.441756", "GW843682X", "Imatinib", "IPA.3", "JNJ.26854165", "JNK.9L", "JNK.Inhibitor.VIII", "JW.7.52.1", "KIN001.135", "KU.55933", "Lapatinib", "Lenalidomide", "LFM.A13", "Metformin", "Methotrexate", "MG.132", "Midostaurin", "Mitomycin.C", "MK.2206", "MS.275", "Nilotinib", "NSC.87877", "NU.7441", "Nutlin.3a", "NVP.BEZ235", "NVP.TAE684", "Obatoclax.Mesylate", "OSI.906", "PAC.1", "Paclitaxel", "Parthenolide", "Pazopanib", "PD.0325901", "PD.0332991", "PD.173074", "PF.02341066", "PF.4708671", "PF.562271", "PHA.665752", "PLX4720", "Pyrimethamine", "QS11", "Rapamycin", "RDEA119", "RO.3306", "Roscovitine", "Salubrinal", "SB.216763", "SB590885", "Shikonin", "SL.0101.1", "Sorafenib", "S.Trityl.L.cysteine", "Sunitinib", "Temsirolimus", "Thapsigargin", "Tipifarnib", "TW.37", "Vinblastine", "Vinorelbine", "Vorinostat", "VX.680", "VX.702", "WH.4.023", "WO2009093972", "WZ.1.84", "X17.AAG", "X681640", "XMD8.85", "Z.LLNle.CHO", "ZM.447439")
@@ -795,8 +780,9 @@ pRRopheticQQplot <- function(drug)
 #' @param predNonResponders a numeric vector of the predictions for the known drug non-responders
 #' @param drug the name of the drug for which you would like to predict sensitivity, one of A.443654, A.770041, ABT.263, ABT.888, AG.014699, AICAR, AKT.inhibitor.VIII, AMG.706, AP.24534, AS601245, ATRA, AUY922, Axitinib, AZ628, AZD.0530, AZD.2281, AZD6244, AZD6482, AZD7762, AZD8055, BAY.61.3606, Bexarotene, BI.2536, BIBW2992, Bicalutamide, BI.D1870, BIRB.0796, Bleomycin, BMS.509744, BMS.536924, BMS.708163, BMS.754807, Bortezomib, Bosutinib, Bryostatin.1, BX.795, Camptothecin, CCT007093, CCT018159, CEP.701, CGP.082996, CGP.60474, CHIR.99021, CI.1040, Cisplatin, CMK, Cyclopamine, Cytarabine, Dasatinib, DMOG, Docetaxel, Doxorubicin, EHT.1864, Elesclomol, Embelin, Epothilone.B, Erlotinib, Etoposide, FH535, FTI.277, GDC.0449, GDC0941, Gefitinib, Gemcitabine, GNF.2, GSK269962A, GSK.650394, GW.441756, GW843682X, Imatinib, IPA.3, JNJ.26854165, JNK.9L, JNK.Inhibitor.VIII, JW.7.52.1, KIN001.135, KU.55933, Lapatinib, Lenalidomide, LFM.A13, Metformin, Methotrexate, MG.132, Midostaurin, Mitomycin.C, MK.2206, MS.275, Nilotinib, NSC.87877, NU.7441, Nutlin.3a, NVP.BEZ235, NVP.TAE684, Obatoclax.Mesylate, OSI.906, PAC.1, Paclitaxel, Parthenolide, Pazopanib, PD.0325901, PD.0332991, PD.173074, PF.02341066, PF.4708671, PF.562271, PHA.665752, PLX4720, Pyrimethamine, QS11, Rapamycin, RDEA119, RO.3306, Roscovitine, Salubrinal, SB.216763, SB590885, Shikonin, SL.0101.1, Sorafenib, S.Trityl.L.cysteine, Sunitinib, Temsirolimus, Thapsigargin, Tipifarnib, TW.37, Vinblastine, Vinorelbine, Vorinostat, VX.680, VX.702, WH.4.023, WO2009093972, WZ.1.84, X17.AAG, X681640, XMD8.85, Z.LLNle.CHO, ZM.447439.
 #' @param tissueType specify if you would like to traing the models on only a subset of the CGP cell lines (based on the tissue type from which the cell lines originated). This be one any of "all" (for everything, default option), "allSolidTumors" (everything except for blood), "blood", "breast", "CNS", "GI tract" ,"lung", "skin", "upper aerodigestive"#'
-#'
 #' @return a list with two entries, trainDataOrd the ordered expression data and ic50sOrd the drug sensitivity data.
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 getPPV <- function(predResponders, predNonResponders, drug, tissueType="all")
 {
   possibleDrugs <- c("A.443654", "A.770041", "ABT.263", "ABT.888", "AG.014699", "AICAR", "AKT.inhibitor.VIII", "AMG.706", "AP.24534", "AS601245", "ATRA", "AUY922", "Axitinib", "AZ628", "AZD.0530", "AZD.2281", "AZD6244", "AZD6482", "AZD7762", "AZD8055", "BAY.61.3606", "Bexarotene", "BI.2536", "BIBW2992", "Bicalutamide", "BI.D1870", "BIRB.0796", "Bleomycin", "BMS.509744", "BMS.536924", "BMS.708163", "BMS.754807", "Bortezomib", "Bosutinib", "Bryostatin.1", "BX.795", "Camptothecin", "CCT007093", "CCT018159", "CEP.701", "CGP.082996", "CGP.60474", "CHIR.99021", "CI.1040", "Cisplatin", "CMK", "Cyclopamine", "Cytarabine", "Dasatinib", "DMOG", "Docetaxel", "Doxorubicin", "EHT.1864", "Elesclomol", "Embelin", "Epothilone.B", "Erlotinib", "Etoposide", "FH535", "FTI.277", "GDC.0449", "GDC0941", "Gefitinib", "Gemcitabine", "GNF.2", "GSK269962A", "GSK.650394", "GW.441756", "GW843682X", "Imatinib", "IPA.3", "JNJ.26854165", "JNK.9L", "JNK.Inhibitor.VIII", "JW.7.52.1", "KIN001.135", "KU.55933", "Lapatinib", "Lenalidomide", "LFM.A13", "Metformin", "Methotrexate", "MG.132", "Midostaurin", "Mitomycin.C", "MK.2206", "MS.275", "Nilotinib", "NSC.87877", "NU.7441", "Nutlin.3a", "NVP.BEZ235", "NVP.TAE684", "Obatoclax.Mesylate", "OSI.906", "PAC.1", "Paclitaxel", "Parthenolide", "Pazopanib", "PD.0325901", "PD.0332991", "PD.173074", "PF.02341066", "PF.4708671", "PF.562271", "PHA.665752", "PLX4720", "Pyrimethamine", "QS11", "Rapamycin", "RDEA119", "RO.3306", "Roscovitine", "Salubrinal", "SB.216763", "SB590885", "Shikonin", "SL.0101.1", "Sorafenib", "S.Trityl.L.cysteine", "Sunitinib", "Temsirolimus", "Thapsigargin", "Tipifarnib", "TW.37", "Vinblastine", "Vinorelbine", "Vorinostat", "VX.680", "VX.702", "WH.4.023", "WO2009093972", "WZ.1.84", "X17.AAG", "X681640", "XMD8.85", "Z.LLNle.CHO", "ZM.447439")
@@ -823,10 +809,9 @@ getPPV <- function(predResponders, predNonResponders, drug, tissueType="all")
 #' expression by their mean.
 #'
 #' @param exprMat a gene expression matrix with gene names as row ids and sample names as column ids.
-#'
 #' @return a gene expression matrix that does not contain duplicate gene ids
-#'
-#' @keywords summarize duplicate gene ids by their mean.
+#' @keywords internal
+#' @author Paul Geeleher, Nancy Cox, R. Stephanie Huang
 summarizeGenesByMean <- function(exprMat)
 {
   geneIds <- rownames(exprMat)

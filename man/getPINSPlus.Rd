@@ -4,9 +4,15 @@
 \alias{getPINSPlus}
 \title{Get subtypes from PINSPlus}
 \usage{
-getPINSPlus(data = NULL, N.clust = NULL, type = rep("gaussian",
-  length(data)), norMethod = "none", clusteringMethod = "kmeans",
-  iterMin = 50, iterMax = 500)
+getPINSPlus(
+  data = NULL,
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  norMethod = "none",
+  clusteringMethod = "kmeans",
+  iterMin = 50,
+  iterMax = 500
+)
 }
 \arguments{
 \item{data}{List of matrices.}

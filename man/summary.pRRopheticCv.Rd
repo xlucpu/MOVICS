@@ -13,4 +13,7 @@ summary.pRRopheticCv(cvOutData)
 Given an object of class "pRRopheticCv", print various metrics that
 summarize the performance of the cross validataion analysis
 }
-\keyword{summary}
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

@@ -4,15 +4,33 @@
 \alias{runMarker}
 \title{Run identification of unique biomarkers}
 \usage{
-runMarker(moic.res = NULL, dea.method = c("deseq2", "edger", "limma"),
-  prefix = NULL, dat.path = getwd(), res.path = getwd(),
-  p.cutoff = 0.05, p.adj.cutoff = 0.05, dirct = "up",
-  n.marker = 200, doplot = T, norm.expr = NULL, annCol = NULL,
-  annColors = NULL, clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C",
-  "#BDD5EA", "#FFA5AB", "#011627"), halfwidth = 3, centerFlag = T,
-  scaleFlag = T, show_rownames = F, show_colnames = F,
-  color = c("#5bc0eb", "black", "#ECE700"), fig.path = getwd(),
-  fig.name = NULL, width = 8, height = 8, ...)
+runMarker(
+  moic.res = NULL,
+  dea.method = c("deseq2", "edger", "limma"),
+  prefix = NULL,
+  dat.path = getwd(),
+  res.path = getwd(),
+  p.cutoff = 0.05,
+  p.adj.cutoff = 0.05,
+  dirct = "up",
+  n.marker = 200,
+  doplot = T,
+  norm.expr = NULL,
+  annCol = NULL,
+  annColors = NULL,
+  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
+  halfwidth = 3,
+  centerFlag = T,
+  scaleFlag = T,
+  show_rownames = F,
+  show_colnames = F,
+  color = c("#5bc0eb", "black", "#ECE700"),
+  fig.path = getwd(),
+  fig.name = NULL,
+  width = 8,
+  height = 8,
+  ...
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}

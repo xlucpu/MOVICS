@@ -65,7 +65,7 @@ Imports:
     grDevices (>= 3.6.1),
     maftools (>= 2.2.0)
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 URL: https://github.com/xlucpu/MOVICS
 BugReports: https://github.com/xlucpu/MOVICS/issues
 Collate: 

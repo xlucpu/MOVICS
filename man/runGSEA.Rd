@@ -4,15 +4,30 @@
 \alias{runGSEA}
 \title{Run identification of unique functional pathways}
 \usage{
-runGSEA(moic.res = NULL, dea.method = c("deseq2", "edger", "limma"),
-  norm.expr = NULL, prefix = NULL, dat.path = getwd(),
-  res.path = getwd(), dirct = "up", n.path = 10,
-  msigdb.path = NULL, nPerm = 1000, minGSSize = 10,
-  maxGSSize = 500, p.cutoff = 0.05, p.adj.cutoff = 0.25,
-  gsva.method = "gsva", norm.method = "mean",
-  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB",
-  "#011627"), color = NULL, fig.name = NULL, fig.path = getwd(),
-  width = 15, height = 10)
+runGSEA(
+  moic.res = NULL,
+  dea.method = c("deseq2", "edger", "limma"),
+  norm.expr = NULL,
+  prefix = NULL,
+  dat.path = getwd(),
+  res.path = getwd(),
+  dirct = "up",
+  n.path = 10,
+  msigdb.path = NULL,
+  nPerm = 1000,
+  minGSSize = 10,
+  maxGSSize = 500,
+  p.cutoff = 0.05,
+  p.adj.cutoff = 0.25,
+  gsva.method = "gsva",
+  norm.method = "mean",
+  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
+  color = NULL,
+  fig.name = NULL,
+  fig.path = getwd(),
+  width = 15,
+  height = 10
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}

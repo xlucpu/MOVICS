@@ -4,10 +4,18 @@
 \alias{classifySamples}
 \title{Dichotimize a training expression set and fit a logistic ridge regression model which is applied to the test expression matirx.}
 \usage{
-classifySamples(trainingExprData, trainingPtype, testExprData,
-  batchCorrect = "eb", minNumSamples = 10, selection = -1,
-  printOutput = TRUE, numGenesSelected = 1000, numSens = 15,
-  numRes = 55)
+classifySamples(
+  trainingExprData,
+  trainingPtype,
+  testExprData,
+  batchCorrect = "eb",
+  minNumSamples = 10,
+  selection = -1,
+  printOutput = TRUE,
+  numGenesSelected = 1000,
+  numSens = 15,
+  numRes = 55
+)
 }
 \arguments{
 \item{trainingExprData}{Gene expression matrix for samples for which we the phenotype is already known.}
@@ -34,3 +42,7 @@ classifySamples(trainingExprData, trainingPtype, testExprData,
 Dichotimize a training expression set and fit a logistic ridge regression model which is applied to the test expression matirx.
 This function will return a set of probabilities.
 }
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

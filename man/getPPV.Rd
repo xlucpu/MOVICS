@@ -21,3 +21,7 @@ a list with two entries, trainDataOrd the ordered expression data and ic50sOrd t
 \description{
 Calculate PPV and NPV and a cutpoint from the training data.
 }
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

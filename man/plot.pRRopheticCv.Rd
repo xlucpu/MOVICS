@@ -14,4 +14,7 @@ Given an object of class "pRRopheticCv", plot the cross validation
 predicted values against the measured values. Also plots a regression
 line.
 }
-\keyword{plot}
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

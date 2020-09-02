@@ -4,13 +4,24 @@
 \alias{getConsensusClustering}
 \title{Get subtypes from ConsensusClustering}
 \usage{
-getConsensusClustering(data = NULL, N.clust = NULL,
-  type = rep("gaussian", length(data)), norMethod = "none",
-  reps = 500, pItem = 0.8, pFeature = 0.8, clusterAlg = "hc",
-  innerLinkage = "ward.D", finalLinkage = "ward.D",
-  distance = "pearson", plot = NULL, writeTable = F,
-  title = file.path(getwd(), "consensuscluster"), seed = 123456,
-  verbose = F)
+getConsensusClustering(
+  data = NULL,
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  norMethod = "none",
+  reps = 500,
+  pItem = 0.8,
+  pFeature = 0.8,
+  clusterAlg = "hc",
+  innerLinkage = "ward.D",
+  finalLinkage = "ward.D",
+  distance = "pearson",
+  plot = NULL,
+  writeTable = F,
+  title = file.path(getwd(), "consensuscluster"),
+  seed = 123456,
+  verbose = F
+)
 }
 \arguments{
 \item{data}{List of matrices.}

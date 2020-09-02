@@ -4,10 +4,17 @@
 \alias{predictionAccuracyByCv}
 \title{Cross validation on training dataset}
 \usage{
-predictionAccuracyByCv(trainingExprData, trainingPtype,
-  testExprData = -1, cvFold = -1, powerTransformPhenotype = TRUE,
-  batchCorrect = "eb", removeLowVaryingGenes = 0.2,
-  minNumSamples = 10, selection = 1)
+predictionAccuracyByCv(
+  trainingExprData,
+  trainingPtype,
+  testExprData = -1,
+  cvFold = -1,
+  powerTransformPhenotype = TRUE,
+  batchCorrect = "eb",
+  removeLowVaryingGenes = 0.2,
+  minNumSamples = 10,
+  selection = 1
+)
 }
 \arguments{
 \item{trainingExprData}{The training data. A matrix of expression levels, rows contain genes and columns contain samples, "rownames()" must be specified and must contain the same type of gene ids as "testExprData"}
@@ -36,5 +43,7 @@ This function does cross validation on a training set to estimate prediction acc
 If the actual test set is provided, the two datasets can be subsetted and homogenized before the
 cross validation analysis is preformed. This may improve the estimate of prediction accuracy.
 }
-\keyword{phenotype}
-\keyword{predict}
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

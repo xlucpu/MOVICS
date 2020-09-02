@@ -16,5 +16,7 @@ a numeric vector containing the median prediction error from the cross validatio
 Given an object of class "pRRopheticCv", estiamte the median prediction error,
 i.e. the median difference between the predicted and measured phenotype.
 }
-\keyword{error}
-\keyword{prediction}
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

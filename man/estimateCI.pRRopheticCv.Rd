@@ -18,5 +18,7 @@ a numeric vector containing the average upper and lower confidence interval.
 Given an object of class "pRRopheticCv", i.e. the output of cross validation, calculate
 an average confidence interval for the predictions.
 }
-\keyword{confidence}
-\keyword{interval}
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

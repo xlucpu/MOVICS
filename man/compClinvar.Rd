@@ -4,10 +4,19 @@
 \alias{compClinvar}
 \title{Comparison of clinical variables}
 \usage{
-compClinvar(moic.res = NULL, var2comp = NULL, strata = "Subtype",
-  factorVars = NULL, nonnormalVars = NULL, exactVars = NULL,
-  includeNA = F, doWord = T, tab.name = NULL, res.path = getwd(),
-  ...)
+compClinvar(
+  moic.res = NULL,
+  var2comp = NULL,
+  strata = "Subtype",
+  factorVars = NULL,
+  nonnormalVars = NULL,
+  exactVars = NULL,
+  includeNA = F,
+  doWord = T,
+  tab.name = NULL,
+  res.path = getwd(),
+  ...
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}

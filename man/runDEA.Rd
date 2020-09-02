@@ -4,9 +4,16 @@
 \alias{runDEA}
 \title{Run differential expression analysis}
 \usage{
-runDEA(dea.method = c("deseq2", "edger", "limma"), expr = NULL,
-  moic.res = NULL, prefix = NULL, overwt = FALSE, sort.p = TRUE,
-  verbose = TRUE, res.path = getwd())
+runDEA(
+  dea.method = c("deseq2", "edger", "limma"),
+  expr = NULL,
+  moic.res = NULL,
+  prefix = NULL,
+  overwt = FALSE,
+  sort.p = TRUE,
+  verbose = TRUE,
+  res.path = getwd()
+)
 }
 \arguments{
 \item{dea.method}{A string value to indicate the algorithm for differential expression analysis. Allowed value contains c('deseq2', 'edger', 'limma'). The former two require RNA-Seq raw count data and the last one requires normalized expression data (FPKM or TPM without log2 transformation is recommended).}

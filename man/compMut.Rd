@@ -4,14 +4,29 @@
 \alias{compMut}
 \title{Comparison of mutational frequency}
 \usage{
-compMut(moic.res = NULL, mut.matrix = NULL, freq.cutoff = 0.05,
-  test.method = "fisher", p.adj.method = "BH", doWord = T,
-  doPlot = T, innerclust = T, res.path = getwd(), tab.name = NULL,
-  fig.path = getwd(), fig.name = NULL, annCol = NULL,
-  annColors = NULL, mut.col = "#21498D", bg.col = "#dcddde",
-  p.cutoff = 0.05, p.adj.cutoff = 0.05, clust.col = c("#2EC4B6",
-  "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"), width = 8,
-  height = 4)
+compMut(
+  moic.res = NULL,
+  mut.matrix = NULL,
+  freq.cutoff = 0.05,
+  test.method = "fisher",
+  p.adj.method = "BH",
+  doWord = T,
+  doPlot = T,
+  innerclust = T,
+  res.path = getwd(),
+  tab.name = NULL,
+  fig.path = getwd(),
+  fig.name = NULL,
+  annCol = NULL,
+  annColors = NULL,
+  mut.col = "#21498D",
+  bg.col = "#dcddde",
+  p.cutoff = 0.05,
+  p.adj.cutoff = 0.05,
+  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
+  width = 8,
+  height = 4
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}

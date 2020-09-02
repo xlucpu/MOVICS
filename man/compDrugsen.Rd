@@ -4,11 +4,19 @@
 \alias{compDrugsen}
 \title{Comparison of drug sensitivity}
 \usage{
-compDrugsen(moic.res = NULL, norm.expr = NULL, drugs = c("Cisplatin",
-  "Paclitaxel"), tissueType = "all", test.method = "nonparametric",
-  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB",
-  "#011627"), prefix = NULL, fig.path = getwd(), seed = 123456,
-  width = 5, height = 5)
+compDrugsen(
+  moic.res = NULL,
+  norm.expr = NULL,
+  drugs = c("Cisplatin", "Paclitaxel"),
+  tissueType = "all",
+  test.method = "nonparametric",
+  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
+  prefix = NULL,
+  fig.path = getwd(),
+  seed = 123456,
+  width = 5,
+  height = 5
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}

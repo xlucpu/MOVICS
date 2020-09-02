@@ -4,9 +4,15 @@
 \alias{getClustNum}
 \title{Get estimation of optimal clustering number}
 \usage{
-getClustNum(data = NULL, is.binary = rep(F, length(data)),
-  try.N.clust = 2:8, center = T, scale = T, fig.path = getwd(),
-  fig.name = "optimal_number_cluster")
+getClustNum(
+  data = NULL,
+  is.binary = rep(F, length(data)),
+  try.N.clust = 2:8,
+  center = T,
+  scale = T,
+  fig.path = getwd(),
+  fig.name = "optimal_number_cluster"
+)
 }
 \arguments{
 \item{data}{List of matrices.}

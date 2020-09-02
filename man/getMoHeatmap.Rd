@@ -4,19 +4,29 @@
 \alias{getMoHeatmap}
 \title{Get multi-omics comprehensive heatmap}
 \usage{
-getMoHeatmap(data = NULL, is.binary = c(F, F, F, F, F, F),
+getMoHeatmap(
+  data = NULL,
+  is.binary = c(F, F, F, F, F, F),
   row.title = c("Data1", "Data2", "Data3", "Data4", "Data5", "Data6"),
   legend.name = c("Data1", "Data2", "Data3", "Data4", "Data5", "Data6"),
-  clust.res = NULL, clust.dend = NULL, show.col.dend = T,
-  show.colnames = F, show.row.dend = c(T, T, T, T, T, T),
-  show.rownames = c(F, F, F, F, F, F), clust.dist.row = c("pearson",
-  "pearson", "pearson", "pearson", "pearson", "pearson"),
-  clust.method.row = c("ward.D", "ward.D", "ward.D", "ward.D", "ward.D",
-  "ward.D"), clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA",
-  "#FFA5AB", "#011627"), color = rep(list(c("#00FF00", "#000000",
-  "#FF0000")), length(data)), annCol = NULL, annColors = NULL,
-  annRow = NULL, width = 6, height = 4, fig.path = getwd(),
-  fig.name = "moheatmap")
+  clust.res = NULL,
+  clust.dend = NULL,
+  show.col.dend = T,
+  show.colnames = F,
+  show.row.dend = c(T, T, T, T, T, T),
+  show.rownames = c(F, F, F, F, F, F),
+  clust.dist.row = c("pearson", "pearson", "pearson", "pearson", "pearson", "pearson"),
+  clust.method.row = c("ward.D", "ward.D", "ward.D", "ward.D", "ward.D", "ward.D"),
+  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
+  color = rep(list(c("#00FF00", "#000000", "#FF0000")), length(data)),
+  annCol = NULL,
+  annColors = NULL,
+  annRow = NULL,
+  width = 6,
+  height = 4,
+  fig.path = getwd(),
+  fig.name = "moheatmap"
+)
 }
 \arguments{
 \item{data}{A list of data frame or matrix storing multiple omics data with rows for features and columns for samples.}

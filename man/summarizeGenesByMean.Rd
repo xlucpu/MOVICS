@@ -17,10 +17,7 @@ This function accepts two expression matrices, with gene ids as rownames() and
 sample ids as colnames(). It will find all duplicate genes and summarize their
 expression by their mean.
 }
-\keyword{by}
-\keyword{duplicate}
-\keyword{gene}
-\keyword{ids}
-\keyword{mean.}
-\keyword{summarize}
-\keyword{their}
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

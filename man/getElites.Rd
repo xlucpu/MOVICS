@@ -4,10 +4,18 @@
 \alias{getElites}
 \title{Get elites for clustering}
 \usage{
-getElites(dat = NULL, surv.info = NULL, method = "mad",
-  na.action = "rm", doLog2 = FALSE, p.cutoff = 0.05,
-  elite.pct = NULL, elite.num = NULL, scaleFlag = FALSE,
-  centerFlag = FALSE)
+getElites(
+  dat = NULL,
+  surv.info = NULL,
+  method = "mad",
+  na.action = "rm",
+  doLog2 = FALSE,
+  p.cutoff = 0.05,
+  elite.pct = NULL,
+  elite.num = NULL,
+  scaleFlag = FALSE,
+  centerFlag = FALSE
+)
 }
 \arguments{
 \item{dat}{A data.frame of one omics data, can be continous or binary data.}

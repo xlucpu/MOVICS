@@ -12,6 +12,7 @@
 #' @importFrom SimDesign quiet
 #' @references Love, M.I., Huber, W., Anders, S. (2014) Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol, 15(12):550-558.
 #' @export
+#' @keywords internal
 #' @examples # There is no example and please refer to vignette.
 twoclassdeseq2 <- function(moic.res    = NULL,
                            countsTable = NULL,
@@ -125,6 +126,7 @@ twoclassdeseq2 <- function(moic.res    = NULL,
 #'
 #' McCarthy DJ, Chen Y, Smyth GK (2012). Differential expression analysis of multifactor RNA-Seq experiments with respect to biological variation. Nucleic Acids Res. 40(10):4288-4297.
 #' @export
+#' @keywords internal
 #' @importFrom edgeR DGEList calcNormFactors estimateDisp glmFit glmLRT topTags
 #' @examples # There is no example and please refer to vignette.
 twoclassedger <- function(moic.res    = NULL,
@@ -240,6 +242,7 @@ twoclassedger <- function(moic.res    = NULL,
 #' @param res.path A string value to indicate the path for saving the results.
 #' @references Ritchie, ME, Phipson, B, Wu, D, Hu, Y, Law, CW, Shi, W, and Smyth, GK (2015). limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res, 43(7):e47.
 #' @export
+#' @keywords internal
 #' @importFrom limma lmFit makeContrasts eBayes topTable
 #' @examples # There is no example and please refer to vignette.
 twoclasslimma <- function(moic.res  = NULL,

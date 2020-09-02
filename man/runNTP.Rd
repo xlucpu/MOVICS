@@ -4,10 +4,21 @@
 \alias{runNTP}
 \title{Run nearest template prediction}
 \usage{
-runNTP(expr = NULL, templates = NULL, scale = FALSE,
-  center = FALSE, nPerm = 1000, distance = "cosine", seed = 123456,
-  verbose = TRUE, doPlot = FALSE, fig.path = getwd(),
-  fig.name = "ntpheatmap", width = 5, height = 5)
+runNTP(
+  expr = NULL,
+  templates = NULL,
+  scale = FALSE,
+  center = FALSE,
+  nPerm = 1000,
+  distance = "cosine",
+  seed = 123456,
+  verbose = TRUE,
+  doPlot = FALSE,
+  fig.path = getwd(),
+  fig.name = "ntpheatmap",
+  width = 5,
+  height = 5
+)
 }
 \arguments{
 \item{expr}{A numeric matrix with row features and sample columns; data is recommended to be z-scored.}

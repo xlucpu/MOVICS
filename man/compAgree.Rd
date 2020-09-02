@@ -4,10 +4,17 @@
 \alias{compAgree}
 \title{Comparison of agreement between two subtypes}
 \usage{
-compAgree(moic.res = NULL, subt2comp = NULL, doPlot = T,
-  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB",
-  "#011627"), box.width = 0.1, fig.name = NULL, fig.path = getwd(),
-  width = 6, height = 5)
+compAgree(
+  moic.res = NULL,
+  subt2comp = NULL,
+  doPlot = T,
+  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
+  box.width = 0.1,
+  fig.name = NULL,
+  fig.path = getwd(),
+  width = 6,
+  height = 5
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}

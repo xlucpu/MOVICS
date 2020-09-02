@@ -73,19 +73,20 @@ compDrugsen <- function(moic.res    = NULL,
   for (drug in drugs) {
     set.seed(seed)
 
-    predictedPtype[[drug]] <- SimDesign::quiet(pRRopheticPredict(testMatrix = as.matrix(gset[,rownames(annCol)]),
-                                                                 drug = drug,
-                                                                 tissueType = tissueType,
-                                                                 dataset = "cgp2016",
+    predictedPtype[[drug]] <- SimDesign::quiet(pRRopheticPredict(testMatrix    = as.matrix(gset[,rownames(annCol)]),
+                                                                 drug          = drug,
+                                                                 tissueType    = tissueType,
+                                                                 dataset       = "cgp2016",
                                                                  minNumSamples = 5,
-                                                                 selection = 1)) # 1 indicate if multiple genes existed, mean value will be considered
+                                                                 selection     = 1)) # 1 indicate if multiple genes existed, mean value will be considered
 
     if(!all(names(predictedPtype[[drug]]) == rownames(annCol))) {stop("name mismatched!\n")}
 
-    predictedBoxdat[[drug]] <- data.frame("Est.IC50" = predictedPtype[[drug]],
-                                          "Subtype" = as.character(annCol$Subtype),
-                                           row.names = names(predictedPtype[[drug]]),
+    predictedBoxdat[[drug]] <- data.frame("Est.IC50"        = predictedPtype[[drug]],
+                                          "Subtype"         = as.character(annCol$Subtype),
+                                           row.names        = names(predictedPtype[[drug]]),
                                            stringsAsFactors = F)
+    message(drug," done...")
 
     # generate boxviolin plot with statistical testing
     if(n.moic == 2 & test.method == "nonparametric") {
@@ -124,8 +125,6 @@ compDrugsen <- function(moic.res    = NULL,
                          hjust = ifelse(n.moic %% 2 == 0, 0.5, 0),
                          label.x = ifelse(n.moic %% 2 == 0, n.moic / 2 + 0.5, n.moic / 2),
                          label.y = min(predictedBoxdat[[drug]]$Est.IC50))
-
-    message(drug," done...")
 
     # save to pdf
     if(is.null(prefix)) {

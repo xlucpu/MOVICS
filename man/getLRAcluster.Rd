@@ -4,8 +4,12 @@
 \alias{getLRAcluster}
 \title{Get subtypes from LRAcluster}
 \usage{
-getLRAcluster(data = NULL, N.clust = NULL, type = rep("gaussian",
-  length(data)), clusterAlg = "ward.D")
+getLRAcluster(
+  data = NULL,
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  clusterAlg = "ward.D"
+)
 }
 \arguments{
 \item{data}{List of matrices.}

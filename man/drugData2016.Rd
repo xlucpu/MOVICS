@@ -4,8 +4,9 @@
 \name{drugData2016}
 \alias{drugData2016}
 \title{GDSC 2016 drug data}
-\format{A data frame with 224510 rows and 13 variables.
-\describe{contains "drugData2016" the 2016 drug IC50 data, downloaded from (http://www.cancerrxgene.org/translation/drug/download#ic50)}}
+\format{
+A data frame with 224510 rows and 13 variables.
+}
 \source{
 \url{https://osf.io/5xvsg/}
 }
@@ -15,4 +16,14 @@ drugData2016
 \description{
 A data frame storing the GDSC 2016 drug data.
 }
-\keyword{datasets}
+\keyword{"drugData2016"}
+\keyword{(http://www.cancerrxgene.org/translation/drug/download#ic50)}}
+\keyword{2016}
+\keyword{IC50}
+\keyword{\describe{contains}
+\keyword{data,}
+\keyword{downloaded}
+\keyword{drug}
+\keyword{from}
+\keyword{internal}
+\keyword{the}

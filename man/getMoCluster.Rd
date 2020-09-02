@@ -4,9 +4,18 @@
 \alias{getMoCluster}
 \title{Get subtypes from MoCluster}
 \usage{
-getMoCluster(data = NULL, N.clust = NULL, type = rep("gaussian",
-  length(data)), ncomp = NULL, method = "CPCA", option = "lambda1",
-  k = 10, center = T, scale = T, clusterAlg = "ward.D")
+getMoCluster(
+  data = NULL,
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  ncomp = NULL,
+  method = "CPCA",
+  option = "lambda1",
+  k = 10,
+  center = T,
+  scale = T,
+  clusterAlg = "ward.D"
+)
 }
 \arguments{
 \item{data}{List of matrices.}

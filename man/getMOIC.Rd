@@ -4,10 +4,14 @@
 \alias{getMOIC}
 \title{Get subtypes from multi-omics integrative clustering}
 \usage{
-getMOIC(data = NULL, methodslist = list("SNF", "CIMLR", "PINSPlus",
-  "NEMO", "COCA", "MoCluster", "LRAcluster", "ConsensusClustering",
-  "IntNMF", "iClusterBayes"), N.clust = NULL, type = rep("gaussian",
-  length(data)), ...)
+getMOIC(
+  data = NULL,
+  methodslist = list("SNF", "CIMLR", "PINSPlus", "NEMO", "COCA", "MoCluster",
+    "LRAcluster", "ConsensusClustering", "IntNMF", "iClusterBayes"),
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  ...
+)
 }
 \arguments{
 \item{data}{List of matrices (Maximum number of matrices is 6).}

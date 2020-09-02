@@ -4,8 +4,12 @@
 \alias{getNEMO}
 \title{Get subtypes from NEMO}
 \usage{
-getNEMO(data = NULL, N.clust = NULL, type = rep("gaussian",
-  length(data)), num.neighbors = NA)
+getNEMO(
+  data = NULL,
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  num.neighbors = NA
+)
 }
 \arguments{
 \item{data}{List of matrices.}

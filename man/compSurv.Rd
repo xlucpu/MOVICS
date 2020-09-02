@@ -4,10 +4,17 @@
 \alias{compSurv}
 \title{Comparison of prognosis by Kaplan-Meier survival curve}
 \usage{
-compSurv(moic.res = NULL, surv.info = NULL, convt.time = "d",
-  surv.cut = NULL, clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C",
-  "#BDD5EA", "#FFA5AB", "#011627"), p.adjust.method = "BH",
-  surv.median.line = "none", fig.name = NULL, fig.path = getwd())
+compSurv(
+  moic.res = NULL,
+  surv.info = NULL,
+  convt.time = "d",
+  surv.cut = NULL,
+  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
+  p.adjust.method = "BH",
+  surv.median.line = "none",
+  fig.name = NULL,
+  fig.path = getwd()
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}

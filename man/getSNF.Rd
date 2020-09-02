@@ -4,8 +4,14 @@
 \alias{getSNF}
 \title{Get subtypes from SNF}
 \usage{
-getSNF(data = NULL, N.clust = NULL, type = rep("gaussian",
-  length(data)), K = 30, t = 20, sigma = 0.5)
+getSNF(
+  data = NULL,
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  K = 30,
+  t = 20,
+  sigma = 0.5
+)
 }
 \arguments{
 \item{data}{List of matrices.}

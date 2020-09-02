@@ -4,9 +4,16 @@
 \alias{getiClusterBayes}
 \title{Get subtypes from iClusterBayes}
 \usage{
-getiClusterBayes(data = NULL, N.clust = NULL, type = rep("gaussian",
-  length(data)), n.burnin = 18000, n.draw = 12000,
-  prior.gamma = rep(0.5, length(data)), sdev = 0.05, thin = 3)
+getiClusterBayes(
+  data = NULL,
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  n.burnin = 18000,
+  n.draw = 12000,
+  prior.gamma = rep(0.5, length(data)),
+  sdev = 0.05,
+  thin = 3
+)
 }
 \arguments{
 \item{data}{List of matrices with maximum of 6 subdatasets.}

@@ -19,3 +19,7 @@ a list with two entries, trainDataOrd the ordered expression data and ic50sOrd t
 \description{
 Given a drug and tissue type, return CGP expression and drug sensitivity data.
 }
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

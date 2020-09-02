@@ -4,9 +4,15 @@
 \alias{twoclassdeseq2}
 \title{Run two class comparison}
 \usage{
-twoclassdeseq2(moic.res = NULL, countsTable = NULL, prefix = NULL,
-  overwt = FALSE, sort.p = TRUE, verbose = TRUE,
-  res.path = getwd())
+twoclassdeseq2(
+  moic.res = NULL,
+  countsTable = NULL,
+  prefix = NULL,
+  overwt = FALSE,
+  sort.p = TRUE,
+  verbose = TRUE,
+  res.path = getwd()
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}
@@ -32,3 +38,4 @@ Two class differential expression analysis using DESeq2 algorithm.
 \references{
 Love, M.I., Huber, W., Anders, S. (2014) Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol, 15(12):550-558.
 }
+\keyword{internal}

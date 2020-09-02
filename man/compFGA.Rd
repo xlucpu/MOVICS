@@ -4,10 +4,18 @@
 \alias{compFGA}
 \title{Comparison of fraction genome altered}
 \usage{
-compFGA(moic.res = NULL, segment = NULL, iscopynumber = FALSE,
-  cnathreshold = 0.2, test.method = "nonparametric",
-  barcolor = c("#008B8A", "#F2042C", "#21498D"), fig.path = getwd(),
-  fig.name = NULL, width = 8, height = 4)
+compFGA(
+  moic.res = NULL,
+  segment = NULL,
+  iscopynumber = FALSE,
+  cnathreshold = 0.2,
+  test.method = "nonparametric",
+  barcolor = c("#008B8A", "#F2042C", "#21498D"),
+  fig.path = getwd(),
+  fig.name = NULL,
+  width = 8,
+  height = 4
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}

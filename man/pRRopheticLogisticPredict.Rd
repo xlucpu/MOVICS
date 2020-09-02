@@ -4,10 +4,18 @@
 \alias{pRRopheticLogisticPredict}
 \title{Predict from the CGP data using a logistic model}
 \usage{
-pRRopheticLogisticPredict(testMatrix, drug, tissueType = "all",
-  batchCorrect = "eb", minNumSamples = 10, selection = -1,
-  printOutput = TRUE, numGenesSelected = 1000, numSens = 15,
-  numRes = 55)
+pRRopheticLogisticPredict(
+  testMatrix,
+  drug,
+  tissueType = "all",
+  batchCorrect = "eb",
+  minNumSamples = 10,
+  selection = -1,
+  printOutput = TRUE,
+  numGenesSelected = 1000,
+  numSens = 15,
+  numRes = 55
+)
 }
 \arguments{
 \item{testMatrix}{a gene expression matrix with gene names as row ids and sample names as column ids.}
@@ -36,10 +44,7 @@ A predicted probability of sensitive or resistant from the logistic regression m
 \description{
 Predict from the CGP data using a logistic model.
 }
-\keyword{by}
-\keyword{duplicate}
-\keyword{gene}
-\keyword{ids}
-\keyword{mean.}
-\keyword{summarize}
-\keyword{their}
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

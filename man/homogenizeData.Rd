@@ -4,8 +4,13 @@
 \alias{homogenizeData}
 \title{Take two expression matrices and return homogenized versions of the matrices.}
 \usage{
-homogenizeData(testExprMat, trainExprMat, batchCorrect = "eb",
-  selection = -1, printOutput = TRUE)
+homogenizeData(
+  testExprMat,
+  trainExprMat,
+  batchCorrect = "eb",
+  selection = -1,
+  printOutput = TRUE
+)
 }
 \arguments{
 \item{testExprMat}{Gene expression matrix for samples on which we wish to predict a phenotype. Gene names as rows, samples names as columns.}
@@ -27,6 +32,7 @@ sample ids as colnames(). It will deal with duplicate gene ids.
 subset and order the matrices correctly.
 and perform homogenize the data using whatever method is specified (by default Combat from the sva library).
 }
-\keyword{data}
-\keyword{expression}
-\keyword{homogenize}
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

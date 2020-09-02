@@ -4,12 +4,18 @@
 \alias{getConsensusMOIC}
 \title{Get subtypes from consensus clustering of multiple multi-omics integrative clustering algorithms}
 \usage{
-getConsensusMOIC(moic.res.list = NULL, distance = "euclidean",
-  linkage = "ward.D", mapcolor = c("#000004FF", "#56106EFF",
-  "#BB3754FF", "#F98C0AFF", "#FCFFA4FF"), clust.col = c("#2EC4B6",
-  "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"), showID = F,
-  fig.path = getwd(), fig.name = "consensusheatmap", width = 5.5,
-  height = 5)
+getConsensusMOIC(
+  moic.res.list = NULL,
+  distance = "euclidean",
+  linkage = "ward.D",
+  mapcolor = c("#000004FF", "#56106EFF", "#BB3754FF", "#F98C0AFF", "#FCFFA4FF"),
+  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
+  showID = F,
+  fig.path = getwd(),
+  fig.name = "consensusheatmap",
+  width = 5.5,
+  height = 5
+)
 }
 \arguments{
 \item{moic.res.list}{A list of object returned by `getMOIC()`.}

@@ -4,9 +4,15 @@
 \alias{twoclasslimma}
 \title{Run two class comparison}
 \usage{
-twoclasslimma(moic.res = NULL, norm.expr = NULL, prefix = NULL,
-  overwt = FALSE, sort.p = TRUE, verbose = TRUE,
-  res.path = getwd())
+twoclasslimma(
+  moic.res = NULL,
+  norm.expr = NULL,
+  prefix = NULL,
+  overwt = FALSE,
+  sort.p = TRUE,
+  verbose = TRUE,
+  res.path = getwd()
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}
@@ -35,3 +41,4 @@ twoclasslimma
 \references{
 Ritchie, ME, Phipson, B, Wu, D, Hu, Y, Law, CW, Shi, W, and Smyth, GK (2015). limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res, 43(7):e47.
 }
+\keyword{internal}

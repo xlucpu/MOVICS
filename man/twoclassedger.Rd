@@ -4,9 +4,15 @@
 \alias{twoclassedger}
 \title{Run two class comparison}
 \usage{
-twoclassedger(moic.res = NULL, countsTable = NULL, prefix = NULL,
-  overwt = FALSE, sort.p = TRUE, verbose = TRUE,
-  res.path = getwd())
+twoclassedger(
+  moic.res = NULL,
+  countsTable = NULL,
+  prefix = NULL,
+  overwt = FALSE,
+  sort.p = TRUE,
+  verbose = TRUE,
+  res.path = getwd()
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}
@@ -37,3 +43,4 @@ Robinson MD, McCarthy DJ and Smyth GK (2010). edgeR: a Bioconductor package for 
 
 McCarthy DJ, Chen Y, Smyth GK (2012). Differential expression analysis of multifactor RNA-Seq experiments with respect to biological variation. Nucleic Acids Res. 40(10):4288-4297.
 }
+\keyword{internal}

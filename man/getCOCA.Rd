@@ -4,8 +4,13 @@
 \alias{getCOCA}
 \title{Get subtypes from COCA}
 \usage{
-getCOCA(data = NULL, N.clust = NULL, type = rep("gaussian",
-  length(data)), methods = "hclust", distances = "euclidean")
+getCOCA(
+  data = NULL,
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  methods = "hclust",
+  distances = "euclidean"
+)
 }
 \arguments{
 \item{data}{List of matrices.}

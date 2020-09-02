@@ -18,3 +18,7 @@ a vector of row ids to keep
 This funtino will I.e. remove genes with low variation
 It returns a vector of row ids to keep. Note, rownames() must be specified.
 }
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

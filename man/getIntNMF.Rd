@@ -4,8 +4,12 @@
 \alias{getIntNMF}
 \title{Get subtypes from IntNMF}
 \usage{
-getIntNMF(data = NULL, N.clust = NULL, type = rep("gaussian",
-  length(data)), is.binary = rep(F, length(data)))
+getIntNMF(
+  data = NULL,
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  is.binary = rep(F, length(data))
+)
 }
 \arguments{
 \item{data}{List of matrices.}

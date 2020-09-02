@@ -18,4 +18,7 @@ a numeric vector containing the R squared value from the cross validation.
 Given an object of class "pRRopheticCv", i.e. the output of cross validation, calculate
 the R^2 value for the prediction (an estimate of prediction accuracy).
 }
-\keyword{r-squared}
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

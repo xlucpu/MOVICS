@@ -4,11 +4,21 @@
 \alias{compTMB}
 \title{Comparsion of total mutation burden}
 \usage{
-compTMB(moic.res = NULL, maf = NULL, rmDup = TRUE, rmFLAGS = FALSE,
-  nonSyn = NULL, exome.size = 38, clust.col = c("#2EC4B6", "#E71D36",
-  "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
-  test.method = "nonparametric", show.size = TRUE,
-  fig.path = getwd(), fig.name = NULL, width = 6, height = 6)
+compTMB(
+  moic.res = NULL,
+  maf = NULL,
+  rmDup = TRUE,
+  rmFLAGS = FALSE,
+  nonSyn = NULL,
+  exome.size = 38,
+  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
+  test.method = "nonparametric",
+  show.size = TRUE,
+  fig.path = getwd(),
+  fig.name = NULL,
+  width = 6,
+  height = 6
+)
 }
 \arguments{
 \item{moic.res}{An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.}

@@ -4,8 +4,13 @@
 \alias{getCIMLR}
 \title{Get subtypes from CIMLR}
 \usage{
-getCIMLR(data = NULL, N.clust = NULL, type = rep("gaussian",
-  length(data)), cores.ratio = 0, verbose = T)
+getCIMLR(
+  data = NULL,
+  N.clust = NULL,
+  type = rep("gaussian", length(data)),
+  cores.ratio = 0,
+  verbose = T
+)
 }
 \arguments{
 \item{data}{List of matrices.}

@@ -4,10 +4,18 @@
 \alias{calcPhenotype}
 \title{Calculates phenotype from microarray data.}
 \usage{
-calcPhenotype(trainingExprData, trainingPtype, testExprData,
-  batchCorrect = "eb", powerTransformPhenotype = TRUE,
-  removeLowVaryingGenes = 0.2, minNumSamples = 10, selection = -1,
-  printOutput = TRUE, removeLowVaringGenesFrom = "homogenizeData")
+calcPhenotype(
+  trainingExprData,
+  trainingPtype,
+  testExprData,
+  batchCorrect = "eb",
+  powerTransformPhenotype = TRUE,
+  removeLowVaryingGenes = 0.2,
+  minNumSamples = 10,
+  selection = -1,
+  printOutput = TRUE,
+  removeLowVaringGenesFrom = "homogenizeData"
+)
 }
 \arguments{
 \item{trainingExprData}{The training data. A matrix of expression levels, rows contain genes and columns contain samples, "rownames()" must be specified and must contain the same type of gene ids as "testExprData"}
@@ -40,5 +48,7 @@ also integrates the two datasets using a user-defined procedure, power transform
 the known phenotype and provides several other options for flexible and powerful prediction
 from a gene expression matrix.
 }
-\keyword{phenotype}
-\keyword{predict,}
+\author{
+Paul Geeleher, Nancy Cox, R. Stephanie Huang
+}
+\keyword{internal}

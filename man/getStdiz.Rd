@@ -4,8 +4,12 @@
 \alias{getStdiz}
 \title{Get standardized omics data}
 \usage{
-getStdiz(data = NULL, halfwidth = rep(1, length(data)),
-  centerFlag = rep(T, length(data)), scaleFlag = rep(T, length(data)))
+getStdiz(
+  data = NULL,
+  halfwidth = rep(1, length(data)),
+  centerFlag = rep(T, length(data)),
+  scaleFlag = rep(T, length(data))
+)
 }
 \arguments{
 \item{data}{A list of data.frame or matrix storing raw multiple omics data with rows for features and columns for samples.}
