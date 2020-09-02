@@ -6,6 +6,7 @@
 \title{GDSC 2016 gene expression data}
 \format{
 A matrix with 17419 rows and 1018 variables.
+\describe{contains "cgp2016ExprRma" the 2016 gene expression data. Data was obtained from \url{http://www.cancerrxgene.org/gdsc1000/GDSC1000_WebResources/Data/preprocessed/Cell_line_RMA_proc_basalExp.txt.zip}. Cosmic Ids (in the column names) were mapped to cell line names using data from this file: \url{ftp://ftp.sanger.ac.uk/pub/project/cancerrxgene/releases/release-6.0/Cell_Lines_Details.xlsx}}
 }
 \source{
 \url{https://osf.io/5xvsg/}
@@ -16,32 +17,4 @@ cgp2016ExprRma
 \description{
 A matrix frame storing the GDSC 2016 gene expression data.
 }
-\keyword{"cgp2016ExprRma"}
-\keyword{"http://www.cancerrxgene.org/gdsc1000/GDSC1000_WebResources/Data/preprocessed/Cell_line_RMA_proc_basalExp.txt.zip".}
-\keyword{(in}
-\keyword{2016}
-\keyword{Cosmic}
-\keyword{Data}
-\keyword{Ids}
-\keyword{\describe{contains}
-\keyword{cell}
-\keyword{column}
-\keyword{data}
-\keyword{data.}
-\keyword{expression}
-\keyword{file:}
-\keyword{from}
-\keyword{ftp://ftp.sanger.ac.uk/pub/project/cancerrxgene/releases/release-6.0/Cell_Lines_Details.xlsx}}
-\keyword{gene}
-\keyword{internal}
-\keyword{line}
-\keyword{mapped}
-\keyword{names}
-\keyword{names)}
-\keyword{obtained}
-\keyword{the}
-\keyword{this}
-\keyword{to}
-\keyword{using}
-\keyword{was}
-\keyword{were}
+\keyword{datasets}
