@@ -282,3 +282,8 @@ compAgree <- function(moic.res  = NULL,
   }
   return(outTab)
 }
+
+#' @title StatStratum
+#' @name StatStratum
+#' @keywords internal
+StatStratum <- ggalluvial::StatStratum
