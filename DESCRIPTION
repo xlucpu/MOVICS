@@ -26,7 +26,6 @@ Imports:
     LRAcluster (>= 1.0),
     PINSPlus (>= 2.0.4),
     SNFtool (>= 2.3.0),
-    NEMO (>= 0.1.0),
     SimDesign (>= 2.0.1),
     coca (>= 1.1.0),
     dplyr (>= 0.8.3),

@@ -10,7 +10,6 @@
 #' @export
 #' @return A list of results returned by each specified algorithms.
 #' @import SNFtool
-#' @import NEMO
 #' @import IntNMF
 #' @import mogsa
 #' @import LRAcluster
