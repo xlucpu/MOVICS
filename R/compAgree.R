@@ -1,7 +1,3 @@
-# set environment for alluvial diagram
-StatStratum <- ggalluvial::StatStratum
-assign("StatStratum", ggalluvial::StatStratum, envir=globalenv())
-
 #' @name compAgree
 #' @title Comparison of agreement between two subtypes
 #' @description Compute the Rand Index, Jaccard Index, Fowlkes-Mallows, and Normalized Mutual Information for agreement of two partitions, and generate alluvial diagrams for visualization.
