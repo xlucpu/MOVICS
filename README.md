@@ -14,7 +14,7 @@ state-of-the-art multi-omics clustering algorithms, and standardizes the
 output for each algorithm so as to form a pipeline for downstream
 analyses. MOVICS incorporates the most
 commonly used downstream analyses in cancer subtyping researches and enables
-creating feature rich customizable visualzations with minimal effort.
+creating feature rich customizable visualizations with minimal effort.
 
 ## Installation
 ``` {r}

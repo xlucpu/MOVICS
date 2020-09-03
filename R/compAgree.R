@@ -14,6 +14,7 @@
 #' @export
 #' @import ggplot2
 #' @import ggalluvial
+#' @importFrom  ggalluvial StatStratum
 #' @importFrom dplyr group_by tally %>%
 #' @importFrom cowplot plot_grid
 #' @importFrom flexclust comPart
