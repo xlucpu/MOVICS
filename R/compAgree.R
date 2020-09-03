@@ -1,3 +1,6 @@
+# generate alluvial diagram
+StatStratum <- ggalluvial::StatStratum
+
 #' @name compAgree
 #' @title Comparison of agreement between two subtypes
 #' @description Compute the Rand Index, Jaccard Index, Fowlkes-Mallows, and Normalized Mutual Information for agreement of two partitions, and generate alluvial diagrams for visualization.
@@ -90,22 +93,19 @@ compAgree <- function(moic.res  = NULL,
     # generate barplot for agreement
     agreement <- reshape2::melt(outTab[,2:ncol(outTab)], id.vars = "other.subtype", variable.name = "Method")
     b <- ggplot(data = agreement, aes(x = Method, y = value, fill = other.subtype)) +
-                geom_bar(stat = "identity", position = position_dodge()) +
-                scale_fill_brewer(palette = "Set1") + ggplot2::labs(x = "", y = "Scalar") +
-                scale_y_continuous(limits = c(0,1), expand = c(0, 0)) +
-                theme_bw() +
-                theme(legend.position = "top",
-                      legend.title = element_blank(),
-                      panel.grid = element_blank(),
-                      axis.ticks = element_blank(),
-                      axis.text.x = element_text(color = "black", size = 12, face = "bold", vjust = -5),
-                      axis.text.y = element_text(color = "black", size = 12, face = "bold"),
-                      axis.title.x = element_text(color = "black", size = 12, face = "bold"),
-                      axis.title.y = element_text(color = "black", size = 12, face = "bold")) +
-         ggtitle("")
-
-    # generate alluvial diagram
-    StatStratum <- ggalluvial::StatStratum
+      geom_bar(stat = "identity", position = position_dodge()) +
+      scale_fill_brewer(palette = "Set1") + ggplot2::labs(x = "", y = "Scalar") +
+      scale_y_continuous(limits = c(0,1), expand = c(0, 0)) +
+      theme_bw() +
+      theme(legend.position = "top",
+            legend.title = element_blank(),
+            panel.grid = element_blank(),
+            axis.ticks = element_blank(),
+            axis.text.x = element_text(color = "black", size = 12, face = "bold", vjust = -5),
+            axis.text.y = element_text(color = "black", size = 12, face = "bold"),
+            axis.title.x = element_text(color = "black", size = 12, face = "bold"),
+            axis.title.y = element_text(color = "black", size = 12, face = "bold")) +
+      ggtitle("")
 
     col = clust.col[1:length(unique(dat$Subtype))]
     var1 <- var[1]
