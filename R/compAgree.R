@@ -1,5 +1,6 @@
 # set environment for alluvial diagram
 StatStratum <- ggalluvial::StatStratum
+assign("StatStratum", ggalluvial::StatStratum, envir=globalenv())
 
 #' @name compAgree
 #' @title Comparison of agreement between two subtypes
@@ -17,7 +18,7 @@ StatStratum <- ggalluvial::StatStratum
 #' @export
 #' @import ggplot2
 #' @import ggalluvial
-#' @importFrom  ggalluvial StatStratum
+#' @importFrom ggalluvial StatStratum
 #' @importFrom dplyr group_by tally %>%
 #' @importFrom cowplot plot_grid
 #' @importFrom flexclust comPart
@@ -81,6 +82,8 @@ compAgree <- function(moic.res  = NULL,
                                                  stringsAsFactors = F),
                                stringsAsFactors = F)
   }
+
+  assign("StatStratum", ggalluvial::StatStratum, envir=globalenv())
 
   if(doPlot) {
 
