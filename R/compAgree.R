@@ -1,4 +1,4 @@
-# generate alluvial diagram
+# set environment for alluvial diagram
 StatStratum <- ggalluvial::StatStratum
 
 #' @name compAgree
@@ -107,6 +107,7 @@ compAgree <- function(moic.res  = NULL,
             axis.title.y = element_text(color = "black", size = 12, face = "bold")) +
       ggtitle("")
 
+    # generate alluvial diagram
     col = clust.col[1:length(unique(dat$Subtype))]
     var1 <- var[1]
 
