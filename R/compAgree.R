@@ -1,3 +1,8 @@
+
+# generate alluvial diagram
+StatStratum <- ggalluvial::StatStratum
+
+
 #' @name compAgree
 #' @title Comparison of agreement between two subtypes
 #' @description Compute the Rand Index, Jaccard Index, Fowlkes-Mallows, and Normalized Mutual Information for agreement of two partitions, and generate alluvial diagrams for visualization.
@@ -103,9 +108,6 @@ compAgree <- function(moic.res  = NULL,
                       axis.title.x = element_text(color = "black", size = 12, face = "bold"),
                       axis.title.y = element_text(color = "black", size = 12, face = "bold")) +
          ggtitle("")
-
-    # generate alluvial diagram
-    StatStratum <- ggalluvial::StatStratum
 
     col = clust.col[1:length(unique(dat$Subtype))]
     var1 <- var[1]
