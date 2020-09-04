@@ -11,6 +11,7 @@ compFGA(
   cnathreshold = 0.2,
   test.method = "nonparametric",
   barcolor = c("#008B8A", "#F2042C", "#21498D"),
+  clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
   fig.path = getwd(),
   fig.name = NULL,
   width = 8,
@@ -29,6 +30,8 @@ compFGA(
 \item{test.method}{A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison.}
 
 \item{barcolor}{A string vector to indicate the mapping color for bars of FGA, FGG and FGL.}
+
+\item{clust.col}{A string vector storing colors for each subtype.}
 
 \item{fig.path}{A string value to indicate the output path for storing the barplot.}
 

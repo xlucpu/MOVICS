@@ -32,7 +32,7 @@
 #'         \code{FLAGS.count}   a data.frame storing the summarization per FLAGS if\code{rmFLAGS = TRUE}.
 #' @export
 #' @importFrom maftools read.maf titv
-#' @importFrom dplyr %>% group_by summarise n
+#' @importFrom dplyr %>% group_by summarise mutate n
 #' @importFrom grDevices dev.copy2pdf
 #' @examples # There is no example and please refer to vignette.
 #' @references Mayakonda A, Lin D, Assenov Y, Plass C, Koeffler PH (2018). Maftools: efficient and comprehensive analysis of somatic variants in cancer. Genome Res, 28(11): 1747-1756.

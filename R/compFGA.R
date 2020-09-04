@@ -7,6 +7,7 @@
 #' @param cnathreshold A numeric value to indicate the cutoff for identifying copy-number gain or loss. 0.2 by default.
 #' @param test.method A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison.
 #' @param barcolor A string vector to indicate the mapping color for bars of FGA, FGG and FGL.
+#' @param clust.col A string vector storing colors for each subtype.
 #' @param fig.path A string value to indicate the output path for storing the barplot.
 #' @param fig.name A string value to indicate the name of the barplot.
 #' @param width A numeric value to indicate the width of barplot.
@@ -38,6 +39,7 @@ compFGA <- function(moic.res     = NULL,
                     cnathreshold = 0.2,
                     test.method  = "nonparametric",
                     barcolor     = c("#008B8A", "#F2042C", "#21498D"),
+                    clust.col    = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627"),
                     fig.path     = getwd(),
                     fig.name     = NULL,
                     width        = 8,
@@ -108,10 +110,10 @@ compFGA <- function(moic.res     = NULL,
       FGL = sum(tmp[tmp$value < (-cnathreshold),"bases"]) / sum(tmp[,"bases"])
     }
 
-    tmp <- data.frame(samID = names(table(segment$sample))[i],
-                      FGA   = FGA,
-                      FGG   = FGG,
-                      FGL   = FGL,
+    tmp <- data.frame(samID            = names(table(segment$sample))[i],
+                      FGA              = FGA,
+                      FGG              = FGG,
+                      FGL              = FGL,
                       stringsAsFactors = F)
     outTab <- rbind.data.frame(outTab, tmp, stringsAsFactors = F)
   }
@@ -213,11 +215,18 @@ compFGA <- function(moic.res     = NULL,
     scale_y_continuous(expand = c(0.01,0),
                        name = "FGL or FGG (Fraction of Genome Lost or Gained)")
 
-  pp <- ggplot()+
-    geom_text(data = summaryFGGL,
-              aes(label = Subtype, x=Subtype), y = 0.5,
-              size = 0.8*11/.pt, # match font size to theme
-              hjust = 0.5, vjust = 0.5)+
+  pp <- ggplot() +
+    # geom_text(data = summaryFGGL,
+    #           aes(label = Subtype, x=Subtype), y = 0.5,
+    #           size = 0.8*11/.pt, # match font size to theme
+    #           hjust = 0.5, vjust = 0.5) +
+    geom_label(data = summaryFGGL,
+               aes(label = Subtype, x = Subtype, fill = Subtype),
+               y = 0.5,
+               color = "white",
+               size = 0.9*11/.pt, # match font size to theme
+               hjust = 0.5, vjust = 0.5) +
+    scale_fill_manual(values = clust.col) +
     theme_minimal()+
     theme(axis.line.y =element_blank(),
           axis.ticks.y =element_blank(),
@@ -225,12 +234,13 @@ compFGA <- function(moic.res     = NULL,
           axis.title.y =element_blank(),
           axis.title.x =element_blank(),
           plot.margin = unit(c(0.3, 0, 0.3, 0), "lines")
-    )+
-    coord_flip()+
+    ) +
+    guides(fill = FALSE) +
+    coord_flip() +
     scale_y_reverse()
 
   pal <- p1 + pp + p2 +
-    plot_layout(widths = c(7,1,7),guides = 'collect') & theme(legend.position = 'top')
+    plot_layout(widths = c(7,1,7), guides = 'collect') & theme(legend.position = 'top')
 
   # save to pdf
   if(is.null(fig.name)) {

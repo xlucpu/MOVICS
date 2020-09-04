@@ -414,7 +414,7 @@ runDEA <- function(dea.method = c("deseq2", "edger", "limma"),
            verbose     = verbose,
            res.path    = res.path)
   } else {
-    message(paste0("--you choose ", method," and please make sure a normalized expression data [FPKM or TPM without log2 transformation is recommended] was provided."))
+    message(paste0("--you choose ", method," and please make sure a microarray profile or a normalized expression data [FPKM or TPM without log2 transformation is recommended] was provided."))
     rundea(moic.res    = moic.res,
            norm.expr   = expr,
            prefix      = prefix,
