@@ -3,12 +3,12 @@
 #' @description This function provides several methods to help selecting elites from input features, which aims to reduce data dimention for multi-omics integrative clustering analysis.
 #' @param dat A data.frame of one omics data, can be continous or binary data.
 #' @param surv.info A data.frame with rownames of observations and with at least two columns of `futime` for survival time and `fustat` for survival status (0: censoring; 1: event)
-#' @param method A string value to indicate the filtering method for selecting elites. Allowed values contain c('mad', 'sd', 'cox', 'none'). 'mad' means median absolute deviation, 'sd' means standard deviation, 'cox' means univariate Cox proportional hazards regression which needs surv.info also, 'none' only works for binary data.
+#' @param method A string value to indicate the filtering method for selecting elites. Allowed values contain c('mad', 'sd', 'cox', 'freq'). 'mad' means median absolute deviation, 'sd' means standard deviation, 'cox' means univariate Cox proportional hazards regression which needs surv.info also, 'freq' only works for binary data.
 #' @param na.action A string value to indicate the action for handling NA missing value. Allowed values contain c('rm', 'impute'). 'rm' means removal of all features containing any missing values, 'impute' means imputation for missing values by k-nearest neighbors
 #' @param doLog2 A logic value to indicate if performing log2 transformation for data before calculating statistics (e.g., sd, mad and cox). FALSE by default.
 #' @param p.cutoff A numeric cutoff for nominal p value derived from univariate Cox proportional hazards regression; 0.05 by default.
-#' @param elite.pct A numberic cutoff of percentage for selecting elites. NOTE: epite.pct works for all methods except for 'cox', but two scenarios exist. 1) when using method of 'mad' or 'sd', features will be descending sorted by mad or sd, and top elites.pct \* feature size of elites (features) will be selected; 2) when using method of 'none' for binary data, frequency for value of 1 will be calculated for each feature, and features that have value of 1 in greater than elites.pct \* sample size will be considered elites. This argument will be discarded if elite.num is provided simultaneously. Set this argument with 1 and leave elite.num NULL will return all the features as elites after dealing with NA values.
-#' @param elite.num A integer cutoff of exact number for selecting elites. NOTE: elite.num works for all methods except for 'cox', but two scenarios exist. 1) when using method of 'mad' or 'sd', features will be descending sorted by mad or sd, and top elite.num of elites (features) will be selected; 2) when using method of 'none' for binary data, frequency for value of 1 will be calculated for each feature, and features that have value of 1 in greater than elite.num of sample size will be considered elites.
+#' @param elite.pct A numberic cutoff of percentage for selecting elites. NOTE: epite.pct works for all methods except for 'cox', but two scenarios exist. 1) when using method of 'mad' or 'sd', features will be descending sorted by mad or sd, and top elites.pct \* feature size of elites (features) will be selected; 2) when using method of 'freq' for binary data, frequency for value of 1 will be calculated for each feature, and features that have value of 1 in greater than elites.pct \* sample size will be considered elites. This argument will be discarded if elite.num is provided simultaneously. Set this argument with 1 and leave elite.num NULL will return all the features as elites after dealing with NA values.
+#' @param elite.num A integer cutoff of exact number for selecting elites. NOTE: elite.num works for all methods except for 'cox', but two scenarios exist. 1) when using method of 'mad' or 'sd', features will be descending sorted by mad or sd, and top elite.num of elites (features) will be selected; 2) when using method of 'freq' for binary data, frequency for value of 1 will be calculated for each feature, and features that have value of 1 in greater than elite.num of sample size will be considered elites.
 #' @param scaleFlag A logic value to indicate if scaling the data after filtering. FALSE by default.
 #' @param centerFlag A logic value to indicate if centerring the data after filtering. FALSE by default.
 #' @import survival
@@ -31,8 +31,8 @@ getElites <- function(dat        = NULL,
                       scaleFlag  = FALSE,
                       centerFlag = FALSE) {
   # check argument
-  if(!is.element(method, c("mad","sd","cox","none"))) {
-    stop("unsupportive method to filter elite features, allowed values contain c('mad','sd','cox','none').")}
+  if(!is.element(method, c("mad","sd","cox","freq"))) {
+    stop("unsupportive method to filter elite features, allowed values contain c('mad','sd','cox','freq').")}
   if(!is.element(na.action, c("rm","impute"))) {
     stop("unsupportive method to handle NA missing value, allowed values contain c('rm','impute').")}
 
@@ -49,8 +49,8 @@ getElites <- function(dat        = NULL,
   if(doLog2) {df <- as.data.frame(log2(df + 1))}
 
   # select elite features
-  if(method == "none") {
-    message("--method of none only supports binary omics data (e.g., somatic mutation matrix), and in this manner, elite.pct and elite.num are used to cut frequency.")
+  if(method == "freq") {
+    message("--method of 'freq' only supports binary omics data (e.g., somatic mutation matrix), and in this manner, elite.pct and elite.num are used to cut frequency.")
     if(sum(unique(as.vector(as.matrix(df)))) == 1) {
       #message("--it seems the input data correctely contains binary values of 0 and 1 only.")
       statistic <- rowSums(df); names(statistic) <- rownames(df)
@@ -58,8 +58,8 @@ getElites <- function(dat        = NULL,
       stop("it seems the input data contains more values than 0 and 1, please check and choose another proper method!")
     }
   }
-  if(method != "none" & method != "cox" & sum(unique(as.vector(as.matrix(df)))) == 1) {
-    stop("it seems the input data is a binary matrix with entries of 0 and 1 only, please check and choose 'none' method if appropriate!")
+  if(method != "freq" & method != "cox" & sum(unique(as.vector(as.matrix(df)))) == 1) {
+    stop("it seems the input data is a binary matrix with entries of 0 and 1 only, please check and choose 'freq' method if appropriate!")
   }
 
   if(method == "mad") {
@@ -115,7 +115,7 @@ getElites <- function(dat        = NULL,
     } else {stop("survival information must contain columns of 'futime' for survival time and 'fustat' for survival status.")}
   }
 
-  if(method == "none") {
+  if(method == "freq") {
     if(!is.null(elite.num)) {
       message("elite.num has been provided then discards elite.pct.")
       elite <- names(statistic[statistic > elite.num])

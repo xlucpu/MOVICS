@@ -126,9 +126,9 @@ MOVICS Pipeline diagram above outlines the concept for this package and such pip
     * `getMoHeatmap()`: get a comprehensive multi-omics heatmap based on clustering results  
 </br>
 * <div style="color:green">**COMP Module: compare subtypes from multiple perspectives**</div> 
-    * `compSurv()`: compare survival outcome and generate a Kalan-Meier curve with pair-wise comparsion if possible
+    * `compSurv()`: compare survival outcome and generate a Kalan-Meier curve with pair-wise comparison if possible
     * `compClinvar()`: compare and summarize clinical features among different identified subtypes
-    * `compMut()`: compare mutational frequency and generate an oncoprint with significant mutations
+    * `compMut()`: compare mutational frequency and generate an OncoPrint with significant mutations
     * `compTMB()`: compare total mutation burden among subtypes and generate distribution of Transitions and Transversions
     * `compFGA()`: compare fraction genome altered among subtypes and generate a barplot for distribution comparison
     * `compDrugsen()`: compare estimated half maximal inhibitory concentration ($IC_{50}$) for drug sensitity and generate a boxviolin for distribution comparison
@@ -171,7 +171,7 @@ surv.info <- brca.tcga$clin.info
 ```
 
 #### <a id="Section.4.2.1.2" style="color:#159957;">2) get elites by reducing data dimension</a>
-Although all these omics data have been already processed (filtered from the original dataset), I am still pleased to show you how to use `getElites()` function to filter out features that meet some stringent requirements, and those features that are preserved in this procedure are considered elites by MOVICS. Four filtering methods are provided here, namely `mad` for median absolute deviation, `sd` for standard deviation, `cox` for univariate Cox proportional hazards regression, and `none` for nothing but is really necessary for binary omics data. This function also handles missing values coded in NA by removing them directly or imputing them by $k$ nearest neighbors using a Euclidean metric through argument of `na.action`. Let me show you how to use `getElites()` below:
+Although all these omics data have been already processed (filtered from the original dataset), I am still pleased to show you how to use `getElites()` function to filter out features that meet some stringent requirements, and those features that are preserved in this procedure are considered elites by MOVICS. Four filtering methods are provided here, namely `mad` for median absolute deviation, `sd` for standard deviation, `cox` for univariate Cox proportional hazards regression, and `freq` for nothing but is really necessary for binary omics data. This function also handles missing values coded in NA by removing them directly or imputing them by $k$ nearest neighbors using a Euclidean metric through argument of `na.action`. Let me show you how to use `getElites()` below:
 ```{r, eval=TRUE}
 # scenario 1: considering we are dealing with an expression data that have 2 rows with NA values
 tmp       <- brca.tcga$mRNA.expr # get expression data
@@ -227,13 +227,13 @@ table(elite.tmp$unicox$pvalue < 0.05) # 3 mutations have nominal pvalue < 0.05
 tmp       <- brca.tcga$mut.status # get mutation data 
 rowSums(tmp) # check mutation frequency
 elite.tmp <- getElites(dat       = tmp,
-                       method    = "none", # must set as 'none'
+                       method    = "freq", # must set as 'freq'
                        elite.num = 80, # note: in this scenario elite.num refer to frequency of mutation
                        elite.pct = 0.1) # discard because elite.num has been already indicated
 rowSums(elite.tmp$elite.dat) # only genes that are mutated in over than 80 samples are kept as elites
 
 elite.tmp <- getElites(dat       = tmp,
-                       method    = "none", # must set as 'none'
+                       method    = "freq", # must set as 'freq'
                        elite.pct = 0.2) # note: in this scenario elite.pct refer to frequency of mutation / sample size
 rowSums(elite.tmp$elite.dat) # only genes that are mutated in over than 0.2*643=128.6 samples are kept as elites
 
@@ -271,7 +271,7 @@ iClusterBayes.res <- getiClusterBayes(data        = mo.data,
 ```
 
 Otherwise, a unified function can be used for all algorithms individually with detailed parameters, that is, `getMOIC()`.
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 iClusterBayes.res <- getMOIC(data        = mo.data,
                              N.clust     = 5,
                              methodslist = "iClusterBayes", # specify only ONE algorithm here
@@ -308,7 +308,7 @@ load(file = "moic.res.list.rda")
 ```
 
 #### <a id="Section.4.2.1.6" style="color:#159957;">6) get consensus from different algorithms</a>
-Since now all the clustering results from 10 algorthms are in hand, MOVICS borrows the idea of consensus clustering for later integration of the clustering results derived from different algorithms, so as to improve the clustering robustness. To be specific, if $t_{max}$ algorithms are specified where $2\le t_{max} \le10$, `getConsensusMOIC()` calculates a matrix $M_{n\times n}^{(t)}$ per algorithm where $n$ is the number of samples, and $M_{ij}^{(t)}=1$ only when the sample $i$ and $j$ are clustered in the same subtype, otherwise $M_{ij}^{(t)}=0$. After get all results from specified algorithms, MOVICS calculates a consensus matrix $CM=\sum_{t=1}^{t_{max}}M^{(t)}$, and $cm_{ij}\in[0,10]$. Applying hierarchical clustering to $CM$, MOVICS generates a clustering result which represents a robust pair-wise similarities for samples because it considers different multi-omics integrative clustering algorithms.
+Since now all the clustering results from 10 algorthms are in hand, MOVICS borrows the idea of consensus clustering for later integration of the clustering results derived from different algorithms, so as to improve the clustering robustness. To be specific, if $t_{max}$ algorithms are specified where $2\le t_{max} \le10$, `getConsensusMOIC()` calculates a matrix $M_{n\times n}^{(t)}$ per algorithm where $n$ is the number of samples, and $M_{ij}^{(t)}=1$ only when the sample $i$ and $j$ are clustered in the same subtype, otherwise $M_{ij}^{(t)}=0$. After get all results from specified algorithms, MOVICS calculates a consensus matrix $CM=\sum_{t=1}^{t_{max}}M^{(t)}$, and $cm_{ij}\in[0,10]$. Such matrix represents a robust pair-wise similarities for samples because it considers different multi-omics integrative clustering algorithms. MOVICS then searches for a stable clustering result by applying hierarchical clustering to $CM$. 
 The simplest way to perform `getConsensusMOIC()` is to pass a list of object returned by multiple `get%algorithm_name%()` or by `getMOIC()` with specific argument of `methodslist`. This can be done like below:
 ```{r, fig.align="center", fig.width=7, fig.height=6, fig.cap="Figure 2. Consensus heatmap based on results from 10 multi-omics integrative clustering algorithms with cluster number of 5.", eval=TRUE}
 cmoic.brca <- getConsensusMOIC(moic.res.list = moic.res.list,
@@ -469,15 +469,15 @@ clin.brca$compTab %>%
 ```
   
 #### <a id="Section.4.2.2.3" style="color:#159957;">3) compare mutational frequency</a>
-Subype-specific mutation might be promising as therapeutic target. Hence, I then compare the mutational frequency among different clusters. MOVICS provides function of `compMut()` which deals with binary mutational data (0 = wild; 1 = mutated). This function applies independent testing (*i.e.*, Fisher\' s exact test or $\chi^2$ test) for each mutation, and generates a table with statistical results (.docx file also if specified), and creates an oncoprint using those differentially mutated genes.
-```{r, fig.align="center", fig.width=8, fig.height=3, fig.cap="Figure 7. Mutational oncoprint of 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE}
+Subype-specific mutation might be promising as therapeutic target. Hence, I then compare the mutational frequency among different clusters. MOVICS provides function of `compMut()` which deals with binary mutational data (0 = wild; 1 = mutated). This function applies independent testing (*i.e.*, Fisher\' s exact test or $\chi^2$ test) for each mutation, and generates a table with statistical results (.docx file also if specified), and creates an OncoPrint using those differentially mutated genes.
+```{r, fig.align="center", fig.width=8, fig.height=3, fig.cap="Figure 7. Mutational OncoPrint of 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE}
 # mutational frequency comparison
 mut.brca <- compMut(moic.res     = cmoic.brca,
                     mut.matrix   = brca.tcga$mut.status, # binary somatic mutation matrix
                     doWord       = T, # generate table in .docx format
-                    doPlot       = T, # draw oncoprint
+                    doPlot       = T, # draw OncoPrint
                     freq.cutoff  = 0.05, # keep those genes that mutated in at least 5% of samples
-                    p.adj.cutoff = 0.05, # keep those genes with adjusted p value < 0.05 to draw oncoprint
+                    p.adj.cutoff = 0.05, # keep those genes with adjusted p value < 0.05 to draw OncoPrint
                     innerclust   = T, # perform clustering within each subtype
                     annCol       = annCol, # same annotation for heatmap
                     annColors    = annColors, # same annotation color for heatmap
