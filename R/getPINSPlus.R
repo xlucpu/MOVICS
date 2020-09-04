@@ -37,11 +37,11 @@ getPINSPlus <- function(data             = NULL,
     }
     if(norMethod == "median-centered") {
       d <- do.call(rbind, data)
-      d <- sweep(d,1, apply(d,1,median,na.rm=T))
+      d <- sweep(d,1, apply(d, 1, median, na.rm = TRUE))
     }
     if(norMethod == "mean-centered") {
       d <- do.call(rbind, data)
-      d <- sweep(d,1, apply(d,1,mean,na.rm=T))
+      d <- sweep(d,1, apply(d, 1, mean, na.rm = TRUE))
     }
     if(norMethod == "z-score") {
       d <- do.call(rbind, data)
@@ -74,12 +74,12 @@ getPINSPlus <- function(data             = NULL,
                                 clusteringMethod = clusteringMethod,
                                 iterMin          = iterMin,
                                 iterMax          = iterMax,
-                                verbose          = T)
+                                verbose          = TRUE)
 
   clustres <- data.frame(samID = rownames(data),
                          clust = fit$cluster,
                          row.names = rownames(data),
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
   #clustres <- clustres[order(clustres$clust),]
 
   return(list(fit = fit, clust.res = clustres, mo.method = "PINSPlus"))

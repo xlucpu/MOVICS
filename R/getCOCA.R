@@ -47,7 +47,7 @@ getCOCA <- function(data      = NULL,
   clustres <- data.frame(samID = rownames(data[[1]]),
                          clust = as.numeric(coca),
                          row.names = rownames(data[[1]]),
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
   #clustres <- clustres[order(clustres$clust),]
 
   return(list(fit = outputBuildMOC, clust.res = clustres, clust.dend = hcs, mo.method = "COCA"))

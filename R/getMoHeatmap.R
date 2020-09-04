@@ -33,15 +33,15 @@
 #' @export
 #' @examples # There is no example and please refer to vignette.
 getMoHeatmap <- function(data             = NULL,
-                         is.binary        = c(F,F,F,F,F,F),
+                         is.binary        = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
                          row.title        = c("Data1","Data2","Data3","Data4","Data5","Data6"),
                          legend.name      = c("Data1","Data2","Data3","Data4","Data5","Data6"),
                          clust.res        = NULL,
                          clust.dend       = NULL,
-                         show.col.dend    = T,
-                         show.colnames    = F,
-                         show.row.dend    = c(T,T,T,T,T,T),
-                         show.rownames    = c(F,F,F,F,F,F),
+                         show.col.dend    = TRUE,
+                         show.colnames    = FALSE,
+                         show.row.dend    = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+                         show.rownames    = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
                          clust.dist.row   = c("pearson","pearson","pearson","pearson","pearson","pearson"),
                          clust.method.row = c("ward.D","ward.D","ward.D","ward.D","ward.D","ward.D"),
                          clust.col        = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627"),
@@ -54,7 +54,7 @@ getMoHeatmap <- function(data             = NULL,
                          fig.path         = getwd(),
                          fig.name         = "moheatmap") {
 
-  ht_opt$message = F
+  ht_opt$message = FALSE
   defaultW <- getOption("warn")
   options(warn = -1)
 
@@ -73,32 +73,32 @@ getMoHeatmap <- function(data             = NULL,
 
   if(!is.null(annCol) & !is.null(annColors)) {
 
-    annCol <- annCol[colnames(data[[1]]), , drop = F]
+    annCol <- annCol[colnames(data[[1]]), , drop = FALSE]
     annCol$Subtype <- paste0("CS",clust.res[colnames(data[[1]]),"clust"])
     annColors[["Subtype"]] <- colvec
 
     if(is.null(clust.dend)) {
       clust.res <- clust.res[order(clust.res$clust),]
-      annCol <- annCol[clust.res$samID,,drop = F]
+      annCol <- annCol[clust.res$samID, , drop = FALSE]
     }
 
     ha <- ComplexHeatmap::HeatmapAnnotation(df     = annCol,
                                             col    = annColors,
-                                            border = F)
+                                            border = FALSE)
   } else {
     annCol <- data.frame("Subtype" = paste0("CS",clust.res[colnames(data[[1]]),"clust"]),
                          row.names = colnames(data[[1]]),
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
     annColors <- list("Subtype" = colvec)
 
     if(is.null(clust.dend)) {
       clust.res <- clust.res[order(clust.res$clust),]
-      annCol <- annCol[clust.res$samID,,drop = F]
+      annCol <- annCol[clust.res$samID,,drop = FALSE]
     }
 
     ha <- ComplexHeatmap::HeatmapAnnotation(df     = annCol,
                                             col    = annColors,
-                                            border = F)
+                                            border = FALSE)
     }
 
   if(!is.null(annRow)) {
@@ -128,9 +128,9 @@ getMoHeatmap <- function(data             = NULL,
         ht[[i]] <-  ComplexHeatmap::Heatmap(matrix               = as.matrix(data[[i]]),
                                             row_title            = row.title[i],
                                             name                 = legend.name[i],
-                                            cluster_columns      = F,
+                                            cluster_columns      = FALSE,
                                             cluster_rows         = hcg,
-                                            show_column_dend     = F,
+                                            show_column_dend     = FALSE,
                                             show_column_names    = show.colnames,
                                             show_row_dend        = show.row.dend[i],
                                             show_row_names       = show.rownames[i],
@@ -154,9 +154,9 @@ getMoHeatmap <- function(data             = NULL,
         ht[[i]] <-  ComplexHeatmap::Heatmap(matrix               = as.matrix(data[[i]]),
                                             row_title            = row.title[i],
                                             name                 = legend.name[i],
-                                            cluster_columns      = F,
+                                            cluster_columns      = FALSE,
                                             cluster_rows         = hcg,
-                                            show_column_dend     = F,
+                                            show_column_dend     = FALSE,
                                             show_column_names    = show.colnames,
                                             show_row_dend        = show.row.dend[i],
                                             show_row_names       = show.rownames[i],

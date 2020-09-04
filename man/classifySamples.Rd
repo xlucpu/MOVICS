@@ -38,6 +38,9 @@ classifySamples(
 
 \item{numRes}{The number of resistant cell lines fit in the logistic regression model.}
 }
+\value{
+classifySamples
+}
 \description{
 Dichotimize a training expression set and fit a logistic ridge regression model which is applied to the test expression matirx.
 This function will return a set of probabilities.

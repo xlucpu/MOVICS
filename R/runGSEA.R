@@ -80,7 +80,7 @@ runGSEA <- function(moic.res     = NULL,
     message(paste0("--",(nrow(moic.res$clust.res)-length(comsam))," samples mismatched from current subtypes."))
   }
 
-  moic.res$clust.res <- moic.res$clust.res[comsam,,drop = F]
+  moic.res$clust.res <- moic.res$clust.res[comsam, , drop = FALSE]
   norm.expr <- norm.expr[,comsam]
 
   n.moic <- length(unique(moic.res$clust.res$clust))
@@ -99,17 +99,17 @@ runGSEA <- function(moic.res     = NULL,
   gsea.list <- list()
   gseaidList <- c()
   for (filek in DEfiles) {
-    DEres <- read.table(file.path(dat.path, filek), header=T, row.names=NULL, sep="\t", quote="", stringsAsFactors=F)
+    DEres <- read.table(file.path(dat.path, filek), header=TRUE, row.names=NULL, sep="\t", quote="", stringsAsFactors=FALSE)
     DEres <- DEres[!duplicated(DEres[, 1]),]
     DEres <- DEres[!is.na(DEres[, 1]), ]
     rownames(DEres) <- DEres[, 1]
     DEres <- DEres[, -1]
 
     geneList <- DEres$log2fc; names(geneList) <- rownames(DEres)
-    geneList <- sort(geneList,decreasing = T) # ranked gene set
+    geneList <- sort(geneList,decreasing = TRUE) # ranked gene set
 
     # run gsea
-    msigdb <- try(clusterProfiler::read.gmt(msigdb.path), silent = T)
+    msigdb <- try(clusterProfiler::read.gmt(msigdb.path), silent = TRUE)
     if(class(msigdb) == "try-error") {stop("please provide correct ABSOLUTE PATH for MSigDB file.")}
 
     moic.lab <- paste0("CS",gsub("_vs_Others.txt","",sub(".*CS", "", filek)))
@@ -118,11 +118,11 @@ runGSEA <- function(moic.res     = NULL,
                                                                     nPerm        = nPerm,
                                                                     minGSSize    = minGSSize,
                                                                     maxGSSize    = maxGSSize,
-                                                                    seed         = T,
-                                                                    verbose      = F,
+                                                                    seed         = TRUE,
+                                                                    verbose      = FALSE,
                                                                     pvalueCutoff = 1))
     gsea.dat <- as.data.frame(gsea.list[[moic.lab]])
-    write.table(gsea.dat[,setdiff(colnames(gsea.dat),"ID")], file=file.path(res.path, paste(gsub("_vs_Others.txt","", filek, fixed = T), "gsea_all_results.txt", sep = "_")),sep = "\t",row.names = F,col.names = T,quote = F)
+    write.table(gsea.dat[,setdiff(colnames(gsea.dat),"ID")], file=file.path(res.path, paste(gsub("_vs_Others.txt","", filek, fixed = TRUE), "gsea_all_results.txt", sep = "_")),sep = "\t",row.names = FALSE,col.names = TRUE,quote = FALSE)
 
     if(dirct == "up") {
       gseaidList <- c(gseaidList, rownames(gsea.dat[which(gsea.dat$NES > 0 & gsea.dat$pvalue < p.cutoff & gsea.dat$p.adjust < p.adj.cutoff),]))
@@ -140,12 +140,12 @@ runGSEA <- function(moic.res     = NULL,
   pathway <- pathcore <- list()
   pathnum <- c()
   for (filek in GSEAfiles) {
-    GSEAres <- read.table(file.path(res.path, filek), header=T, row.names=1, sep="\t", quote="", stringsAsFactors=F)
+    GSEAres <- read.table(file.path(res.path, filek), header=TRUE, row.names=1, sep="\t", quote="", stringsAsFactors=FALSE)
 
     if(dirct == "up") {
       outk <- intersect( unqlist, rownames(GSEAres[which(GSEAres$NES > 0 & GSEAres$pvalue < p.cutoff & GSEAres$p.adjust < p.adj.cutoff),]) )
       outk <- GSEAres[outk,]
-      outk <- outk[order(outk$NES, decreasing = T),]
+      outk <- outk[order(outk$NES, decreasing = TRUE),]
 
       if(nrow(outk) > n.path) {
         pathway[[filek]] <- outk[1:n.path,]
@@ -162,7 +162,7 @@ runGSEA <- function(moic.res     = NULL,
     if(dirct=="down") {
       outk <- intersect( unqlist, rownames(GSEAres[which(GSEAres$NES < 0 & GSEAres$pvalue < p.cutoff & GSEAres$p.adjust < p.adj.cutoff),]) )
       outk <- GSEAres[outk,]
-      outk <- outk[order(outk$NES, decreasing = F),]
+      outk <- outk[order(outk$NES, decreasing = FALSE),]
 
       if(nrow(outk) > n.path) {
         pathway[[filek]] <- outk[1:n.path,]
@@ -176,11 +176,11 @@ runGSEA <- function(moic.res     = NULL,
         pathcore[[i]] <- msigdb[which(msigdb$ont %in% i),"gene"]
       }
     }
-    write.table(outk, file=file.path(res.path, paste(gsub("_gsea_all_results.txt","", filek, fixed = T), outlabel, sep = "_")), row.names = T, col.names = NA, sep = "\t", quote = F)
+    write.table(outk, file=file.path(res.path, paste(gsub("_gsea_all_results.txt","", filek, fixed = TRUE), outlabel, sep = "_")), row.names = TRUE, col.names = NA, sep = "\t", quote = FALSE)
   }
 
   # calculate single sample enrichment scores
-  standarize.fun <- function(indata=NULL, halfwidth=NULL, centerFlag=T, scaleFlag=T) {
+  standarize.fun <- function(indata=NULL, halfwidth=NULL, centerFlag=TRUE, scaleFlag=TRUE) {
     outdata=t(scale(t(indata), center=centerFlag, scale=scaleFlag))
     if (!is.null(halfwidth)) {
       outdata[outdata>halfwidth]=halfwidth
@@ -206,20 +206,20 @@ runGSEA <- function(moic.res     = NULL,
     gset <- log2(norm.expr + 1)
   }
 
-  sam.order <- moic.res$clust.res[order(moic.res$clust.res$clust, decreasing = F), "samID"]
+  sam.order <- moic.res$clust.res[order(moic.res$clust.res$clust, decreasing = FALSE), "samID"]
   colvec <- clust.col[1:n.moic]
   names(colvec) <- paste0("CS",1:n.moic)
   annCol <- data.frame("Subtype" = paste0("CS",moic.res$clust.res[sam.order,"clust"]),
                        row.names = sam.order,
-                       stringsAsFactors = F)
+                       stringsAsFactors = FALSE)
   annColors <- list("Subtype" = colvec)
 
-  es <- GSVA::gsva(expr          = as.matrix(gset[,rownames(annCol), drop = F]),
+  es <- GSVA::gsva(expr          = as.matrix(gset[,rownames(annCol), drop = FALSE]),
                    gset.idx.list = pathcore,
                    method        = gsva.method,
                    parallel.sz   = 1)
   es.backup <- es
-  es <- standarize.fun(es, halfwidth = 1, centerFlag = T, scaleFlag = T)
+  es <- standarize.fun(es, halfwidth = 1, centerFlag = TRUE, scaleFlag = TRUE)
   message(gsva.method," done...")
 
   # calculate subtype-specific pathway enrichment score
@@ -227,14 +227,14 @@ runGSEA <- function(moic.res     = NULL,
   if(norm.method == "mean") {
     for (i in paste0("CS",1:n.moic)) {
       esm <- cbind.data.frame(esm,
-                              data.frame(rowmean(es[,rownames(annCol[which(annCol$Subtype == i),,drop = F])])))
+                              data.frame(rowmean(es[,rownames(annCol[which(annCol$Subtype == i), , drop = FALSE])])))
     }
   }
 
   if(norm.method == "median") {
     for (i in paste0("CS",1:n.moic)) {
       esm <- cbind.data.frame(esm,
-                              data.frame(rowmedian(es[,rownames(annCol[which(annCol$Subtype == i),,drop = F])])))
+                              data.frame(rowmedian(es[,rownames(annCol[which(annCol$Subtype == i), , drop = FALSE])])))
     }
   }
 
@@ -243,20 +243,20 @@ runGSEA <- function(moic.res     = NULL,
   # generate heatmap
   annRow <- data.frame(Subtype = rep(paste0("CS",1:n.moic), pathnum),
                        row.names = rownames(esm),
-                       stringsAsFactors = F)
+                       stringsAsFactors = FALSE)
 
   if(is.null(color)) {
     mapcolor <- grDevices::colorRampPalette(c("#0000FF", "#8080FF", "#FFFFFF", "#FF8080", "#FF0000"))(64)
   } else {mapcolor <- grDevices::colorRampPalette(color)(64)}
   hm <- ComplexHeatmap::pheatmap(mat                  = as.matrix(esm),
-                                 cluster_rows         = F,
-                                 cluster_cols         = F,
-                                 show_rownames        = T,
-                                 show_colnames        = T,
+                                 cluster_rows         = FALSE,
+                                 cluster_cols         = FALSE,
+                                 show_rownames        = TRUE,
+                                 show_colnames        = TRUE,
                                  annotation_row       = annRow,
                                  annotation_colors    = annColors,
-                                 annotation_names_row = F,
-                                 legend               = T,
+                                 annotation_names_row = FALSE,
+                                 legend               = TRUE,
                                  color                = mapcolor,
                                  border_color         = "black",
                                  legend_breaks        = c(-1,-0.5,0,0.5,1),

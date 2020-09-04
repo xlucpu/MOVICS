@@ -13,7 +13,6 @@ compDrugsen(
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
   prefix = NULL,
   fig.path = getwd(),
-  seed = 123456,
   width = 5,
   height = 5
 )
@@ -34,8 +33,6 @@ compDrugsen(
 \item{prefix}{A string value to indicate the prefix of the output plot.}
 
 \item{fig.path}{A string value to indicate the output path for storing the boxviolin plot.}
-
-\item{seed}{A numeric value to set the seed for ridge regression training process in the predictive model to ensure reproducibility.}
 
 \item{width}{A numeric value to indicate the width of boxviolin plot.}
 

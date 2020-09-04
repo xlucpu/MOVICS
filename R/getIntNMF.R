@@ -20,12 +20,12 @@
 getIntNMF <- function(data      = NULL,
                       N.clust   = NULL,
                       type      = rep("gaussian", length(data)),
-                      is.binary = rep(F,length(data))){
+                      is.binary = rep(FALSE, length(data))){
 
   useless.argument <- type
   # remove features that made of categories not equal to 2 otherwise Error in svd(X) : a dimension is zero
   if(!all(!is.binary)) {
-    bindex <- which(is.binary == T)
+    bindex <- which(is.binary == TRUE)
     a <- which(rowSums(data[[bindex]]) == 0)
     b <- which(rowSums(data[[bindex]]) == ncol(data[[bindex]]))
     if(length(a) > 0) {
@@ -60,7 +60,7 @@ getIntNMF <- function(data      = NULL,
   clustres <- data.frame(samID = colnames(data[[1]]),
                          clust = as.numeric(clust.intNMF),
                          row.names = colnames(data[[1]]),
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
   #clustres <- clustres[order(clustres$clust),]
 
   return(list(fit = result.intNMF, clust.res = clustres, mo.method = "IntNMF"))

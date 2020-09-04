@@ -9,9 +9,9 @@
 #' @return A standardized data.frame containing multi-omics data.
 #' @examples # There is no example and please refer to vignette.
 getStdiz <- function(data       = NULL,
-                     halfwidth  = rep(1,length(data)),
-                     centerFlag = rep(T,length(data)),
-                     scaleFlag  = rep(T,length(data))) {
+                     halfwidth  = rep(1, length(data)),
+                     centerFlag = rep(TRUE, length(data)),
+                     scaleFlag  = rep(TRUE, length(data))) {
 
   if(is.null(names(data))){
     names(data) <- sprintf("dat%s", 1:length(data))

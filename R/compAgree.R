@@ -23,7 +23,7 @@
 #' @examples # There is no example and please refer to vignette.
 compAgree <- function(moic.res  = NULL,
                       subt2comp = NULL,
-                      doPlot    = T,
+                      doPlot    = TRUE,
                       clust.col = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627"),
                       box.width = 0.1,
                       fig.name  = NULL,
@@ -41,7 +41,7 @@ compAgree <- function(moic.res  = NULL,
   } else {
     message(paste0("--",(nrow(dat)-length(comsam))," samples mismatched from current subtypes."))
   }
-  dat <- cbind.data.frame("Subtype" = dat[comsam, "Subtype", drop = F], subt2comp[comsam, , drop = F])
+  dat <- cbind.data.frame("Subtype" = dat[comsam, "Subtype", drop = FALSE], subt2comp[comsam, , drop = FALSE])
   dat <- as.data.frame(na.omit(dat))
   if(nrow(dat) != nrow(moic.res$clust.res)) {message("--removed NA values in subt2comp.")}
 
@@ -75,8 +75,8 @@ compAgree <- function(moic.res  = NULL,
                                                  AMI = as.numeric(AMI),
                                                  JI = as.numeric(JI),
                                                  FM = as.numeric(FM),
-                                                 stringsAsFactors = F),
-                               stringsAsFactors = F)
+                                                 stringsAsFactors = FALSE),
+                               stringsAsFactors = FALSE)
   }
 
   assign("StatStratum", ggalluvial::StatStratum, envir=globalenv())
@@ -123,8 +123,8 @@ compAgree <- function(moic.res  = NULL,
                       axis2 = Subtype1)) +
         scale_fill_manual(values = col) +
         geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
-        geom_stratum(width = 1/8, reverse = T) +
-        geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = T) +
+        geom_stratum(width = 1/8, reverse = TRUE) +
+        geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = TRUE) +
         scale_x_continuous(breaks = 1:n.var, labels = c(var1, var2)) +
         theme_bw() +
         theme(legend.position = "top",
@@ -154,8 +154,8 @@ compAgree <- function(moic.res  = NULL,
                       axis3 = Subtype2)) +
         scale_fill_manual(values = col) +
         geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
-        geom_stratum(width = box.width, reverse = T) +
-        geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = T) +
+        geom_stratum(width = box.width, reverse = TRUE) +
+        geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = TRUE) +
         scale_x_continuous(breaks = 1:n.var, labels = c(var1, var2, var3)) +
         theme_bw() +
         theme(legend.position = "top",
@@ -187,8 +187,8 @@ compAgree <- function(moic.res  = NULL,
                       axis4 = Subtype3)) +
         scale_fill_manual(values = col) +
         geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
-        geom_stratum(width = 1/8, reverse = T) +
-        geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = T) +
+        geom_stratum(width = 1/8, reverse = TRUE) +
+        geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = TRUE) +
         scale_x_continuous(breaks = 1:n.var, labels = c(var1, var2, var3, var4)) +
         theme_bw() +
         theme(legend.position = "top",
@@ -222,8 +222,8 @@ compAgree <- function(moic.res  = NULL,
                       axis5 = Subtype4)) +
         scale_fill_manual(values = col) +
         geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
-        geom_stratum(width = 1/8, reverse = T) +
-        geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = T) +
+        geom_stratum(width = 1/8, reverse = TRUE) +
+        geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = TRUE) +
         scale_x_continuous(breaks = 1:n.var, labels = c(var1, var2, var3, var4, var5)) +
         theme_bw() +
         theme(legend.position = "top",
@@ -259,8 +259,8 @@ compAgree <- function(moic.res  = NULL,
                       axis6 = Subtype5)) +
         scale_fill_manual(values = col) +
         geom_flow(stat = "alluvium", width = 1/8, aes(fill = Subtype)) +
-        geom_stratum(width = 1/8, reverse = T) +
-        geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = T) +
+        geom_stratum(width = 1/8, reverse = TRUE) +
+        geom_text(stat = "stratum", aes(label = after_stat(stratum)), reverse = TRUE) +
         scale_x_continuous(breaks = 1:n.var, labels = c(var1, var2, var3, var4, var5, var6)) +
         theme_bw() +
         theme(legend.position = "top",

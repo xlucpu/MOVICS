@@ -48,8 +48,8 @@ runNTP <- function(expr      = NULL,
 
   com_feat <- intersect(rownames(expr), templates$probe)
   message(paste0("--original template has ",nrow(templates), " biomarkers and ", length(com_feat)," are matched in external expression profiling."))
-  expr <- expr[com_feat, , drop = F]
-  templates <- templates[which(templates$probe %in% com_feat), , drop = F]
+  expr <- expr[com_feat, , drop = FALSE]
+  templates <- templates[which(templates$probe %in% com_feat), , drop = FALSE]
 
   if(is.element(0,as.numeric(table(templates$class)))) {
     stop("at least one class has no probes/genes matched in template file!")
@@ -83,7 +83,7 @@ runNTP <- function(expr      = NULL,
   ex.moic.res <- data.frame(samID = rownames(ntp.res),
                             clust = gsub("CS","",ntp.res$prediction),
                             row.names = rownames(ntp.res),
-                            stringsAsFactors = F)
+                            stringsAsFactors = FALSE)
 
   return(list(ntp.res = ntp.res, clust.res = ex.moic.res, mo.method = "NTP"))
 }

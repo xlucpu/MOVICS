@@ -24,13 +24,13 @@
 #' @references Chalise P, Fridley BL (2017). Integrative clustering of multi-level omic data based on non-negative matrix factorization algorithm. PLoS One, 12(5):e0176278.
 #'
 #'Tibshirani, R., Walther, G., Hastie, T. (2001). Estimating the number of data clusters via the Gap statistic. J R Stat Soc Series B Stat Methodol, 63(2):411-423.
-getClustNum <- function(data = NULL,
-                        is.binary = rep(F,length(data)),
+getClustNum <- function(data        = NULL,
+                        is.binary   = rep(FALSE, length(data)),
                         try.N.clust = 2:8,
-                        center = T,
-                        scale = T,
-                        fig.path = getwd(),
-                        fig.name = "optimal_number_cluster") {
+                        center      = TRUE,
+                        scale       = TRUE,
+                        fig.path    = getwd(),
+                        fig.name    = "optimal_number_cluster") {
 
   data.backup <- data # save a backup
 
@@ -38,7 +38,7 @@ getClustNum <- function(data = NULL,
   # Cluster Prediction Index (CPI) from IntNMF #
   # remove features that made of categories not equal to 2 otherwise Error in svd(X) : a dimension is zero
   if(!all(!is.binary)) {
-    bindex <- which(is.binary == T)
+    bindex <- which(is.binary == TRUE)
     a <- which(rowSums(data[[bindex]]) == 0)
     b <- which(rowSums(data[[bindex]]) == ncol(data[[bindex]]))
     if(length(a) > 0) {
@@ -67,28 +67,28 @@ getClustNum <- function(data = NULL,
   dat <- lapply(dat, function(x) t(x) + .Machine$double.eps)
 
   message("calculating Cluster Prediction Index...")
-  optk1 <- IntNMF::nmf.opt.k(dat = dat,
-                            n.runs = 5,
-                            n.fold = 5,
-                            k.range = try.N.clust,
-                            st.count = 10,
-                            maxiter = 100,
-                            make.plot = F)
+  optk1 <- IntNMF::nmf.opt.k(dat      = dat,
+                            n.runs    = 5,
+                            n.fold    = 5,
+                            k.range   = try.N.clust,
+                            st.count  = 10,
+                            maxiter   = 100,
+                            make.plot = FALSE)
   optk1 <- as.data.frame(optk1)
 
   #-------------------------------#
   # Gap-statistics from MoCluster #
   message("calculating Gap-statistics...")
-  moas <- data.backup %>% mogsa::mbpca(ncomp = 2,
-                                       k = "all",
-                                       method = "globalScore",
-                                       center = center,
-                                       scale = scale,
-                                       moa = TRUE,
+  moas <- data.backup %>% mogsa::mbpca(ncomp      = 2,
+                                       k          = "all",
+                                       method     = "globalScore",
+                                       center     = center,
+                                       scale      = scale,
+                                       moa        = TRUE,
                                        svd.solver = "fast",
-                                       maxiter = 1000,
-                                       verbose = F)
-  gap <- mogsa::moGap(moas, K.max = max(try.N.clust), cluster = "hclust",plot = F)
+                                       maxiter    = 1000,
+                                       verbose    = FALSE)
+  gap <- mogsa::moGap(moas, K.max = max(try.N.clust), cluster = "hclust", plot = FALSE)
   optk2 <- as.data.frame(gap$Tab)[-1,] # remove k=1
 
   #---------------------#
@@ -127,14 +127,14 @@ getClustNum <- function(data = NULL,
        xlim = c(min(try.N.clust),max(try.N.clust)),
        ylim = c(min(optk1), max(optk1)),
        xlab = "Number of Multi-Omics Clusters",ylab = "")
-  rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = "#EAE9E9",border = F)
+  rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = "#EAE9E9",border = FALSE)
   grid(col = "white", lty = 1, lwd = 1.5)
   # for (m in 1:n.runs) points(try.N.clust, optk1[, m], pch = 20, cex = 1.5, col = "#224A8D")
   points(try.N.clust, apply(optk1, 1, mean), pch = 19, col = ggplot2::alpha("#224A8D"), cex = 1.5)
   lines(try.N.clust, apply(optk1, 1, mean), col = "#224A8D", lwd = 2, lty = 4)
   mtext("Cluster Prediction Index", side = 2, line = 2, cex = 1.5, col = "#224A8D", las = 3)
 
-  par(new = TRUE, xpd = F)
+  par(new = TRUE, xpd = FALSE)
   plot(NULL,NULL,
        xlim = c(min(try.N.clust),max(try.N.clust)),
        ylim = c(min(optk2$gap), max(optk2$gap)),

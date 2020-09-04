@@ -17,6 +17,9 @@ the estimated number of clusters in the graph.
 \description{
 Estimates the number of clusters in an affinity graph.
 }
+\references{
+Rappoport N, Shamir R (2019). NEMO: cancer subtyping by integration of partial multi-omic data. Bioinformatics, 35(18):3348-3356.
+}
 \author{
 Nimrod Rappoport
 }

@@ -41,7 +41,7 @@ getSNF <- function(data    = NULL,
   clustres <- data.frame(samID = rownames(data[[1]]),
                          clust = clust.SNF,
                          row.names = rownames(data[[1]]),
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
   #clustres <- clustres[order(clustres$clust),]
 
   return(list(fit = W, clust.res = clustres, mo.method = "SNF"))

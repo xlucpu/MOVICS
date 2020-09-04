@@ -7,8 +7,8 @@
 getStdiz(
   data = NULL,
   halfwidth = rep(1, length(data)),
-  centerFlag = rep(T, length(data)),
-  scaleFlag = rep(T, length(data))
+  centerFlag = rep(TRUE, length(data)),
+  scaleFlag = rep(TRUE, length(data))
 )
 }
 \arguments{

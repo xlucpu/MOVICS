@@ -12,8 +12,8 @@ getMoCluster(
   method = "CPCA",
   option = "lambda1",
   k = 10,
-  center = T,
-  scale = T,
+  center = TRUE,
+  scale = TRUE,
   clusterAlg = "ward.D"
 )
 }

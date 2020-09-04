@@ -24,8 +24,8 @@ compClinvar <- function(moic.res      = NULL,
                         factorVars    = NULL,
                         nonnormalVars = NULL,
                         exactVars     = NULL,
-                        includeNA     = F,
-                        doWord        = T,
+                        includeNA     = FALSE,
+                        doWord        = TRUE,
                         tab.name      = NULL,
                         res.path      = getwd(),
                         ...){
@@ -41,7 +41,7 @@ compClinvar <- function(moic.res      = NULL,
   } else {
     message(paste0("--",(nrow(dat)-length(com_sam))," samples mismatched from current subtypes."))
   }
-  dat <- cbind.data.frame("Subtype" = dat[com_sam, "Subtype", drop = F], var2comp[com_sam, , drop = F])
+  dat <- cbind.data.frame("Subtype" = dat[com_sam, "Subtype", drop = FALSE], var2comp[com_sam, , drop = FALSE])
 
   # summarizing
   stabl <- jstable::CreateTableOne2(vars = setdiff(colnames(dat), strata),
@@ -51,7 +51,7 @@ compClinvar <- function(moic.res      = NULL,
                                     nonnormal = nonnormalVars,
                                     exact = exactVars,
                                     includeNA = includeNA,
-                                    showAllLevels = T,
+                                    showAllLevels = TRUE,
                                     ...)
   comtable <- as.data.frame(stabl)
   comtable <- cbind.data.frame(var = rownames(stabl), comtable)
@@ -65,14 +65,14 @@ compClinvar <- function(moic.res      = NULL,
     outFile <- paste0(tab.name,".txt")
   }
 
-  write.table(stabl, file.path(res.path,outFile), sep = "\t", quote = F)
+  write.table(stabl, file.path(res.path,outFile), sep = "\t", quote = FALSE)
 
   # generate WORD format
   if(doWord){
 
     table_subtitle <- colnames(comtable)
 
-    title_name <- paste0("Table *. ", gsub(".txt", "", outFile, fixed = T))
+    title_name <- paste0("Table *. ", gsub(".txt", "", outFile, fixed = TRUE))
     mynote <- "Note: ..."
 
     my_doc <- officer::read_docx()
@@ -80,7 +80,7 @@ compClinvar <- function(moic.res      = NULL,
       officer::body_add_par(value = title_name, style = "table title") %>%
       officer::body_add_table(value = comtable, style = "table_template") %>%
       officer::body_add_par(value = mynote) %>%
-      print(target = file.path(res.path,paste0("TABLE ", gsub(".txt", "", outFile, fixed = T), ".docx")))
+      print(target = file.path(res.path,paste0("TABLE ", gsub(".txt", "", outFile, fixed = TRUE), ".docx")))
   }
   return(list(compTab = comtable))
 }

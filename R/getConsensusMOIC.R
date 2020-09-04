@@ -33,7 +33,7 @@ getConsensusMOIC <- function(moic.res.list = NULL,
                              linkage       = "ward.D",
                              mapcolor      = c("#000004FF", "#56106EFF", "#BB3754FF", "#F98C0AFF", "#FCFFA4FF"),
                              clust.col     = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
-                             showID        = F,
+                             showID        = FALSE,
                              fig.path      = getwd(),
                              fig.name      = "consensusheatmap",
                              width         = 5.5,
@@ -79,7 +79,7 @@ getConsensusMOIC <- function(moic.res.list = NULL,
   clustres <- data.frame(samID = fixed.sam,
                          clust = as.numeric(coca.moic),
                          row.names = fixed.sam,
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
   #clustres <- clustres[order(clustres$clust),]
 
   annCol <- data.frame("Subtype" = paste0("CS", clustres[fixed.sam,"clust"]), # consensus multi-omics integrative clustering

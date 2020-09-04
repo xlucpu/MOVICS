@@ -51,7 +51,7 @@ getLRAcluster <- function(data       = NULL,
   clustres <- data.frame(samID = colnames(data[[1]]),
                          clust = cutree(clust.dend,k = N.clust),
                          row.names = colnames(data[[1]]),
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
   #clustres <- clustres[order(clustres$clust),]
 
   return(list(fit = fit, clust.res = clustres, clust.dend = clust.dend, mo.method = "LRAcluster"))

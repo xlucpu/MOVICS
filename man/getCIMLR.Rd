@@ -9,7 +9,7 @@ getCIMLR(
   N.clust = NULL,
   type = rep("gaussian", length(data)),
   cores.ratio = 0,
-  verbose = T
+  verbose = TRUE
 )
 }
 \arguments{

@@ -10,7 +10,7 @@ getConsensusMOIC(
   linkage = "ward.D",
   mapcolor = c("#000004FF", "#56106EFF", "#BB3754FF", "#F98C0AFF", "#FCFFA4FF"),
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
-  showID = F,
+  showID = FALSE,
   fig.path = getwd(),
   fig.name = "consensusheatmap",
   width = 5.5,

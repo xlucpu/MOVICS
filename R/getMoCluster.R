@@ -34,8 +34,8 @@ getMoCluster <- function(data       = NULL,
                          method     = "CPCA",
                          option     = "lambda1",
                          k          = 10,
-                         center     = T,
-                         scale      = T,
+                         center     = TRUE,
+                         scale      = TRUE,
                          clusterAlg = "ward.D"){
 
   useless.argument <- type
@@ -68,7 +68,7 @@ getMoCluster <- function(data       = NULL,
   clustres <- data.frame(samID = colnames(data[[1]]),
                          clust = cutree(clust.dend,k = N.clust),
                          row.names = colnames(data[[1]]),
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
   #clustres <- clustres[order(clustres$clust),]
   message("clustering done...")
 
@@ -79,7 +79,7 @@ getMoCluster <- function(data       = NULL,
   featres <- data.frame(feature = f,
                         dataset = d,
                         load = featres[,1],
-                        stringsAsFactors = F)
+                        stringsAsFactors = FALSE)
   feat.res <- NULL
   for (d in unique(featres$dataset)) {
     tmp <- featres[which(featres$dataset == d),]

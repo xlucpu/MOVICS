@@ -66,7 +66,7 @@ compFGA <- function(moic.res     = NULL,
     stop("test.method can be one of nonparametric or parametric.")
   }
 
-  clust.res <- moic.res$clust.res[comsam,,drop = F]
+  clust.res <- moic.res$clust.res[comsam, , drop = FALSE]
   segment <- segment[which(segment$sample %in% comsam),]
   n.moic <- length(unique(clust.res$clust))
 
@@ -114,8 +114,8 @@ compFGA <- function(moic.res     = NULL,
                       FGA              = FGA,
                       FGG              = FGG,
                       FGL              = FGL,
-                      stringsAsFactors = F)
-    outTab <- rbind.data.frame(outTab, tmp, stringsAsFactors = F)
+                      stringsAsFactors = FALSE)
+    outTab <- rbind.data.frame(outTab, tmp, stringsAsFactors = FALSE)
   }
   outTab$Subtype <- paste0("CS", clust.res[outTab$samID, "clust"])
 
@@ -123,7 +123,7 @@ compFGA <- function(moic.res     = NULL,
   summaryFGA  <- outTab %>% group_by(Subtype) %>% dplyr::summarize(mean = mean(FGA, na.rm = TRUE), se = std(FGA, na.rm = TRUE))
   summaryFGG  <- outTab %>% group_by(Subtype) %>% dplyr::summarize(mean = mean(FGG, na.rm = TRUE), se = std(FGG, na.rm = TRUE))
   summaryFGL  <- outTab %>% group_by(Subtype) %>% dplyr::summarize(mean = mean(FGL, na.rm = TRUE), se = std(FGL, na.rm = TRUE))
-  summaryFGGL <- data.frame(rbind.data.frame(summaryFGG,summaryFGL),class = rep(c("FGG","FGL"),c(nrow(summaryFGG),nrow(summaryFGL))),stringsAsFactors = F)
+  summaryFGGL <- data.frame(rbind.data.frame(summaryFGG,summaryFGL),class = rep(c("FGG","FGL"),c(nrow(summaryFGG),nrow(summaryFGL))),stringsAsFactors = FALSE)
 
   # statistical testing
   # generate boxviolin plot with statistical testing
@@ -225,7 +225,7 @@ compFGA <- function(moic.res     = NULL,
                y = 0.5,
                color = "white",
                size = 0.9*11/.pt, # match font size to theme
-               hjust = 0.5, vjust = 0.5) +
+               hjust = 0.4, vjust = 0.5) +
     scale_fill_manual(values = clust.col) +
     theme_minimal()+
     theme(axis.line.y =element_blank(),

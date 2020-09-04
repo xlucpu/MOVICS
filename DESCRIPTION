@@ -1,6 +1,6 @@
 Package: MOVICS
 Title: Multi-Omics integration and VIsualization in Cancer Subtyping
-Version: 1.0.0
+Version: 0.99.0
 Authors@R: 
     person(given = "Xiaofan",
            family = "Lu",
@@ -17,13 +17,14 @@ Suggests:
     knitr,
     rmarkdown,
     kableExtra (>= 1.1.2)
+Remotes: 
+	github::danro9685/CIMLR@R
 Imports: 
     CIMLR (>= 1.0.0),
     ClassDiscovery (>= 3.3.12),
     ComplexHeatmap (>= 2.5.4),
     ConsensusClusterPlus (>= 1.50.0),
     IntNMF (>= 1.2.0),
-    LRAcluster (>= 1.0),
     PINSPlus (>= 2.0.4),
     SNFtool (>= 2.3.0),
     SimDesign (>= 2.0.1),
@@ -65,6 +66,7 @@ Imports:
     maftools (>= 2.2.0)
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
+biocViews: Clustering, DifferentialExpression, GeneSetEnrichment, MultipleComparison, SomaticMutation, CopyNumberVariation, Survival
 URL: https://github.com/xlucpu/MOVICS
 BugReports: https://github.com/xlucpu/MOVICS/issues
 Collate: 
@@ -75,7 +77,6 @@ Collate:
     'compMut.R'
     'compSurv.R'
     'compTMB.R'
-    'dataset.R'
     'getCIMLR.R'
     'getCOCA.R'
     'getClustNum.R'
@@ -92,9 +93,11 @@ Collate:
     'getSNF.R'
     'getStdiz.R'
     'getiClusterBayes.R'
-    'pRRophetic.R'
     'runDEA.R'
     'runGSEA.R'
     'runMarker.R'
     'runNTP.R'
+	'pRRophetic.R'
+	'LRAcluster.R'
+    'dataset.R'
 	'global.R'

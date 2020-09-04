@@ -12,6 +12,7 @@
 #' @importFrom SimDesign quiet
 #' @references Love, M.I., Huber, W., Anders, S. (2014) Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol, 15(12):550-558.
 #' @export
+#' @return Several .txt files storing differential expression analysis results by DESeq2
 #' @keywords internal
 #' @examples # There is no example and please refer to vignette.
 twoclassdeseq2 <- function(moic.res    = NULL,
@@ -79,7 +80,7 @@ twoclassdeseq2 <- function(moic.res    = NULL,
 
     saminfo <- data.frame("Type" = as.factor(tmp[samples]),
                           "SampleID" = samples,
-                          stringsAsFactors = F)
+                          stringsAsFactors = FALSE)
 
     cts <- countsTable[,samples]
     coldata <- saminfo[samples,]
@@ -106,7 +107,7 @@ twoclassdeseq2 <- function(moic.res    = NULL,
       resData <- resData[,c("id","fc","log2fc","baseMean","lfcSE","stat","pvalue","padj")]
     }
 
-    write.table(resData, file = outfile, row.names = F, sep = "\t", quote = F)
+    write.table(resData, file = outfile, row.names = FALSE, sep = "\t", quote = FALSE)
     cat(paste0("deseq2 of ",compname, " done...\n"))
   }
   options(warn = 0)
@@ -126,6 +127,7 @@ twoclassdeseq2 <- function(moic.res    = NULL,
 #'
 #' McCarthy DJ, Chen Y, Smyth GK (2012). Differential expression analysis of multifactor RNA-Seq experiments with respect to biological variation. Nucleic Acids Res. 40(10):4288-4297.
 #' @export
+#' @return Several .txt files storing differential expression analysis results by edgeR
 #' @keywords internal
 #' @importFrom edgeR DGEList calcNormFactors estimateDisp glmFit glmLRT topTags
 #' @examples # There is no example and please refer to vignette.
@@ -194,7 +196,7 @@ twoclassedger <- function(moic.res    = NULL,
 
     saminfo <- data.frame("Type" = tmp[samples],
                           "SampleID" = samples,
-                          stringsAsFactors = F)
+                          stringsAsFactors = FALSE)
 
     group = factor(saminfo$Type,levels = c("control","treatment"))
 
@@ -224,7 +226,7 @@ twoclassedger <- function(moic.res    = NULL,
     } else {
       resData <- resData[,c("id","fc","log2fc","logCPM","LR","pvalue","padj")]
     }
-    write.table(resData, file = outfile, row.names = F, sep = "\t", quote = F)
+    write.table(resData, file = outfile, row.names = FALSE, sep = "\t", quote = FALSE)
     cat(paste0("edger of ",compname, " done...\n"))
   }
   options(warn = 0)
@@ -242,6 +244,7 @@ twoclassedger <- function(moic.res    = NULL,
 #' @param res.path A string value to indicate the path for saving the results.
 #' @references Ritchie, ME, Phipson, B, Wu, D, Hu, Y, Law, CW, Shi, W, and Smyth, GK (2015). limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res, 43(7):e47.
 #' @export
+#' @return Several .txt files storing differential expression analysis results by limma
 #' @keywords internal
 #' @importFrom limma lmFit makeContrasts eBayes topTable
 #' @examples # There is no example and please refer to vignette.
@@ -321,7 +324,7 @@ twoclasslimma <- function(moic.res  = NULL,
 
     pd <- data.frame(Samples = names(tmp),
                      Group = as.character(tmp),
-                     stringsAsFactors = F)
+                     stringsAsFactors = FALSE)
 
     design <-model.matrix(~ -1 + factor(pd$Group, levels = c("treatment","control")))
     colnames(design) <- c("treatment","control")
@@ -344,7 +347,7 @@ twoclasslimma <- function(moic.res  = NULL,
     } else {
       resData <- resData[,c("id","fc","log2fc","t","B","pvalue","padj")]
     }
-    write.table(resData, file = outfile, row.names = F, sep = "\t", quote = F)
+    write.table(resData, file = outfile, row.names = FALSE, sep = "\t", quote = FALSE)
     cat(paste0("limma of ",compname, " done...\n"))
   }
   options(warn = 0)
@@ -362,6 +365,7 @@ twoclasslimma <- function(moic.res  = NULL,
 #' @param verbose A logic value to indicate if to only output id, log2fc, pvalue, and padj; TRUE by default.
 #' @param res.path A string value to indicate the path for saving the results.
 #' @export
+#' @return Several .txt files storing differential expression analysis results by specified algorithm
 #' @importFrom limma lmFit makeContrasts eBayes topTable
 #' @importFrom DESeq2 DESeqDataSetFromMatrix DESeq results
 #' @importFrom edgeR DGEList calcNormFactors estimateDisp glmFit glmLRT topTags
@@ -397,7 +401,7 @@ runDEA <- function(dea.method = c("deseq2", "edger", "limma"),
     message(paste0("--",(nrow(moic.res$clust.res)-length(comsam))," samples mismatched from current subtypes."))
   }
 
-  moic.res$clust.res <- moic.res$clust.res[comsam,,drop = F]
+  moic.res$clust.res <- moic.res$clust.res[comsam,,drop = FALSE]
   expr <- expr[,comsam]
 
   rundea <- switch(method,

@@ -85,7 +85,7 @@ compTMB <- function(moic.res    = NULL,
   }
 
   maf <- maf[which(maf$Tumor_Sample_Barcode %in% comsam),]
-  clust.res <- moic.res$clust.res[comsam, , drop = F]
+  clust.res <- moic.res$clust.res[comsam, , drop = FALSE]
   n.moic <- length(unique(clust.res$clust))
   colvec <- clust.col[1:n.moic]
   names(colvec) <- paste0("CS",unique(clust.res$clust))
@@ -218,7 +218,7 @@ compTMB <- function(moic.res    = NULL,
   }
 
   # classifies Single Nucleotide Variants into Transitions and Transversions
-  titv.dat <- maftools::titv(maf = maf.ob, plot = FALSE, useSyn = F)$fraction.contribution %>%
+  titv.dat <- maftools::titv(maf = maf.ob, plot = FALSE, useSyn = FALSE)$fraction.contribution %>%
     as.data.frame() %>%
     mutate(Subtype = paste0("CS",clust.res[as.character(.$Tumor_Sample_Barcode),"clust"]))
   titv.dat.backup <- titv.dat
@@ -235,10 +235,10 @@ compTMB <- function(moic.res    = NULL,
                         TMB              = as.numeric(TMB.dat$Variants)/exome.size,
                         log10TMB         = log10(as.numeric(TMB.dat$Variants)/exome.size + 1),
                         Subtype          = paste0("CS", clust.res[as.character(TMB.dat$Tumor_Sample_Barcode), "clust"]),
-                        stringsAsFactors = F)
-  TMB.dat <- TMB.dat[order(TMB.dat$Subtype), , drop = F]
+                        stringsAsFactors = FALSE)
+  TMB.dat <- TMB.dat[order(TMB.dat$Subtype), , drop = FALSE]
   TMB.med <- TMB.dat %>% group_by(Subtype) %>% summarize(median = median(TMB)) %>% as.data.frame()
-  TMB.dat <- TMB.dat[order(TMB.dat$Subtype, TMB.dat$TMB, decreasing = F), ]
+  TMB.dat <- TMB.dat[order(TMB.dat$Subtype, TMB.dat$TMB, decreasing = FALSE), ]
 
   # sample order in bottom panel
   sampleorder <- TMB.dat %>% split(.$Subtype) %>% lapply("[[", 1) %>% lapply(., as.character)
@@ -311,10 +311,10 @@ compTMB <- function(moic.res    = NULL,
   n  <- data.frame(n1 = n1[1:n.moic], n2 = n2, n3 = 0.05, n4 = 0.2) %>%
     rbind(c(0.05, 0.97, 0.25, 1), ., c(0, 0.1, 0.05, 0.25)) %>% as.matrix()
 
-  opar <- par(no.readonly = T)
+  opar <- par(no.readonly = TRUE)
   invisible(suppressWarnings(split.screen(n, erase = TRUE)))
-  screen(1, new = T)
-  par(xpd = T, mar = c(3, 1, 2, 0), oma = c(0, 0, 0, 0),bty = "o", mgp = c(2, 0.5, 0), tcl=-.25)
+  screen(1, new = TRUE)
+  par(xpd = TRUE, mar = c(3, 1, 2, 0), oma = c(0, 0, 0, 0),bty = "o", mgp = c(2, 0.5, 0), tcl=-.25)
   y_lims = range(log10(unlist(lapply(TMB.plot, function(x) max(x[, "TMB"], na.rm = TRUE))) + 1))
   y_lims[1] = 0
   y_lims[2] = ceiling(max(y_lims))
@@ -322,10 +322,10 @@ compTMB <- function(moic.res    = NULL,
   x_top_label <- as.numeric(unlist(lapply(TMB.plot, nrow)))
   plot(NA, NA, xlim = c(0, length(TMB.plot)), ylim = y_lims,
        xlab = NA, ylab = NA, xaxt="n", yaxt = "n", xaxs = "r", yaxs = "r")
-  rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = "#EAE9E9",border = F)
+  rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = "#EAE9E9", border = FALSE)
   grid(col = "white", lty = 1, lwd = 1.5) # add grid
 
-  par(new = T, bty="o")
+  par(new = TRUE, bty="o")
   plot(NA, NA,
        col = "white",
        xlim = c(0, length(TMB.plot)), ylim = y_lims,
@@ -352,18 +352,18 @@ compTMB <- function(moic.res    = NULL,
 
   # modify axis
   axis(side = 1, at = seq(0.5, length(TMB.plot) - 0.5, 1), labels = names(TMB.plot),
-       las = 1, tick = T, line = 0)
-  axis(side = 2, at = y_at, las = 2, line = 0, tick = T, labels = c(0, 1, 2, 3))
+       las = 1, tick = TRUE, line = 0)
+  axis(side = 2, at = y_at, las = 2, line = 0, tick = TRUE, labels = c(0, 1, 2, 3))
   if(show.size) {
     axis(side = 3, at = seq(0.5, length(TMB.plot) - 0.5, 1), labels = paste0("n = ",x_top_label),
-         tick = T, line = 0, cex.axis = 0.9)
+         tick = TRUE, line = 0, cex.axis = 0.9)
   }
   mtext(text = bquote("Log"[10]~"(TMB + 1)"), side = 2, line = 1.15, cex = 1.1)
 
   # add titv
   invisible(lapply(seq_len(length(titv.dat2)), function(i){
-    screen(i + 1, new = T)
-    par(xpd = T, mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), bty = "o")
+    screen(i + 1, new = TRUE)
+    par(xpd = TRUE, mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), bty = "o")
     tmp <- titv.dat2[[i]]
     barplot(tmp, col = col.titv[rownames(tmp)], names.arg = rep("", ncol(tmp)),
             xaxs = "i", yaxs = "i",
@@ -372,8 +372,8 @@ compTMB <- function(moic.res    = NULL,
   }))
 
   # add legend
-  screen(n.moic + 2, new = T)
-  par(xpd = T, mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), bty = "n")
+  screen(n.moic + 2, new = TRUE)
+  par(xpd = TRUE, mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0), bty = "n")
   plot(NA, NA, xlim = c(0, 1), ylim = c(0, 1), axes = FALSE, xlab = NA, ylab = NA)
   legend("center",
          fill   = col.titv,

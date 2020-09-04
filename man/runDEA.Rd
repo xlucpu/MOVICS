@@ -32,6 +32,9 @@ runDEA(
 
 \item{res.path}{A string value to indicate the path for saving the results.}
 }
+\value{
+Several .txt files storing differential expression analysis results by specified algorithm
+}
 \description{
 Using choosen algorithm to run differential expression analysis between two classes identified by multi-omics clustering process.
 }

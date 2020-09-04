@@ -6,10 +6,10 @@
 \usage{
 getClustNum(
   data = NULL,
-  is.binary = rep(F, length(data)),
+  is.binary = rep(FALSE, length(data)),
   try.N.clust = 2:8,
-  center = T,
-  scale = T,
+  center = TRUE,
+  scale = TRUE,
   fig.path = getwd(),
   fig.name = "optimal_number_cluster"
 )

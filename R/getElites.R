@@ -65,12 +65,12 @@ getElites <- function(dat        = NULL,
   if(method == "mad") {
     statistic <- apply(df, 1, mad)
     names(statistic) <- rownames(df)
-    statistic <- sort(statistic, decreasing = T)
+    statistic <- sort(statistic, decreasing = TRUE)
   }
   if(method == "sd") {
     statistic <- apply(df, 1, sd)
     names(statistic) <- rownames(df)
-    statistic <- sort(statistic, decreasing = T)
+    statistic <- sort(statistic, decreasing = TRUE)
   }
   if(method == "cox" & !is.null(surv.info)) {
     if(all(is.element(c("futime", "fustat"), colnames(surv.info)))) {
@@ -82,7 +82,7 @@ getElites <- function(dat        = NULL,
       }
 
       comsam <- intersect(colnames(df), rownames(surv.info))
-      df <- df[,comsam]; surv.info <- surv.info[comsam,,drop = F]
+      df <- df[,comsam]; surv.info <- surv.info[comsam,,drop = FALSE]
       if(length(comsam) == ncol(df)) {
         message("--all sample matched between omics matrix and survival data.")
       } else {
@@ -97,7 +97,7 @@ getElites <- function(dat        = NULL,
         tmp <- data.frame(expr = as.numeric(df[i,]),
                           futime = surv.info$futime,
                           fustat = surv.info$fustat,
-                          stringsAsFactors = F)
+                          stringsAsFactors = FALSE)
         cox <- survival::coxph(survival::Surv(futime, fustat) ~ expr, data = tmp)
         coxSummary <- summary(cox)
         unicox <- rbind.data.frame(unicox,
@@ -107,8 +107,8 @@ getElites <- function(dat        = NULL,
                                               pvalue           = as.numeric(coxSummary$coefficients[,"Pr(>|z|)"])[1],
                                               lower            = as.numeric(coxSummary$conf.int[,3][1]),
                                               upper            = as.numeric(coxSummary$conf.int[,4][1]),
-                                              stringsAsFactors = F),
-                                   stringsAsFactors            = F)
+                                              stringsAsFactors = FALSE),
+                                   stringsAsFactors            = FALSE)
       }
       statistic <- unicox$pvalue
       names(statistic) <- unicox$gene
@@ -140,7 +140,7 @@ getElites <- function(dat        = NULL,
     }
   }
 
-  outdat <- as.data.frame(t(scale(t(df[elite,,drop = F]), center = centerFlag, scale = scaleFlag)))
+  outdat <- as.data.frame(t(scale(t(df[elite, , drop = FALSE]), center = centerFlag, scale = scaleFlag)))
   if(method == "cox") {
     return(list(elite.dat = outdat, unicox.res = unicox))
   } else {return(list(elite.dat = outdat))}

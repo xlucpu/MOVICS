@@ -7,7 +7,7 @@
 compAgree(
   moic.res = NULL,
   subt2comp = NULL,
-  doPlot = T,
+  doPlot = TRUE,
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
   box.width = 0.1,
   fig.name = NULL,

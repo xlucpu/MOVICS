@@ -29,6 +29,9 @@ twoclasslimma(
 
 \item{res.path}{A string value to indicate the path for saving the results.}
 }
+\value{
+Several .txt files storing differential expression analysis results by limma
+}
 \description{
 Two class differential expression analysis using limma algorithm.
 }

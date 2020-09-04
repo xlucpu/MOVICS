@@ -10,7 +10,6 @@
 #' @param fig.path A string value to indicate the output path for storing the boxviolin plot.
 #' @param width A numeric value to indicate the width of boxviolin plot.
 #' @param height A numeric value to indicate the height of boxviolin plot.
-#' @param seed A numeric value to set the seed for ridge regression training process in the predictive model to ensure reproducibility.
 #' @param test.method A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison.
 #' @return Data.frame(s) storing the estimated IC50 of specified drugs per sample within each Subtype.
 #' @export
@@ -29,7 +28,6 @@ compDrugsen <- function(moic.res    = NULL,
                         clust.col   = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627"),
                         prefix      = NULL,
                         fig.path    = getwd(),
-                        seed        = 123456,
                         width       = 5,
                         height      = 5) {
 
@@ -45,18 +43,18 @@ compDrugsen <- function(moic.res    = NULL,
   } else {
     message(paste0("--",(nrow(moic.res$clust.res)-length(comsam))," samples mismatched from current subtypes."))
   }
-  moic.res$clust.res <- moic.res$clust.res[comsam,,drop = F]
+  moic.res$clust.res <- moic.res$clust.res[comsam,,drop = FALSE]
   norm.expr <- norm.expr[,comsam]
 
   n.moic <- length(unique(moic.res$clust.res$clust))
-  sam.order <- moic.res$clust.res[order(moic.res$clust.res$clust, decreasing = F), "samID"]
+  sam.order <- moic.res$clust.res[order(moic.res$clust.res$clust, decreasing = FALSE), "samID"]
   colvec <- clust.col[1:length(unique(moic.res$clust.res$clust))]
   names(colvec) <- paste0("CS",unique(moic.res$clust.res$clust))
 
   annCol <- data.frame("Subtype" = paste0("CS",moic.res$clust.res[sam.order,"clust"]),
                        samID = sam.order,
                        row.names = sam.order,
-                       stringsAsFactors = F)
+                       stringsAsFactors = FALSE)
 
   if(max(norm.expr) < 25 | (max(norm.expr) >= 25 & min(norm.expr) < 0)) {
     message("--expression profile seems to have veen standardised (z-score or log transformation), no more action will be performed.")
@@ -71,8 +69,6 @@ compDrugsen <- function(moic.res    = NULL,
   predictedPtype <- predictedBoxdat <- list()
 
   for (drug in drugs) {
-    set.seed(seed)
-
     predictedPtype[[drug]] <- SimDesign::quiet(pRRopheticPredict(testMatrix    = as.matrix(gset[,rownames(annCol)]),
                                                                  drug          = drug,
                                                                  tissueType    = tissueType,
@@ -85,7 +81,7 @@ compDrugsen <- function(moic.res    = NULL,
     predictedBoxdat[[drug]] <- data.frame("Est.IC50"        = predictedPtype[[drug]],
                                           "Subtype"         = as.character(annCol$Subtype),
                                            row.names        = names(predictedPtype[[drug]]),
-                                           stringsAsFactors = F)
+                                           stringsAsFactors = FALSE)
     message(drug," done...")
 
     # generate boxviolin plot with statistical testing

@@ -8,7 +8,7 @@ getIntNMF(
   data = NULL,
   N.clust = NULL,
   type = rep("gaussian", length(data)),
-  is.binary = rep(F, length(data))
+  is.binary = rep(FALSE, length(data))
 )
 }
 \arguments{

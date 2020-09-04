@@ -47,16 +47,16 @@ runMarker <- function(moic.res      = NULL,
                       p.adj.cutoff  = 0.05,
                       dirct         = "up",
                       n.marker      = 200,
-                      doplot        = T,
+                      doplot        = TRUE,
                       norm.expr     = NULL,
                       annCol        = NULL,
                       annColors     = NULL,
                       clust.col     = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627"),
                       halfwidth     = 3,
-                      centerFlag    = T,
-                      scaleFlag     = T,
-                      show_rownames = F,
-                      show_colnames = F,
+                      centerFlag    = TRUE,
+                      scaleFlag     = TRUE,
+                      show_rownames = FALSE,
+                      show_colnames = FALSE,
                       color         = c("#5bc0eb", "black", "#ECE700"),
                       fig.path      = getwd(),
                       fig.name      = NULL,
@@ -78,7 +78,7 @@ runMarker <- function(moic.res      = NULL,
 
   genelist <- c()
   for (filek in DEfiles) {
-    DEres <- read.table(file.path(dat.path, filek), header=T, row.names=NULL, sep="\t", quote="", stringsAsFactors=F)
+    DEres <- read.table(file.path(dat.path, filek), header=TRUE, row.names=NULL, sep="\t", quote="", stringsAsFactors=FALSE)
     DEres <- DEres[!duplicated(DEres[, 1]),]
     DEres <- DEres[!is.na(DEres[, 1]), ]
     rownames(DEres) <- DEres[, 1]
@@ -96,7 +96,7 @@ runMarker <- function(moic.res      = NULL,
 
   marker <- list()
   for (filek in DEfiles) {
-    DEres <- read.table(file.path(dat.path, filek), header=T, row.names=NULL, sep="\t", quote="", stringsAsFactors=F)
+    DEres <- read.table(file.path(dat.path, filek), header=TRUE, row.names=NULL, sep="\t", quote="", stringsAsFactors=FALSE)
     DEres <- DEres[!duplicated(DEres[, 1]),]
     DEres <- DEres[!is.na(DEres[, 1]), ]
     rownames(DEres) <- DEres[, 1]
@@ -106,7 +106,7 @@ runMarker <- function(moic.res      = NULL,
     if(dirct == "up") {
       outk <- intersect( unqlist, rownames(DEres[!is.na(DEres$padj) & DEres$pvalue < p.cutoff & DEres$padj < p.adj.cutoff & !is.na(DEres$log2fc) & DEres$log2fc > 0, ]) )
       outk <- DEres[outk,]
-      outk <- outk[order(outk$log2fc, decreasing = T),]
+      outk <- outk[order(outk$log2fc, decreasing = TRUE),]
 
       if(nrow(outk) > n.marker) {
         marker[[filek]] <- outk[1:n.marker,]
@@ -118,7 +118,7 @@ runMarker <- function(moic.res      = NULL,
     if(dirct == "down") {
       outk <- intersect( unqlist, rownames(DEres[!is.na(DEres$padj) & DEres$pvalue < p.cutoff & DEres$padj < p.adj.cutoff & !is.na(DEres$log2fc) & DEres$log2fc < 0, ]) )
       outk <- DEres[outk,]
-      outk <- outk[order(outk$log2fc, decreasing = F),]
+      outk <- outk[order(outk$log2fc, decreasing = FALSE),]
 
       if(nrow(outk) > n.marker) {
         marker[[filek]] <- outk[1:n.marker,]
@@ -128,7 +128,7 @@ runMarker <- function(moic.res      = NULL,
       marker$dirct <- "down"
     }
     # write file
-    write.table(outk, file=file.path(res.path, paste(gsub("_vs_Others.txt","", filek, fixed = T), outlabel, sep = "_")), row.names = T, col.names = NA, sep = "\t", quote = F)
+    write.table(outk, file=file.path(res.path, paste(gsub("_vs_Others.txt","", filek, fixed = TRUE), outlabel, sep = "_")), row.names = TRUE, col.names = NA, sep = "\t", quote = FALSE)
   }
 
   # generate templates for nearest template prediction
@@ -137,10 +137,10 @@ runMarker <- function(moic.res      = NULL,
     tmp <- data.frame(probe = rownames(marker[[filek]]),
                       class = sub("_vs_Others.txt","",sub(".*.result.","",filek)),
                       dirct = marker$dirct,
-                      stringsAsFactors = F)
-    templates <- rbind.data.frame(templates, tmp, stringsAsFactors = F)
+                      stringsAsFactors = FALSE)
+    templates <- rbind.data.frame(templates, tmp, stringsAsFactors = FALSE)
   }
-  write.table(templates, file=file.path(res.path, paste0(mo.method,"_",dea.method,"_",dirct,"regulated","_marker_templates.txt")), row.names = F, sep = "\t", quote = F)
+  write.table(templates, file=file.path(res.path, paste0(mo.method,"_",dea.method,"_",dirct,"regulated","_marker_templates.txt")), row.names = FALSE, sep = "\t", quote = FALSE)
 
   # generate heatmap with subtype-specific markers
   if(doplot) {
@@ -156,7 +156,7 @@ runMarker <- function(moic.res      = NULL,
       message(paste0("--",(nrow(moic.res$clust.res)-length(comsam))," samples mismatched from current subtypes."))
     }
 
-    moic.res$clust.res <- moic.res$clust.res[comsam,,drop = F]
+    moic.res$clust.res <- moic.res$clust.res[comsam, , drop = FALSE]
     norm.expr <- norm.expr[,comsam]
 
     if(is.null(fig.name)) {
@@ -164,17 +164,17 @@ runMarker <- function(moic.res      = NULL,
     } else {
       outFig <- paste0(fig.name, "_using_", dirct,"regulated_genes.pdf")
     }
-    sam.order <- moic.res$clust.res[order(moic.res$clust.res$clust, decreasing = F), "samID"]
+    sam.order <- moic.res$clust.res[order(moic.res$clust.res$clust, decreasing = FALSE), "samID"]
     colvec <- clust.col[1:n.moic]
     names(colvec) <- paste0("CS",1:n.moic)
     if(!is.null(annCol) & !is.null(annColors)) {
-      annCol <- annCol[sam.order, , drop = F]
+      annCol <- annCol[sam.order, , drop = FALSE]
       annCol$Subtype <- paste0("CS",moic.res$clust.res[sam.order,"clust"])
       annColors[["Subtype"]] <- colvec
     } else {
       annCol <- data.frame("Subtype" = paste0("CS",moic.res$clust.res[sam.order,"clust"]),
                            row.names = sam.order,
-                           stringsAsFactors = F)
+                           stringsAsFactors = FALSE)
       annColors <- list("Subtype" = colvec)
     }
 
@@ -187,7 +187,7 @@ runMarker <- function(moic.res      = NULL,
       gset <- log2(norm.expr + 1)
     }
 
-    standarize.fun <- function(indata=NULL, halfwidth=NULL, centerFlag=T, scaleFlag=T) {
+    standarize.fun <- function(indata=NULL, halfwidth=NULL, centerFlag=TRUE, scaleFlag=TRUE) {
       outdata=t(scale(t(indata), center=centerFlag, scale=scaleFlag))
       if (!is.null(halfwidth)) {
         outdata[outdata>halfwidth]=halfwidth
@@ -211,8 +211,8 @@ runMarker <- function(moic.res      = NULL,
 
     hm <- ComplexHeatmap::pheatmap(mat               = plotdata,
                                    border_color      = NA,
-                                   cluster_cols      = F,
-                                   cluster_rows      = F,
+                                   cluster_cols      = FALSE,
+                                   cluster_rows      = FALSE,
                                    annotation_col    = annCol,
                                    annotation_colors = annColors,
                                    legend_breaks     = pretty(c(-halfwidth,halfwidth)),

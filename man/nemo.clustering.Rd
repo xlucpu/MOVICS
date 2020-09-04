@@ -21,6 +21,9 @@ A single matrix measuring similarity between the samples across all omics.
 Performs multi-omic clustering on a datset using the NEMO algorithm.
 Uses nemo.num.clusters to estimate the number of clusters.
 }
+\references{
+Rappoport N, Shamir R (2019). NEMO: cancer subtyping by integration of partial multi-omic data. Bioinformatics, 35(18):3348-3356.
+}
 \author{
 Nimrod Rappoport
 }

@@ -24,7 +24,7 @@ getCIMLR <- function(data        = NULL,
                      N.clust     = NULL,
                      type        = rep("gaussian", length(data)),
                      cores.ratio = 0,
-                     verbose     = T){
+                     verbose     = TRUE){
 
   useless.argument <- type
   if(verbose) {
@@ -56,20 +56,20 @@ getCIMLR <- function(data        = NULL,
   clustres <- data.frame(samID = colnames(data[[1]]),
                          clust = fit$y$cluster,
                          row.names = colnames(data[[1]]),
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
   #clustres <- clustres[order(clustres$clust),]
 
-  f <- sapply(strsplit(ranks$name, "+",fixed = T), "[",1)
-  d <- sapply(strsplit(ranks$name, "+",fixed = T), "[",2)
+  f <- sapply(strsplit(ranks$name, "+",fixed = TRUE), "[",1)
+  d <- sapply(strsplit(ranks$name, "+",fixed = TRUE), "[",2)
 
   featres <- data.frame(feature = f,
                         dataset = d,
                         pvalue = ranks$pval,
-                        stringsAsFactors = F)
+                        stringsAsFactors = FALSE)
   feat.res <- NULL
   for (d in unique(featres$dataset)) {
     tmp <- featres[which(featres$dataset == d),]
-    tmp <- tmp[order(tmp$pvalue, decreasing = F),]
+    tmp <- tmp[order(tmp$pvalue, decreasing = FALSE),]
     tmp$rank <- 1:nrow(tmp)
     feat.res <- rbind.data.frame(feat.res,tmp)
   }

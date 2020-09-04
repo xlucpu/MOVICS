@@ -13,8 +13,14 @@ affinityMatrix(Diff, K = 20, sigma = 0.5)
 
 \item{sigma}{Variance for local model.}
 }
+\value{
+affinityMatrix
+}
 \description{
 affinityMatrix
+}
+\references{
+Wang B, Mezlini AM, Demir F, et al (2014). Similarity network fusion for aggregating data types on a genomic scale. Nat Methods, 11(3):333-337.
 }
 \author{
 Bo Wang, Aziz Mezlini, Feyyaz Demir, Marc Fiume, Zhuowen Tu, Michael Brudno, Benjamin Haibe-Kains, Anna Goldenberg

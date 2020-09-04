@@ -36,9 +36,9 @@ compMut <- function(moic.res     = NULL,
                     freq.cutoff  = 0.05,
                     test.method  = "fisher",
                     p.adj.method = "BH",
-                    doWord       = T,
-                    doPlot       = T,
-                    innerclust   = T,
+                    doWord       = TRUE,
+                    doPlot       = TRUE,
+                    innerclust   = TRUE,
                     res.path     = getwd(),
                     tab.name     = NULL,
                     fig.path     = getwd(),
@@ -88,9 +88,9 @@ compMut <- function(moic.res     = NULL,
   }
 
   clust.res <- moic.res$clust.res
-  clust.res <- clust.res[order(clust.res$clust,decreasing = F), , drop = F]
+  clust.res <- clust.res[order(clust.res$clust,decreasing = FALSE), , drop = FALSE]
   comsam <- intersect(clust.res$samID, colnames(mut.matrix))
-  clust.res <- clust.res[comsam,,drop = F]
+  clust.res <- clust.res[comsam, , drop = FALSE]
   mut.matrix <- mut.matrix[,comsam]
   n.moic <- length(unique(clust.res$clust))
 
@@ -118,7 +118,7 @@ compMut <- function(moic.res     = NULL,
   for (k in 1:length(genelist)) {
     genek <- genelist[k]
     x <- ans
-    y <- binarymut[names(x), genek, drop=T]; y <- as.character(y); names(y) <- names(x)
+    y <- binarymut[names(x), genek, drop = TRUE]; y <- as.character(y); names(y) <- names(x)
     tmp <- setdiff(names(x), names(y)[y=="Not Available"])
     x <- x[tmp]
     y <- y[tmp]
@@ -147,17 +147,17 @@ compMut <- function(moic.res     = NULL,
   freqpct <- paste(tmb, pct, sep = " ")
   out <- cbind.data.frame(data.frame("Gene (Mutated)" = gsub("_Mutated","",rownames(out)),
                                      "TMB" = freqpct,
-                                     check.names = F),
+                                     check.names = FALSE),
                           out)
   rownames(out) <- NULL
   # message("show heading...")
   # print(head(out))
-  write.table(out, file.path(res.path, outFile), row.names = F, col.names = T, sep = "\t", quote = F)
+  write.table(out, file.path(res.path, outFile), row.names = FALSE, col.names = TRUE, sep = "\t", quote = FALSE)
 
   # generate WORD format
   if(doWord){
     comtable <- out
-    title_name <- paste0("Table *. ", gsub(".txt", "", outFile, fixed = T))
+    title_name <- paste0("Table *. ", gsub(".txt", "", outFile, fixed = TRUE))
     mynote <- "Note: ..."
 
     my_doc <- officer::read_docx()
@@ -165,7 +165,7 @@ compMut <- function(moic.res     = NULL,
       officer::body_add_par(value = title_name, style = "table title") %>%
       officer::body_add_table(value = comtable, style = "table_template") %>%
       officer::body_add_par(value = mynote) %>%
-      print(target = file.path(res.path,paste0("TABLE ", gsub(".txt", "", outFile, fixed = T), ".docx")))
+      print(target = file.path(res.path,paste0("TABLE ", gsub(".txt", "", outFile, fixed = TRUE), ".docx")))
   }
 
   # generate mutation oncoprint
@@ -176,11 +176,11 @@ compMut <- function(moic.res     = NULL,
       outFig <- paste0(fig.name,".pdf")
     }
 
-    sam.order <- moic.res$clust.res[order(moic.res$clust.res$clust, decreasing = F), "samID"]
+    sam.order <- moic.res$clust.res[order(moic.res$clust.res$clust, decreasing = FALSE), "samID"]
     colvec <- clust.col[1:length(unique(moic.res$clust.res$clust))]
     names(colvec) <- paste0("CS",unique(moic.res$clust.res$clust))
     if(!is.null(annCol) & !is.null(annColors)) {
-      annCol <- annCol[sam.order, , drop = F]
+      annCol <- annCol[sam.order, , drop = FALSE]
       annCol$Subtype <- paste0("CS",moic.res$clust.res[sam.order,"clust"])
       annColors[["Subtype"]] <- colvec
     } else {
@@ -189,7 +189,7 @@ compMut <- function(moic.res     = NULL,
       annColors <- list("Subtype" = colvec)
     }
     sig.mut <- as.character(out[which(as.numeric(out$pvalue) < p.cutoff & as.numeric(out$padj) < p.adj.cutoff), "Gene (Mutated)"])
-    onco_dat <- t(binarymut[rownames(annCol), sig.mut, drop = F])
+    onco_dat <- t(binarymut[rownames(annCol), sig.mut, drop = FALSE])
     onco_dat[onco_dat == "Normal"] <- ""; onco_dat <- as.data.frame(onco_dat)
 
     alter_fun = list(
@@ -207,33 +207,33 @@ compMut <- function(moic.res     = NULL,
         sam <- moic.res$clust.res[which(moic.res$clust.res$clust == i), "samID"]
         tmp <- SimDesign::quiet(ComplexHeatmap::oncoPrint(onco_dat[,sam], get_type = function(x) x,
                                                           alter_fun = alter_fun, col = col,
-                                                          remove_empty_columns = F,
-                                                          show_pct = F,
+                                                          remove_empty_columns = FALSE,
+                                                          show_pct = FALSE,
                                                           bottom_annotation = NULL,
                                                           top_annotation = NULL,
-                                                          show_heatmap_legend = F))
+                                                          show_heatmap_legend = FALSE))
         sam.reorder <- c(sam.reorder, sam[tmp@column_order])
       }
 
-      my_annotation = ComplexHeatmap::HeatmapAnnotation(df = annCol[sam.reorder, , drop = F], col = annColors)
+      my_annotation = ComplexHeatmap::HeatmapAnnotation(df = annCol[sam.reorder, , drop = FALSE], col = annColors)
       p <- SimDesign::quiet(ComplexHeatmap::oncoPrint(onco_dat[,sam.reorder], get_type = function(x) x,
                                                       alter_fun = alter_fun, col = col,
-                                                      remove_empty_columns = F,
+                                                      remove_empty_columns = FALSE,
                                                       column_order = sam.reorder,
-                                                      show_pct = T,
+                                                      show_pct = TRUE,
                                                       bottom_annotation = my_annotation,
                                                       top_annotation = NULL,
-                                                      show_heatmap_legend = F))
+                                                      show_heatmap_legend = FALSE))
     } else {
       my_annotation = ComplexHeatmap::HeatmapAnnotation(df = annCol, col = annColors)
       p <- SimDesign::quiet(ComplexHeatmap::oncoPrint(onco_dat, get_type = function(x) x,
                                                       alter_fun = alter_fun, col = col,
-                                                      remove_empty_columns = F,
+                                                      remove_empty_columns = FALSE,
                                                       column_order = colnames(onco_dat),
-                                                      show_pct = T,
+                                                      show_pct = TRUE,
                                                       bottom_annotation = my_annotation,
                                                       top_annotation = NULL,
-                                                      show_heatmap_legend = F))
+                                                      show_heatmap_legend = FALSE))
     }
 
     # save to pdf

@@ -29,7 +29,7 @@ getNEMO <- function(data          = NULL,
   clustres <- data.frame(samID = colnames(data[[1]]),
                          clust = as.numeric(fit),
                          row.names = colnames(data[[1]]),
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
   #clustres <- clustres[order(clustres$clust),]
 
   return(list(fit = fit, clust.res = clustres, mo.method = "NEMO"))
@@ -41,7 +41,9 @@ getNEMO <- function(data          = NULL,
 #' @param K Number of nearest neighbors.
 #' @param sigma Variance for local model.
 #' @author Bo Wang, Aziz Mezlini, Feyyaz Demir, Marc Fiume, Zhuowen Tu, Michael Brudno, Benjamin Haibe-Kains, Anna Goldenberg
+#' @references Wang B, Mezlini AM, Demir F, et al (2014). Similarity network fusion for aggregating data types on a genomic scale. Nat Methods, 11(3):333-337.
 #' @keywords internal
+#' @return affinityMatrix
 affinityMatrix <- function(Diff,K=20,sigma=0.5) {
   ###This function constructs similarity networks.
   N = nrow(Diff)
@@ -66,7 +68,9 @@ affinityMatrix <- function(Diff,K=20,sigma=0.5) {
 #' @param X A data matrix where each row is a different data point.
 #' @param C A data matrix where each row is a different data point. If this matrix is the same as X, pairwise distances for all data points are computed.
 #' @author Bo Wang, Aziz Mezlini, Feyyaz Demir, Marc Fiume, Zhuowen Tu, Michael Brudno, Benjamin Haibe-Kains, Anna Goldenberg
+#' @references Wang B, Mezlini AM, Demir F, et al (2014). Similarity network fusion for aggregating data types on a genomic scale. Nat Methods, 11(3):333-337.
 #' @keywords internal
+#' @return dist2
 dist2 <- function(X,C) {
   ndata = nrow(X)
   ncentres = nrow(C)
@@ -86,6 +90,8 @@ dist2 <- function(X,C) {
 #' @name spectralClustering
 #' @keywords internal
 #' @author Bo Wang, Aziz Mezlini, Feyyaz Demir, Marc Fiume, Zhuowen Tu, Michael Brudno, Benjamin Haibe-Kains, Anna Goldenberg
+#' @references Wang B, Mezlini AM, Demir F, et al (2014). Similarity network fusion for aggregating data types on a genomic scale. Nat Methods, 11(3):333-337.
+#' @return spectralClustering
 spectralClustering = SNFtool::spectralClustering
 
 #' @title NEMO num clusters
@@ -95,6 +101,7 @@ spectralClustering = SNFtool::spectralClustering
 #' @param NUMC possible values for the number of clusters. Defaults to 2:15.
 #' @return the estimated number of clusters in the graph.
 #' @author Nimrod Rappoport
+#' @references Rappoport N, Shamir R (2019). NEMO: cancer subtyping by integration of partial multi-omic data. Bioinformatics, 35(18):3348-3356.
 #' @keywords internal
 nemo.num.clusters <- function(W, NUMC=2:15) {
   if (min(NUMC) == 1) {
@@ -112,13 +119,13 @@ nemo.num.clusters <- function(W, NUMC=2:15) {
     L = Di %*% L %*% Di
     print(dim(L))
     eigs = eigen(L)
-    eigs_order = sort(eigs$values, index.return = T)$ix
+    eigs_order = sort(eigs$values, index.return = TRUE)$ix
     eigs$values = eigs$values[eigs_order]
     eigs$vectors = eigs$vectors[, eigs_order]
     eigengap = abs(diff(eigs$values))
     eigengap = (1:length(eigengap)) * eigengap
 
-    t1 <- sort(eigengap[NUMC], decreasing = TRUE, index.return = T)$ix
+    t1 <- sort(eigengap[NUMC], decreasing = TRUE, index.return = TRUE)$ix
     return(NUMC[t1[1]])
   }
 }
@@ -133,8 +140,9 @@ nemo.num.clusters <- function(W, NUMC=2:15) {
 #' number of neighbors to be the number of samples divided by NUM.NEIGHBORS.RATIO.
 #' @return A single matrix measuring similarity between the samples across all omics.
 #' @author Nimrod Rappoport
+#' @references Rappoport N, Shamir R (2019). NEMO: cancer subtyping by integration of partial multi-omic data. Bioinformatics, 35(18):3348-3356.
 #' @keywords internal
-nemo.affinity.graph <- function(raw.data, k=NA, NUM.NEIGHBORS.RATIO = 6) {
+nemo.affinity.graph <- function(raw.data, k = NA, NUM.NEIGHBORS.RATIO = 6) {
   if (is.na(k)) {
     k = as.numeric(lapply(1:length(raw.data), function(i) round(ncol(raw.data[[i]]) / NUM.NEIGHBORS.RATIO)))
   } else if (length(k) == 1) {
@@ -146,7 +154,7 @@ nemo.affinity.graph <- function(raw.data, k=NA, NUM.NEIGHBORS.RATIO = 6) {
     sim.datum = sim.data[[i]]
     non.sym.knn = apply(sim.datum, 1, function(sim.row) {
       returned.row = sim.row
-      threshold = sort(sim.row, decreasing = T)[k[i]]
+      threshold = sort(sim.row, decreasing = TRUE)[k[i]]
       returned.row[sim.row < threshold] = 0
       row.sum = sum(returned.row)
       returned.row[sim.row >= threshold] = returned.row[sim.row >= threshold] / row.sum
@@ -189,8 +197,9 @@ nemo.affinity.graph <- function(raw.data, k=NA, NUM.NEIGHBORS.RATIO = 6) {
 #' number of neighbors to be the number of samples divided by NUM.NEIGHBORS.RATIO.
 #' @return A single matrix measuring similarity between the samples across all omics.
 #' @author Nimrod Rappoport
+#' @references Rappoport N, Shamir R (2019). NEMO: cancer subtyping by integration of partial multi-omic data. Bioinformatics, 35(18):3348-3356.
 #' @keywords internal
-nemo.clustering <- function(omics.list, num.clusters=NULL, num.neighbors=NA) {
+nemo.clustering <- function(omics.list, num.clusters = NULL, num.neighbors = NA) {
   if (is.null(num.clusters)) {
     num.clusters = NA
   }

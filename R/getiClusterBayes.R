@@ -133,18 +133,18 @@ getiClusterBayes <- function(data        = NULL,
   clustres <- data.frame(samID = rownames(data[[1]]),
                          clust = res$clusters,
                          row.names = rownames(data[[1]]),
-                         stringsAsFactors = F)
+                         stringsAsFactors = FALSE)
   #clustres <- clustres[order(clustres$clust),]
 
   featres <- data.frame(feature = as.character(unlist(lapply(data.backup, rownames))),
                         dataset = rep(names(data),as.numeric(sapply(data.backup, function(x) length(rownames(x))))),
                         post.prob = unlist(res$beta.pp),
-                        stringsAsFactors = F)
+                        stringsAsFactors = FALSE)
 
   feat.res <- NULL
   for (d in unique(featres$dataset)) {
     tmp <- featres[which(featres$dataset == d),]
-    tmp <- tmp[order(tmp$post.prob, decreasing = T),]
+    tmp <- tmp[order(tmp$post.prob, decreasing = TRUE),]
     tmp$rank <- 1:nrow(tmp)
     feat.res <- rbind.data.frame(feat.res,tmp)
   }

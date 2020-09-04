@@ -20,6 +20,9 @@ A single matrix measuring similarity between the samples across all omics.
 \description{
 Constructs a single affinity graph measuring similarity across different omics.
 }
+\references{
+Rappoport N, Shamir R (2019). NEMO: cancer subtyping by integration of partial multi-omic data. Bioinformatics, 35(18):3348-3356.
+}
 \author{
 Nimrod Rappoport
 }

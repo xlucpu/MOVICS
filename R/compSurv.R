@@ -49,7 +49,7 @@ compSurv <- function(moic.res         = NULL,
   # get common samples
   comsam <- intersect(rownames(surv.info),rownames(moic.res$clust.res))
   mosurv.res <- cbind.data.frame(surv.info[comsam,c("futime","fustat")],
-                                 moic.res$clust.res[comsam, "clust", drop = F])
+                                 moic.res$clust.res[comsam, "clust", drop = FALSE])
   message(paste0("--a total of ",length(comsam), " samples are identified."))
 
   # remove missing data if possible
@@ -116,7 +116,7 @@ compSurv <- function(moic.res         = NULL,
   fitd <- survdiff(Surv(futime, fustat) ~ Subtype,
                    data      = mosurv.res,
                    na.action = na.exclude)
-  p.val <- 1-pchisq(fitd$chisq, length(fitd$n) - 1)
+  p.val <- 1 - pchisq(fitd$chisq, length(fitd$n) - 1)
   fit <- survfit(Surv(futime, fustat)~ Subtype,
                  data      = mosurv.res,
                  type      = "kaplan-meier",
@@ -129,8 +129,8 @@ compSurv <- function(moic.res         = NULL,
 
   # kaplan-meier curve
   p <- suppressWarnings(ggsurvplot(fit               = fit,
-                                   conf.int          = F,
-                                   risk.table        = T,
+                                   conf.int          = FALSE,
+                                   risk.table        = TRUE,
                                    risk.table.col    = "strata",
                                    palette           = clust.col[1:n.moic],
                                    data              = mosurv.res,
@@ -141,7 +141,7 @@ compSurv <- function(moic.res         = NULL,
                                    surv.median.line  = surv.median.line,
                                    xlab              = paste0("Time (",date.lab,")"),
                                    ylab              = "Survival probability (%)",
-                                   risk.table.y.text = F))
+                                   risk.table.y.text = FALSE))
 
   # make survival time as percentage
   p$plot <- SimDesign::quiet(
@@ -167,13 +167,13 @@ compSurv <- function(moic.res         = NULL,
 
     # add pair-wise comparison table
     options(stringsAsFactors = FALSE)
-    addTab <- as.data.frame(as.matrix(ifelse(round(ps$p.value, 3) < 0.001,"<0.001",
+    addTab <- as.data.frame(as.matrix(ifelse(round(ps$p.value, 3) < 0.001, "<0.001",
                                              round(ps$p.value, 3))))
     addTab[is.na(addTab)] <- "-"
     options(stringsAsFactors = TRUE)
 
     df <- tibble(x = 0, y = 0, tb = list(addTab))
-    p$plot <- p$plot + geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = T)
+    p$plot <- p$plot + geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE)
 
   } else {
     # add nominal pvalue for log-rank test

@@ -11,8 +11,8 @@ compClinvar(
   factorVars = NULL,
   nonnormalVars = NULL,
   exactVars = NULL,
-  includeNA = F,
-  doWord = T,
+  includeNA = FALSE,
+  doWord = TRUE,
   tab.name = NULL,
   res.path = getwd(),
   ...

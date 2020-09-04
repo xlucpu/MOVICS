@@ -9,6 +9,9 @@ summary.pRRopheticCv(cvOutData)
 \arguments{
 \item{cvOutData}{an object of class "pRRopheticCv", i.e. the outpout of the "predictionAccuracyByCv()" function}
 }
+\value{
+summary.pRRopheticCv
+}
 \description{
 Given an object of class "pRRopheticCv", print various metrics that
 summarize the performance of the cross validataion analysis

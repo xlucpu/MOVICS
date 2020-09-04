@@ -321,7 +321,7 @@ Remember, you must choose at least two methods to perform the above consensus cl
 
 #### <a id="Section.4.2.1.7" style="color:#159957;">7) get multi-omics heatmap based on clustering result</a>
 Genome-wide heatmaps are widely used to graphically display potential underlying patterns within the large genomic dataset. They have been used to reveal information about how the samples/genes cluster together and provide insights into potential sample biases or other artifacts. Herein MOVICS provides `getMoHeatmap` to visually deal with preclustered multi-omics data and generate an exquisite heatmap for publication requirement.
-Before using `getMoHeatmap()`, omics data should be properly processed by using the function of `getStdiz()` which returns a list storing normalized omics data. Omics data, especially for expression (*e.g.*, RNA and protein), should be centered (`centerFlag = T`) or scaled (`scaleFlag = T`) or z-scored (both centered and scaled). Generally, DNA methylation data ($\beta$ matrix ranging from 0 to 1) and somatic mutation (0 and 1 binary matrix) should not be normalized. However, it is a good choice to convert the methylation $\beta$ value to M value following the formula of $M=log_2\frac{\beta}{1-\beta}$ for its stronger signal in visualization and M value is suitable for normalization.
+Before using `getMoHeatmap()`, omics data should be properly processed by using the function of `getStdiz()` which returns a list storing normalized omics data. Omics data, especially for expression (*e.g.*, RNA and protein), should be centered (`centerFlag = TRUE`) or scaled (`scaleFlag = TRUE`) or z-scored (both centered and scaled). Generally, DNA methylation data ($\beta$ matrix ranging from 0 to 1) and somatic mutation (0 and 1 binary matrix) should not be normalized. However, it is a good choice to convert the methylation $\beta$ value to M value following the formula of $M=log_2\frac{\beta}{1-\beta}$ for its stronger signal in visualization and M value is suitable for normalization.
 This function also provides an argument of `halfwidth` for continuous omics data; such argument is used to truncate the 'extremum' after normalization; specifically, normalized values that exceed the halfwidth boundaries will be replaced by the halfwidth, which is beneficial to map colors in heatmap.
 ```{r, eval=TRUE}
 # convert beta value to M value for stronger signal
@@ -363,7 +363,7 @@ getMoHeatmap(data          = plotdata,
              clust.res     = iClusterBayes.res$clust.res, # cluster results
              clust.dend    = NULL, # no dendrogram
              show.rownames = c(F,F,F,F), # specify for each omics data
-             show.colnames = F, # show no sample names
+             show.colnames = FALSE, # show no sample names
              annRow        = annRow, # mark selected features
              color         = col.list,
              annCol        = NULL, # no annotation for samples
@@ -391,7 +391,7 @@ getMoHeatmap(data          = plotdata,
 Now go back to the consensus result of `cmoic.brca` that integrates 10 algorithms and this time samples' annotation is also provided to generate the heatmap. Since the core function of `getMoHeatmap()` is based on ComplexHeatmap R package, **when creating annotations, you should always use `circlize::colorRamp2()` function to generate the color mapping function for continuous variables** (*e.g.*, age in this example).
 ```{r, fig.align="center", fig.width=9, fig.height=9.5, fig.cap="Figure 5. Comprehensive heatmap based on consensus across 10 algorithms with clinicopathological annotation.", eval=TRUE}
 # extract PAM50, pathologic stage and age for sample annotation
-annCol    <- surv.info[,c("PAM50", "pstage", "age"), drop = F]
+annCol    <- surv.info[,c("PAM50", "pstage", "age"), drop = FALSE]
 
 # generate corresponding colors for sample annotation
 annColors <- list(age    = circlize::colorRamp2(breaks = c(min(annCol$age),
@@ -417,7 +417,7 @@ getMoHeatmap(data          = plotdata,
              clust.res     = cmoic.brca$clust.res, # consensusMOIC results
              clust.dend    = NULL, # show no dendrogram for samples
              show.rownames = c(F,F,F,F), # specify for each omics data
-             show.colnames = F, # show no sample names
+             show.colnames = FALSE, # show no sample names
              show.row.dend = c(F,F,F,F), # show no dendrogram for features
              annRow        = NULL, # no selected features
              color         = col.list,
@@ -453,7 +453,7 @@ clin.brca <- compClinvar(moic.res      = cmoic.brca,
                          factorVars    = c("PAM50","pstage","fustat"), # features that are considered categorical variables
                          nonnormalVars = "futime", # feature(s) that are considered using nonparametric test
                          exactVars     = "pstage", # feature(s) that are considered using exact test
-                         doWord        = T, # generate .docx file in local path
+                         doWord        = TRUE, # generate .docx file in local path
                          tab.name      = "SUMMARIZATION OF CLINICAL FEATURES")
 
 ```
@@ -465,7 +465,7 @@ print(clin.brca$compTab)
 ```{r, echo=FALSE, eval=TRUE}
 clin.brca$compTab %>%
   kbl(caption = "Table 1. Comparison of clinical features among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
   
 #### <a id="Section.4.2.2.3" style="color:#159957;">3) compare mutational frequency</a>
@@ -474,11 +474,11 @@ Subype-specific mutation might be promising as therapeutic target. Hence, I then
 # mutational frequency comparison
 mut.brca <- compMut(moic.res     = cmoic.brca,
                     mut.matrix   = brca.tcga$mut.status, # binary somatic mutation matrix
-                    doWord       = T, # generate table in .docx format
-                    doPlot       = T, # draw OncoPrint
+                    doWord       = TRUE, # generate table in .docx format
+                    doPlot       = TRUE, # draw OncoPrint
                     freq.cutoff  = 0.05, # keep those genes that mutated in at least 5% of samples
                     p.adj.cutoff = 0.05, # keep those genes with adjusted p value < 0.05 to draw OncoPrint
-                    innerclust   = T, # perform clustering within each subtype
+                    innerclust   = TRUE, # perform clustering within each subtype
                     annCol       = annCol, # same annotation for heatmap
                     annColors    = annColors, # same annotation color for heatmap
                     width        = 6, 
@@ -494,7 +494,7 @@ print(mut.brca)
 ```{r, echo=FALSE, eval=TRUE}
 mut.brca %>%
   kbl(caption = "Table 2. Comparison of mutational frequency among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 #### <a id="Section.4.2.2.4" style="color:#159957;">4) compare total mutation burden</a>
@@ -506,15 +506,15 @@ head(maf)
 ```{r, echo=FALSE, eval=FALSE}
 head(maf) %>%
   kbl(caption = "Table . Demo of MAF data with eligible column names.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 Run `compTMB()` then. By default, this function considers nonsynonymous variants only when counting somatic mutation frequency, including Frame_Shift_Del, Frame_Shift_Ins, Splice_Site, Translation_Start_Site, Nonsense_Mutation, Nonstop_Mutation, In_Frame_Del, In_Frame_Ins, and Missense_Mutation. In addition to calculating TMB, this function also classifies Single Nucleotide Variants into Transitions and Transversions (TiTv), and depicts the distribution of both TMB and TiTv.
 ```{r, fig.align="center", fig.width=6, fig.height=6, fig.cap="Figure 8. Comparison of TMB and TiTv among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE}
 # compare TMB
 tmb.brca <- compTMB(moic.res     = cmoic.brca,
                     maf          = maf,
-                    rmDup        = T, # remove duplicated variants per sample
-                    rmFLAGS      = F, # keep FLAGS mutations
+                    rmDup        = TRUE, # remove duplicated variants per sample
+                    rmFLAGS      = FALSE, # keep FLAGS mutations
                     exome.size   = 38, # estimated exome size
                     test.method  = "nonparametric", # statistical testing method
                     fig.name     = "DISTRIBUTION OF TMB AND TITV")
@@ -527,7 +527,7 @@ head(tmb.brca$TMB)
 ```{r, echo=FALSE, eval=TRUE}
 head(tmb.brca$TMB) %>%
   kbl(caption = "Table 3. Demo of comparison of TMB among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 #### <a id="Section.4.2.2.5" style="color:#159957;">5) compare fraction genome altered</a>
@@ -545,7 +545,7 @@ head(segment)
 ```{r, echo=FALSE, eval=FALSE}
 head(segment) %>%
   kbl(caption = "Table . Demo of segmented copy number data with eligible column names.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 Then this function can be run without any difficulties. **Notably, if your CNA calling procedure did not provide a segmented copy number as value column but the original copy number, argument of `iscopynumber` must be switched to `TRUE` instead**.
@@ -553,7 +553,7 @@ Then this function can be run without any difficulties. **Notably, if your CNA c
 # compare FGA, FGG, and FGL
 fga.brca <- compFGA(moic.res     = cmoic.brca,
                     segment      = segment,
-                    iscopynumber = F, # this is a segmented copy number file
+                    iscopynumber = FALSE, # this is a segmented copy number file
                     cnathreshold = 0.2, # threshold to determine CNA gain or loss
                     test.method  = "nonparametric", # statistical testing method
                     fig.name     = "BARPLOT OF FGA")
@@ -566,7 +566,7 @@ head(fga.brca$summary)
 ```{r, echo=FALSE, eval=TRUE}
 head(fga.brca$summary) %>%
   kbl(caption = "Table 4. Demo of comparison of fraction genome altered among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 #### <a id="Section.4.2.2.6" style="color:#159957;">6) compare drug sensitivity</a>
@@ -588,7 +588,7 @@ head(drug.brca$Cisplatin)
 ```{r, echo=FALSE, eval=TRUE}
 head(drug.brca$Cisplatin) %>%
   kbl(caption = "Table 5. Demo of estimated IC50 for Cisplatin among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 #### <a id="Section.4.2.2.7" style="color:#159957;">7) compare agreement with other subtypes</a>
@@ -600,7 +600,7 @@ surv.info$pstage <- factor(surv.info$pstage, levels = c("TX","T1","T2","T3","T4"
 # agreement comparsion (support up to 6 classifications include current subtype)
 agree.brca <- compAgree(moic.res  = cmoic.brca,
                         subt2comp = surv.info[,c("PAM50","pstage")],
-                        doPlot    = T,
+                        doPlot    = TRUE,
                         box.width = 0.2,
                         fig.name  = "AGREEMENT OF CONSENSUSMOIC WITH PAM50 AND PSTAGE")
 ```
@@ -612,7 +612,7 @@ print(agree.brca)
 ```{r, echo=FALSE, eval=TRUE}
 agree.brca %>%
   kbl(caption = "Table 6. Agreement of 5 identified subtypes with PAM50 classification and pathological stage in TCGA-BRCA cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 ### <a id="Section.4.2.3" style="color:#159957;">4.2.3 RUN Module</a>
@@ -656,11 +656,11 @@ marker.up <- runMarker(moic.res      = cmoic.brca,
                        p.adj.cutoff  = 0.05, # padj cutoff to identify significant DEGs
                        dirct         = "up", # direction of dysregulation in expression
                        n.marker      = 100, # number of biomarkers for each subtype
-                       doplot        = T, # generate diagonal heatmap
+                       doplot        = TRUE, # generate diagonal heatmap
                        norm.expr     = fpkm, # use normalized expression as heatmap input
                        annCol        = annCol, # sample annotation in heatmap
                        annColors     = annColors, # colors for sample annotation
-                       show_rownames = F, # show no rownames (biomarker name)
+                       show_rownames = FALSE, # show no rownames (biomarker name)
                        fig.name      = "UPREGULATED BIOMARKER HEATMAP")
 ```
 
@@ -672,7 +672,7 @@ head(marker.up$templates)
 ```{r, echo=FALSE, eval=TRUE}
 head(marker.up$templates) %>%
   kbl(caption = "Table 7. Demo of subtype-specific upregulated biomarkers for 5 identified subtypes of breast cancer in TCGA-BRCA cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 Then try results derived from limma to identify subtype-specific downregulated biomarkers. Please feel free to try DESeq2.
@@ -683,7 +683,7 @@ marker.dn <- runMarker(moic.res      = cmoic.brca,
                        prefix        = "TCGA-BRCA",
                        dirct         = "down",
                        n.marker      = 50, # switch to 50
-                       doplot        = T,
+                       doplot        = TRUE,
                        norm.expr     = fpkm,
                        annCol        = annCol,
                        annColors     = annColors,
@@ -723,7 +723,7 @@ print(gsea.up$gsea.list$CS1[1:6,3:6])
 ```{r, echo=FALSE, eval=TRUE}
 gsea.up$gsea.list$CS1[1:6,3:6] %>%
   kbl(caption = "Table 8. Demo of GSEA results for the first cancer subtype (CS1) of breast cancer in TCGA-BRCA cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 Also check results of subtype-specific enrichment scores.
@@ -734,7 +734,7 @@ head(round(gsea.up$grouped.es,3))
 ```{r, echo=FALSE, eval=TRUE}
 head(round(gsea.up$grouped.es,3)) %>%
   kbl(caption = "Table 9. Demo of subtype-specific enrichment scores among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 Then try results derived from DESeq2 to identify subtype-specific downregulated pathways. Please feel free to try limma.
@@ -759,9 +759,9 @@ Oh wait, did we forget something? Yeah there is a dataset that has not been used
 # run NTP in Yau cohort by using up-regulated biomarkers
 brca.pred <- runNTP(expr      = brca.yau$mRNA.expr,
                     templates = marker.up$templates, # the template has been already prepared in runMarker()
-                    scale     = T, # scale input data
-                    center    = T, # center input data
-                    doPlot    = T, # to generate heatmap
+                    scale     = TRUE, # scale input data
+                    center    = TRUE, # center input data
+                    doPlot    = TRUE, # to generate heatmap
                     fig.name  = "NTP HEATMAP FOR YAU") 
 ```
 
@@ -772,7 +772,7 @@ head(brca.pred$ntp.res)
 ```{r, echo=FALSE, eval=TRUE}
 head(brca.pred$ntp.res) %>%
   kbl(caption = "Table 10. Demo of predicted subtypes in Yau cohort by NTP using subtype-specific upregulated biomarkers identified from TCGA-BRCA cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 Above an object `brca.pred` is prepared which is similar in structure of object returned by `getMOIC()` but only stores `clust.res` which can be passed to functions within <span style="color:green">**COMP Module**</span> if additional data is available. For example, I herein first compare the survival outcome of the predicted 5 cancer subtypes in Yau cohort.
@@ -791,8 +791,8 @@ I further check the agreement between the predicted subtype and PAM50 classifica
 ```{r, fig.align="center", fig.width=8, fig.height=5, fig.cap="Figure 18. Agreement of predicted 5 subtypes of breast cancer with PAM50 classification in Yau cohort.", eval=TRUE}
 # compare agreemeng in Yau cohort
 agree.yau <- compAgree(moic.res  = brca.pred,
-                       subt2comp = brca.yau$clin.info[, "PAM50", drop = F],
-                       doPlot    = T,
+                       subt2comp = brca.yau$clin.info[, "PAM50", drop = FALSE],
+                       doPlot    = TRUE,
                        fig.name  = "YAU PREDICTEDMOIC WITH PAM50")
 
 ```
@@ -804,7 +804,7 @@ print(agree.yau)
 ```{r, echo=FALSE, eval=TRUE}
 agree.yau %>%
   kbl(caption = "Table 11. Agreement of 5 predicted subtypes of breast cancer with PAM50 classification in Yau cohort.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 It is clearly that the predicted subtypes of breast cancer in Yau cohort can distinguish prognosis well and also show similar pattern of agreement with PAM50 classification as compared to TCGA-BRCA to some extent.
@@ -837,7 +837,7 @@ head(pseudo.moic.res$clust.res)
 ```{r, echo=FALSE, eval=FALSE}
 head(pseudo.moic.res$clust.res) %>%
   kbl(caption = "Table . Demo of pseudo object for downstream analyses in MOVICS.") %>%
-  kable_classic(full_width = T, html_font = "Calibri")
+  kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
 
 Ok everything is ready, just keep in mind how your interested subtypes are mapped and feel free to use such pseudo object to perform downstream analyses such as `compSurv()` as follows:
