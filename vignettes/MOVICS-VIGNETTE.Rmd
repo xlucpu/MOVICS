@@ -83,10 +83,10 @@ Recent advances in next-generation sequencing, microarrays and mass spectrometry
 It is essential that you have R 3.6.2 or above already installed on your computer or server. MOVICS is a pipeline that utilises many other R packages that are currently available from CRAN and Bioconductor. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version (BiocManager v3.10).
 After you have R and Bioconductor installed properly, you can start to install MOVICS. The easiest way to install it is by typing the following code into your R session:
 ```{r, warning=FALSE, message=FALSE, echo=TRUE, eval=FALSE}
-if (!require("remotes")) {
-  install.packages("remotes")
+if (!require("devtools")) {
+  install.packages("devtools")
 } 
-remotes::install_github("xlucpu/MOVICS")
+devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
 ```
 
 ```{r, echo=FALSE, eval=TRUE, warning=FALSE, message=FALSE}

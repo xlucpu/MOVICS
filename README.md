@@ -18,10 +18,10 @@ creating feature rich customizable visualizations with minimal effort.
 
 ## Installation
 ``` {r}
-if (!require("remotes")) {
-  install.packages("remotes")
+if (!require("devtools")) {
+  install.packages("devtools")
 } 
-remotes::install_github("xlucpu/MOVICS")
+devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
 ```
 
 ## Guidance
