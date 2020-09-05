@@ -12,6 +12,7 @@ compDrugsen(
   test.method = "nonparametric",
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627"),
   prefix = NULL,
+  seed = 123456,
   fig.path = getwd(),
   width = 5,
   height = 5

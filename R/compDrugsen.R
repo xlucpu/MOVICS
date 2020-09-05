@@ -8,6 +8,7 @@
 #' @param clust.col A string vector storing colors for annotating each Subtype.
 #' @param prefix  A string value to indicate the prefix of the output plot.
 #' @param fig.path A string value to indicate the output path for storing the boxviolin plot.
+#' @param seed A integer value to indicate the seed for reproducing ridge regression.
 #' @param width A numeric value to indicate the width of boxviolin plot.
 #' @param height A numeric value to indicate the height of boxviolin plot.
 #' @param test.method A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison.
@@ -27,6 +28,7 @@ compDrugsen <- function(moic.res    = NULL,
                         test.method = "nonparametric",
                         clust.col   = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627"),
                         prefix      = NULL,
+                        seed        = 123456,
                         fig.path    = getwd(),
                         width       = 5,
                         height      = 5) {
