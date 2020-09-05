@@ -33,6 +33,8 @@ compDrugsen(
 
 \item{prefix}{A string value to indicate the prefix of the output plot.}
 
+\item{seed}{A integer value to indicate the seed for reproducing ridge regression.}
+
 \item{fig.path}{A string value to indicate the output path for storing the boxviolin plot.}
 
 \item{width}{A numeric value to indicate the width of boxviolin plot.}
