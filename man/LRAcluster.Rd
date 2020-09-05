@@ -17,9 +17,9 @@ LRAcluster(data, types, dimension = 2, names = as.character(1:length(data)))
 }
 \value{
 A list contains the following component:
-      
+
         \code{coordinate} A matrix of the coordinates of all the samples in the reduced space
-        
+
         \code{potential}  ratio of explained variance
 }
 \description{

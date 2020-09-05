@@ -21,7 +21,7 @@ creating feature rich customizable visualizations with minimal effort.
 if (!require("remotes")) {
   install.packages("remotes")
 } 
-remotes::install_github("xlucpu/MOVICS")
+remotes::install_github("xlucpu/MOVICS", host = "https://api.github.com")
 ```
 
 ## Guidance

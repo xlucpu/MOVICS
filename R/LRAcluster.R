@@ -7,9 +7,9 @@
 #' @param dimension the reduced dimension
 #' @param names data names
 #' @return A list contains the following component:
-#'       
+#'
 #'         \code{coordinate} A matrix of the coordinates of all the samples in the reduced space
-#'         
+#'
 #'         \code{potential}  ratio of explained variance
 #' @keywords internal
 #' @author Dingming Wu, Dongfang Wang
@@ -53,7 +53,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     colnames(mat_c)<-colnames(mat)
     return (mat_c)
   }
-  
+
   base.binary.row<-function(arr)
   {
     idx<-!is.na(arr)
@@ -61,7 +61,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     m<-sum(arr[idx])
     return (log(m/(n-m)))
   }
-  
+
   base.binary<-function(mat)
   {
     mat_b<-matrix(0,nrow(mat),ncol(mat))
@@ -69,7 +69,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     mat_b[1:nrow(mat_b),]<-ar_b
     return (mat_b)
   }
-  
+
   update.binary<-function(mat,mat_b,mat_now,eps)
   {
     mat_p<-mat_b+mat_now
@@ -83,7 +83,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     mat_u[idx0]<-mat_now[idx0]-eps*epsilon.binary*arr[idx0]/(1.0+arr[idx0])
     return (mat_u)
   }
-  
+
   stop.binary<-function(mat,mat_b,mat_now,mat_u)
   {
     index<-!is.na(mat)
@@ -97,7 +97,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     lgu<-sum(log(aru[idx1]/(1+aru[idx1])))+sum(log(1/(1+aru[idx0])))
     return (lgu-lgn)
   }
-  
+
   LL.binary<-function(mat,mat_b,mat_u)
   {
     index<-!is.na(mat)
@@ -108,12 +108,12 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     lgu<-sum(log(aru[idx1]/(1+aru[idx1])))+sum(log(1/(1+aru[idx0])))
     return (lgu)
   }
-  
+
   LLmax.binary<-function(mat)
   {
     return (0)
   }
-  
+
   LLmin.binary<-function(mat,mat_b)
   {
     index<-!is.na(mat)
@@ -123,7 +123,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     lgu<-sum(log(aru[idx1]/(1+aru[idx1])))+sum(log(1/(1+aru[idx0])))
     return (lgu)
   }
-  
+
   binary_type_base <- function( data,dimension=2 ,name="test")
   {
     data<-check.binary(data,name)
@@ -145,13 +145,13 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     }
     return (data_now)
   }
-  
+
   #----------#
   # gaussian #
   #----------#
-  
+
   epsilon.gaussian=0.5
-  
+
   check.gaussian.row<-function(arr)
   {
     if (sum(!is.na(arr))==0)
@@ -180,13 +180,13 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     colnames(mat_c)<-colnames(mat)
     return (mat_c)
   }
-  
+
   base.gaussian.row<-function(arr)
   {
     idx<-!is.na(arr)
     return (mean(arr[idx]))
   }
-  
+
   base.gaussian<-function(mat)
   {
     mat_b<-matrix(0,nrow(mat),ncol(mat))
@@ -194,7 +194,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     mat_b[1:nrow(mat_b),]<-ar_b
     return (mat_b)
   }
-  
+
   update.gaussian<-function(mat,mat_b,mat_now,eps)
   {
     mat_p<-mat_b+mat_now
@@ -205,7 +205,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     mat_u[index]<-mat_now[index]
     return (mat_u)
   }
-  
+
   stop.gaussian<-function(mat,mat_b,mat_now,mat_u)
   {
     index<-!is.na(mat)
@@ -217,7 +217,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     lgu<- -0.5*sum(reu*reu)
     return (lgu-lgn)
   }
-  
+
   LL.gaussian<-function(mat,mat_b,mat_u)
   {
     index<-!is.na(mat)
@@ -226,12 +226,12 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     lgu<- -0.5*sum(reu*reu)
     return (lgu)
   }
-  
+
   LLmax.gaussian<-function(mat)
   {
     return (0.0)
   }
-  
+
   LLmin.gaussian<-function(mat,mat_b)
   {
     index<-!is.na(mat)
@@ -239,7 +239,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     lgu<- -0.5*sum(reu*reu)
     return (lgu)
   }
-  
+
   gaussian_base<-function(data,dimension=2,name="test")
   {
     data<-check.gaussian(data,name)
@@ -261,13 +261,13 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     }
     return (data_now)
   }
-  
+
   #---------#
   # poisson #
   #---------#
-  
+
   epsilon.poisson<-0.5
-  
+
   check.poisson.row<-function(arr)
   {
     if (sum(!is.na(arr))==0)
@@ -287,7 +287,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
       }
     }
   }
-  
+
   check.poisson<-function(mat,name)
   {
     w<-paste(name," is poisson type. Add 1 to all counts",sep="")
@@ -304,7 +304,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     colnames(mat_c)<-colnames(mat)
     return (mat_c)
   }
-  
+
   base.poisson.row<-function(arr)
   {
     idx<-!is.na(arr)
@@ -312,7 +312,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     n<-sum(idx)
     return(m/n)
   }
-  
+
   base.poisson<-function(mat)
   {
     mat_b<-matrix(0,nrow(mat),ncol(mat))
@@ -320,7 +320,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     mat_b[1:nrow(mat_b),]<-ar_b
     return (mat_b)
   }
-  
+
   update.poisson<-function(mat,mat_b,mat_now,eps)
   {
     mat_p<-mat_b+mat_now
@@ -331,7 +331,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     mat_u[index]<-mat_now[index]
     return (mat_u)
   }
-  
+
   stop.poisson<-function(mat,mat_b,mat_now,mat_u)
   {
     index<-!is.na(mat)
@@ -341,7 +341,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     lgu<-sum(mat[index]*mu[index]-exp(mu[index]))
     return (lgu-lgn)
   }
-  
+
   LL.poisson<-function(mat,mat_b,mat_u)
   {
     index<-!is.na(mat)
@@ -349,21 +349,21 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     lgu<-sum(mat[index]*mu[index]-exp(mu[index]))
     return (lgu)
   }
-  
+
   LLmax.poisson<-function(mat)
   {
     index<-!is.na(mat)
     lgu<-sum(mat[index]*log(mat[index])-mat[index])
     return (lgu)
   }
-  
+
   LLmin.poisson<-function(mat,mat_b)
   {
     index<-!is.na(mat)
     lgu<-sum(mat[index]*mat_b[index]-exp(mat_b[index]))
     return (lgu)
   }
-  
+
   poisson_type_base<-function(data,dimension=2,name="test")
   {
     data<-check.poisson(data,name)
@@ -385,11 +385,11 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     }
     return (data_now)
   }
-  
+
   #----#
   # na #
   #----#
-  
+
   nuclear_approximation<-function(mat,dimension)
   {
     svd<-svd(mat,nu=0,nv=0)
@@ -410,7 +410,53 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     }
     return (mat_low)
   }
-  
+
+  #------------#
+  # LRAcluster #
+  #------------#
+  check.matrix.element<-function(x)
+  {
+    if (!is.matrix(x))
+    {
+      return (T)
+    }
+    else
+    {
+      return (F)
+    }
+  }
+
+  ncol.element<-function(x)
+  {
+    return (ncol(x))
+  }
+
+  nrow.element<-function(x)
+  {
+    return (nrow(x))
+  }
+
+  check<-function(mat,type,name)
+  {
+    if (type=="binary")
+    {
+      return (check.binary(mat,name))
+    }
+    else if (type=="gaussian")
+    {
+      return (check.gaussian(mat,name))
+    }
+    else if (type=="poisson")
+    {
+      return (check.poisson(mat,name))
+    }
+    else
+    {
+      e<-paste("unknown type ",type,sep="")
+      stop(e)
+    }
+  }
+
   eps<-0.0
   if (!is.list(data))
   {
@@ -457,7 +503,7 @@ LRAcluster <- function(data, types, dimension = 2, names = as.character(1:length
     if (types[[i]]=="binary")
     {
       base[indexData[[i]],]<-base.binary(data[[i]])
-      loglmin<-loglmin+LLmin.binary(data[[i]],base[indexData[[i]],]) 
+      loglmin<-loglmin+LLmin.binary(data[[i]],base[indexData[[i]],])
       loglmax<-loglmax+LLmax.binary(data[[i]])
     }
     else if (types[[i]]=="gaussian")
