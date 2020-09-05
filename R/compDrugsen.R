@@ -71,6 +71,8 @@ compDrugsen <- function(moic.res    = NULL,
   predictedPtype <- predictedBoxdat <- list()
 
   for (drug in drugs) {
+    set.seed(seed)
+
     predictedPtype[[drug]] <- SimDesign::quiet(pRRopheticPredict(testMatrix    = as.matrix(gset[,rownames(annCol)]),
                                                                  drug          = drug,
                                                                  tissueType    = tissueType,
