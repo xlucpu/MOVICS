@@ -18,8 +18,7 @@ Suggests:
     rmarkdown,
     kableExtra (>= 1.1.2)
 Remotes: 
-	github::danro9685/CIMLR@R
-	github::Lothelab/CMScaller@master
+	github::danro9685/CIMLR@R, github::Lothelab/CMScaller@master
 Imports: 
     CIMLR (>= 1.0.0),
     ClassDiscovery (>= 3.3.12),
