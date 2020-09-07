@@ -140,7 +140,7 @@ runMarker <- function(moic.res      = NULL,
                       stringsAsFactors = FALSE)
     templates <- rbind.data.frame(templates, tmp, stringsAsFactors = FALSE)
   }
-  write.table(templates, file=file.path(res.path, paste0(mo.method,"_",dea.method,"_",dirct,"regulated","_marker_templates.txt")), row.names = FALSE, sep = "\t", quote = FALSE)
+  write.table(templates, file=file.path(res.path, paste0(mo.method,"_",dea.method,"_",dirct,"regulated_marker_templates.txt")), row.names = FALSE, sep = "\t", quote = FALSE)
 
   # generate heatmap with subtype-specific markers
   if(doplot) {

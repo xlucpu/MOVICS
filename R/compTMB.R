@@ -358,7 +358,7 @@ compTMB <- function(moic.res    = NULL,
     axis(side = 3, at = seq(0.5, length(TMB.plot) - 0.5, 1), labels = paste0("n = ",x_top_label),
          tick = TRUE, line = 0, cex.axis = 0.9)
   }
-  mtext(text = bquote("Log"[10]~"(TMB + 1)"), side = 2, line = 1.15, cex = 1.1)
+  mtext(text = bquote("log"[10]~"(TMB + 1)"), side = 2, line = 1.15, cex = 1.1)
 
   # add titv
   invisible(lapply(seq_len(length(titv.dat2)), function(i){
