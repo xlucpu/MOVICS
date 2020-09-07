@@ -12,7 +12,6 @@
 #' @import SNFtool
 #' @import IntNMF
 #' @import mogsa
-#' @import LRAcluster
 #' @import coca
 #' @import iClusterPlus
 #' @import CIMLR

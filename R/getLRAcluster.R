@@ -15,7 +15,6 @@
 #'
 #'         \code{mo.method}  a string value indicating the method used for multi-omics integrative clustering.
 #' @examples # There is no example and please refer to vignette.
-#' @import LRAcluster
 #' @importFrom dplyr %>%
 #' @export
 #' @references Wu D, Wang D, Zhang MQ, Gu J (2015). Fast dimension reduction and integrative clustering of multi-omics data using low-rank approximation: application to cancer molecular classification. BMC Genomics, 16(1):1022.
