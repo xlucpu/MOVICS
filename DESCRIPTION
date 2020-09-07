@@ -18,11 +18,10 @@ Suggests:
     rmarkdown,
     kableExtra
 Remotes: 
-	github::danro9685/CIMLR@R, github::Lothelab/CMScaller@master
+	github::danro9685/CIMLR@R, github::Lothelab/CMScaller@master, github::jokergoo/ComplexHeatmap@master
 Imports: 
     CIMLR,
     ClassDiscovery,
-    ComplexHeatmap,
     ConsensusClusterPlus,
     IntNMF,
     PINSPlus,
@@ -62,7 +61,8 @@ Imports:
     ridge,
     sva,
     grDevices,
-    maftools
+    maftools,
+    ComplexHeatmap (>= 2.5.4)
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 biocViews: Clustering, DifferentialExpression, GeneSetEnrichment, MultipleComparison, SomaticMutation, CopyNumberVariation, Survival
