@@ -16,7 +16,6 @@
 #'
 #'         \code{mo.method} a string value indicating the method used for multi-omics integrative clustering.
 #' @import CIMLR
-#' @importFrom SimDesign quiet
 #' @export
 #' @examples # There is no example and please refer to vignette.
 #' @references Ramazzotti D, Lal A, Wang B, Batzoglou S, Sidow A (2018). Multi-omic tumor data reveal diversity of molecular mechanisms that correlate with survival. Nat Commun, 9(1):4453.

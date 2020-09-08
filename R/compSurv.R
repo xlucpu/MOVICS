@@ -25,7 +25,6 @@
 #' @importFrom ggpmisc geom_table
 #' @importFrom grDevices pdf dev.off pdf.options
 #' @importFrom tibble tibble
-#' @importFrom SimDesign quiet
 #' @export
 #' @examples # There is no example and please refer to vignette.
 compSurv <- function(moic.res         = NULL,
@@ -144,8 +143,7 @@ compSurv <- function(moic.res         = NULL,
                                    risk.table.y.text = FALSE))
 
   # make survival time as percentage
-  p$plot <- SimDesign::quiet(
-    p$plot + scale_y_continuous(breaks = seq(0, 1, 0.25), labels = seq(0,100,25)))
+  p$plot <- quiet(p$plot + scale_y_continuous(breaks = seq(0, 1, 0.25), labels = seq(0,100,25)))
 
   if(n.moic > 2) {
 

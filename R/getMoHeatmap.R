@@ -26,7 +26,6 @@
 #' @importFrom ComplexHeatmap HeatmapAnnotation Heatmap rowAnnotation anno_mark draw ht_opt %v%
 #' @importFrom ClassDiscovery distanceMatrix
 #' @importFrom grDevices pdf dev.off colorRampPalette
-#' @importFrom dendsort dendsort
 #' @importFrom circlize colorRamp2
 #' @importFrom dplyr %>%
 #' @references Gu Z, Eils R, Schlesner M (2016). Complex heatmaps reveal patterns and correlations in multidimensional genomic data. Bioinformatics.
@@ -108,7 +107,7 @@ getMoHeatmap <- function(data             = NULL,
   ht <- list()
   for (i in 1:n_dat) {
 
-    hcg <- hclust(ClassDiscovery::distanceMatrix(as.matrix(t(data[[i]])), clust.dist.row[i]), clust.method.row[i]) %>% dendsort::dendsort()
+    hcg <- hclust(ClassDiscovery::distanceMatrix(as.matrix(t(data[[i]])), clust.dist.row[i]), clust.method.row[i])
 
     if(is.null(annRow[[i]][1])) {
       rowlab <- ""
@@ -182,7 +181,7 @@ getMoHeatmap <- function(data             = NULL,
         ht[[i]] <-  ComplexHeatmap::Heatmap(matrix               = as.matrix(data[[i]]),
                                             row_title            = row.title[i],
                                             name                 = legend.name[i],
-                                            cluster_columns      = dendsort::dendsort(clust.dend),
+                                            cluster_columns      = clust.dend,
                                             cluster_rows         = hcg,
                                             show_column_dend     = show.col.dend,
                                             show_column_names    = show.colnames,
@@ -208,7 +207,7 @@ getMoHeatmap <- function(data             = NULL,
         ht[[i]] <-  ComplexHeatmap::Heatmap(matrix               = as.matrix(data[[i]]),
                                             row_title            = row.title[i],
                                             name                 = legend.name[i],
-                                            cluster_columns      = dendsort::dendsort(clust.dend),
+                                            cluster_columns      = clust.dend,
                                             cluster_rows         = hcg,
                                             show_column_dend     = show.col.dend,
                                             show_column_names    = show.colnames,

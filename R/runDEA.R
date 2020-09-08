@@ -9,7 +9,6 @@
 #' @param verbose A logic value to indicate if to only output id, log2fc, pvalue, and padj; TRUE by default.
 #' @param res.path A string value to indicate the path for saving the results.
 #' @importFrom DESeq2 DESeqDataSetFromMatrix DESeq results
-#' @importFrom SimDesign quiet
 #' @references Love, M.I., Huber, W., Anders, S. (2014) Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol, 15(12):550-558.
 #' @export
 #' @return Several .txt files storing differential expression analysis results by DESeq2
@@ -85,13 +84,13 @@ twoclassdeseq2 <- function(moic.res    = NULL,
     cts <- countsTable[,samples]
     coldata <- saminfo[samples,]
 
-    dds <- SimDesign::quiet(DESeq2::DESeqDataSetFromMatrix(countData = cts,
-                                                           colData = coldata,
-                                                           design = as.formula("~ Type")))
+    dds <- quiet(DESeq2::DESeqDataSetFromMatrix(countData = cts,
+                                                colData = coldata,
+                                                design = as.formula("~ Type")))
 
     dds$Type <- relevel(dds$Type,ref = "control")
 
-    dds <- SimDesign::quiet(DESeq2::DESeq(dds))
+    dds <- quiet(DESeq2::DESeq(dds))
     res <- DESeq2::results(dds, contrast = c("Type","treatment","control"))
 
     if(sort.p) {
