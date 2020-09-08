@@ -8,7 +8,7 @@ Authors@R:
            email = "xlu.cpu@foxmail.com",
            comment = c(ORCID = "0000-0003-2417-6548"))
 Description: This package provides a unified interface for 10 state-of-the-art multi-omics clustering algorithms, and forms a pipeline for most commonly used downstream analyses in cancer subtyping researches and to create feature rich customizable visualzations with minimal effort.
-Depends: R (>= 4.0.0)
+Depends: R (>= 3.6.1)
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -100,4 +100,3 @@ Collate:
     'quiet.R'
     'dataset.R'
     'global.R'
-    
