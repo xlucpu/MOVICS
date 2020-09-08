@@ -18,8 +18,10 @@ creating feature rich customizable visualizations with minimal effort.
 
 ## Installation
 ``` {r}
-Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS="TRUE")
-if (!require("devtools")) install.packages("devtools")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+if (!require("devtools")) 
+    install.packages("devtools")
 devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
 ```
 
