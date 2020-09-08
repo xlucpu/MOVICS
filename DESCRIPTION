@@ -93,7 +93,7 @@ Collate:
     'runDEA.R'
     'runGSEA.R'
     'runMarker.R'
-    'runNTP.R'
+	'runNTP.R'
 	'pRRophetic.R'
 	'LRAcluster.R'
 	'quiet.R'
