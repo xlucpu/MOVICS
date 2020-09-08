@@ -96,5 +96,6 @@ Collate:
     'runNTP.R'
 	'pRRophetic.R'
 	'LRAcluster.R'
+	'quiet.R',
     'dataset.R'
 	'global.R'
