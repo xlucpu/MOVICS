@@ -27,7 +27,6 @@
 #' @importFrom dplyr %>%
 #' @importFrom grid grid.rect gpar
 #' @importFrom officer read_docx body_add_par body_add_table body_add_par
-#' @importFrom SimDesign quiet
 #' @importFrom ComplexHeatmap HeatmapAnnotation oncoPrint draw
 #' @references Gu Z, Eils R, Schlesner M (2016). Complex heatmaps reveal patterns and correlations in multidimensional genomic data. Bioinformatics, 32(18):2847–2849.
 #' @examples # There is no example and please refer to vignette.
@@ -205,35 +204,35 @@ compMut <- function(moic.res     = NULL,
       sam.reorder <- c()
       for (i in 1:n.moic) {
         sam <- moic.res$clust.res[which(moic.res$clust.res$clust == i), "samID"]
-        tmp <- SimDesign::quiet(ComplexHeatmap::oncoPrint(onco_dat[,sam], get_type = function(x) x,
-                                                          alter_fun = alter_fun, col = col,
-                                                          remove_empty_columns = FALSE,
-                                                          show_pct = FALSE,
-                                                          bottom_annotation = NULL,
-                                                          top_annotation = NULL,
-                                                          show_heatmap_legend = FALSE))
+        tmp <- quiet(ComplexHeatmap::oncoPrint(onco_dat[,sam], get_type = function(x) x,
+                                               alter_fun = alter_fun, col = col,
+                                               remove_empty_columns = FALSE,
+                                               show_pct = FALSE,
+                                               bottom_annotation = NULL,
+                                               top_annotation = NULL,
+                                               show_heatmap_legend = FALSE))
         sam.reorder <- c(sam.reorder, sam[tmp@column_order])
       }
 
       my_annotation = ComplexHeatmap::HeatmapAnnotation(df = annCol[sam.reorder, , drop = FALSE], col = annColors)
-      p <- SimDesign::quiet(ComplexHeatmap::oncoPrint(onco_dat[,sam.reorder], get_type = function(x) x,
-                                                      alter_fun = alter_fun, col = col,
-                                                      remove_empty_columns = FALSE,
-                                                      column_order = sam.reorder,
-                                                      show_pct = TRUE,
-                                                      bottom_annotation = my_annotation,
-                                                      top_annotation = NULL,
-                                                      show_heatmap_legend = FALSE))
+      p <- quiet(ComplexHeatmap::oncoPrint(onco_dat[,sam.reorder], get_type = function(x) x,
+                                           alter_fun = alter_fun, col = col,
+                                           remove_empty_columns = FALSE,
+                                           column_order = sam.reorder,
+                                           show_pct = TRUE,
+                                           bottom_annotation = my_annotation,
+                                           top_annotation = NULL,
+                                           show_heatmap_legend = FALSE))
     } else {
       my_annotation = ComplexHeatmap::HeatmapAnnotation(df = annCol, col = annColors)
-      p <- SimDesign::quiet(ComplexHeatmap::oncoPrint(onco_dat, get_type = function(x) x,
-                                                      alter_fun = alter_fun, col = col,
-                                                      remove_empty_columns = FALSE,
-                                                      column_order = colnames(onco_dat),
-                                                      show_pct = TRUE,
-                                                      bottom_annotation = my_annotation,
-                                                      top_annotation = NULL,
-                                                      show_heatmap_legend = FALSE))
+      p <- quiet(ComplexHeatmap::oncoPrint(onco_dat, get_type = function(x) x,
+                                           alter_fun = alter_fun, col = col,
+                                           remove_empty_columns = FALSE,
+                                           column_order = colnames(onco_dat),
+                                           show_pct = TRUE,
+                                           bottom_annotation = my_annotation,
+                                           top_annotation = NULL,
+                                           show_heatmap_legend = FALSE))
     }
 
     # save to pdf
