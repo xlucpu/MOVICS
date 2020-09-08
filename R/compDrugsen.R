@@ -16,7 +16,6 @@
 #' @export
 #' @import ggplot2
 #' @importFrom ggpubr stat_compare_means
-#' @importFrom SimDesign quiet
 #' @references Geeleher P, Cox N, Huang R S. (2014). pRRophetic: an R package for prediction of clinical chemotherapeutic response from tumor gene expression levels. PLoS One, 9(9):e107468.
 #'
 #' Geeleher P, Cox N J, Huang R S. (2014). Clinical drug response can be predicted using baseline gene expression levels and in vitro drug sensitivity in cell lines. Genome Biol, 15(3):1-12.
@@ -73,12 +72,12 @@ compDrugsen <- function(moic.res    = NULL,
   for (drug in drugs) {
     set.seed(seed)
 
-    predictedPtype[[drug]] <- SimDesign::quiet(pRRopheticPredict(testMatrix    = as.matrix(gset[,rownames(annCol)]),
-                                                                 drug          = drug,
-                                                                 tissueType    = tissueType,
-                                                                 dataset       = "cgp2016",
-                                                                 minNumSamples = 5,
-                                                                 selection     = 1)) # 1 indicate if multiple genes existed, mean value will be considered
+    predictedPtype[[drug]] <- quiet(pRRopheticPredict(testMatrix    = as.matrix(gset[,rownames(annCol)]),
+                                                      drug          = drug,
+                                                      tissueType    = tissueType,
+                                                      dataset       = "cgp2016",
+                                                      minNumSamples = 5,
+                                                      selection     = 1)) # 1 indicate if multiple genes existed, mean value will be considered
 
     if(!all(names(predictedPtype[[drug]]) == rownames(annCol))) {stop("name mismatched!\n")}
 
