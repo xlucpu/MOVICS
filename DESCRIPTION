@@ -97,5 +97,5 @@ Collate:
 	'pRRophetic.R'
 	'LRAcluster.R'
 	'quiet.R'
-    'dataset.R'
+	'dataset.R'
 	'global.R'
