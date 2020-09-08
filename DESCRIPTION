@@ -60,8 +60,8 @@ Imports:
     sva,
     grDevices,
     maftools,
-    ComplexHeatmap (>= 2.5.4),
-    patchwork
+  	patchwork,
+    ComplexHeatmap (>= 2.5.4)
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 biocViews: Clustering, DifferentialExpression, GeneSetEnrichment, MultipleComparison, SomaticMutation, CopyNumberVariation, Survival
@@ -94,9 +94,9 @@ Collate:
     'runDEA.R'
     'runGSEA.R'
     'runMarker.R'
-	'runNTP.R'
-	'pRRophetic.R'
-	'LRAcluster.R'
-	'quiet.R'
-	'dataset.R'
-	'global.R'
+  	'runNTP.R'
+  	'pRRophetic.R'
+  	'LRAcluster.R'
+  	'quiet.R'
+  	'dataset.R'
+  	'global.R'
