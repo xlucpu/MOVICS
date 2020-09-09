@@ -521,11 +521,11 @@ tmb.brca <- compTMB(moic.res     = cmoic.brca,
 ```
 
 ```{r, eval=FALSE}
-head(tmb.brca$TMB)
+head(tmb.brca$TMB.dat)
 ```
 
 ```{r, echo=FALSE, eval=TRUE}
-head(tmb.brca$TMB) %>%
+head(tmb.brca$TMB.dat) %>%
   kbl(caption = "Table 3. Demo of comparison of TMB among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 ```
