@@ -14,6 +14,7 @@
 #' @param cat logical; suppress all concatenate and print calls from \code{\link{cat}}?
 #' @author Phil Chalmers
 #' @return quiet
+#' @keywords internal
 #' @references Sigal, M. J., & Chalmers, R. P. (2016). Play it again: Teaching statistics with Monte Carlo simulation. \code{Journal of Statistics Education, 24}(3), 136-156.
 quiet <- function(..., messages=FALSE, cat=FALSE){
   if(!cat){
