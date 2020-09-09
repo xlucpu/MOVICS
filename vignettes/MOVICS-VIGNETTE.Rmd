@@ -77,15 +77,16 @@ Sys.setenv(LANGUAGE = "en")
 * [REFERENCES](#Section.9)
 
 # <a id="Section.1" style="color:#159957;">1. Introduction</a>
-Recent advances in next-generation sequencing, microarrays and mass spectrometry for omics data production have enabled the generation and collection of different modalities of high-dimensional molecular data<sup>1</sup>. Clustering multi-omic data has the potential to reveal further systems-level insights, but raises computational and biological challenges<sup>2</sup>. This vignette aims to show how to use the package named MOVICS to perform multi-omics integrative clustering and visualization for cancer subtyping researches. This R package provides a unified interface for 10 state-of-the-art multi-omics clustering algorithms, and standardizes the output for each algorithm so as to form a pipeline for downstream analyses. Ten algorithms are CIMLR, iClusterBayes, MoCluster, COCA, ConsensusClustering, IntNMF, LRAcluster, NEMO, PINSPlus, and SNF where the former three methods can also perform the process of feature selection. For cancer subtyping studies, MOVICS also forms a pipeline for most commonly used downstream analyses for further subtype characterization and creates editable publication-quality illustrations (see more details below). Please note that MOVICS currently supports up to 6 omics data for jointly clustering and users must provide at least 2 omics datastes as input. Ok then, let us make our hands dirty to figure out how MOVICS works.
+Recent advances in next-generation sequencing, microarrays and mass spectrometry for omics data production have enabled the generation and collection of different modalities of high-dimensional molecular data<sup>1</sup>. Clustering multi-omic data has the potential to reveal further systems-level insights, but raises computational and biological challenges<sup>2</sup>. This vignette aims to show how to use the package named MOVICS to perform multi-omics integrative clustering and visualization for cancer subtyping researches. This R package provides a unified interface for 10 state-of-the-art multi-omics clustering algorithms, and standardizes the output for each algorithm so as to form a pipeline for downstream analyses. Ten algorithms are CIMLR, iClusterBayes, MoCluster, COCA, ConsensusClustering, IntNMF, LRAcluster, NEMO, PINSPlus, and SNF where the former three methods can also perform the process of feature selection. For cancer subtyping studies, MOVICS also forms a pipeline for most commonly used downstream analyses for further subtype characterization and creates editable publication-quality illustrations (see more details below). Please note that MOVICS currently supports up to 6 omics data for jointly clustering and users must provide at least 2 omics datasets as input. Okay then, let us make our hands dirty to figure out how MOVICS works.
 
 # <a id="Section.2" style="color:#159957;">2. Installation</a>
-It is essential that you have R 3.6.1 or above already installed on your computer or server. MOVICS is a pipeline that utilises many other R packages that are currently available from CRAN and Bioconductor. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version (BiocManager v3.10).
+It is essential that you have R 4.0.0 or above already installed on your computer or server. MOVICS is a pipeline that utilizes many other R packages that are currently available from CRAN and Bioconductor. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version (BiocManager v3.11).
 After you have R and Bioconductor installed properly, you can start to install MOVICS. The easiest way to install it is by typing the following code into your R session:
 ```{r, warning=FALSE, message=FALSE, echo=TRUE, eval=FALSE}
-if (!require("devtools")) {
-  install.packages("devtools")
-} 
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+if (!require("devtools")) 
+    install.packages("devtools")
 devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
 ```
 
@@ -97,13 +98,13 @@ library("kableExtra")
 #load_all()
 ```
 
-When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. After installation, you should be able to load the MOVICS package in your R session:
+When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, you can refer to the `Imports` in the *DESCRIPTION* file from https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION, try to install all the R dependencies, and then install MOVICS. After installation, you should be able to load the MOVICS package in your R session:
 ```{r, eval=TRUE, warning=FALSE, message=FALSE}
 library("MOVICS")
 ```
 
 # <a id="Section.3" style="color:#159957;">3. Real Data Scenario</a>
-This package contains two preprocessed real datasets of breast cancer. One dataset is `brca.tcga.RData` which is a list that includes 643 samples with four complete omics data types of breast cancer retrieved from TCGA-BRCA cohort<sup>3</sup> (*i.e.*, mRNA expression, lncRNA expression, DNA methylation profiling and somatic mutation matrix), and corresponding clinicopathological information (*i.e.*, age, pathological stage, PAM50 subtype, vital status and overall suvival time); such data list also contains corresponding RNA-Seq raw count table and Fragments Per Kilobase Million (FPKM) data in order to test the functions for downstream analyses (*e.g.*, differential expression analysis, drug sensitivity analysis, *etc*). The other one, `brca.yau.RData`, is an external validation dataset which contains gene expression profilings and clinicopathological information that downloaded from BRCA-YAU cohort<sup>4</sup> with 682 samples (one sample without annotation of PAM50 subtype was removed), which can be used to test the predictive functions available in MOVICS. These two datasets can be loaded like below:
+This package contains two pre-processed real datasets of breast cancer. One dataset is `brca.tcga.RData` which is a list that includes 643 samples with four complete omics data types of breast cancer retrieved from TCGA-BRCA cohort<sup>3</sup> (*i.e.*, mRNA expression, lncRNA expression, DNA methylation profiling and somatic mutation matrix), and corresponding clinicopathological information (*i.e.*, age, pathological stage, PAM50 subtype, vital status and overall suvival time); such data list also contains corresponding RNA-Seq raw count table and Fragments Per Kilobase Million (FPKM) data in order to test the functions for downstream analyses (*e.g.*, differential expression analysis, drug sensitivity analysis, *etc*). The other one, `brca.yau.RData`, is an external validation dataset which contains gene expression profiles and clinicopathological information that downloaded from BRCA-YAU cohort<sup>4</sup> with 682 samples (one sample without annotation of PAM50 subtype was removed), which can be used to test the predictive functions available in MOVICS. These two datasets can be loaded like below:
 ```{r, eval=TRUE}
 # load example data of breast cancer
 load(system.file("extdata", "brca.tcga.RData", package = "MOVICS", mustWork = TRUE))
@@ -114,7 +115,10 @@ Since in most cases, multi-omics clustering procedure is rather time-consuming, 
 
 # <a id="Section.4" style="color:#159957;">4. MOVICS Pipeline</a>
 ## <a id="Section.4.1" style="color:#159957;">4.1 Pipeline Introduction</a>
-MOVICS Pipeline diagram above outlines the concept for this package and such pipeline comprises separate functions that can be run individually (see datails about argument list by typing `?function_name()` in R session). In above graphical abstract, all functions of MOVICS are included, which are categorized into three modules using three colors:
+
+<p align="center">![cloud](pkg_pipeline.jpg)</p>
+
+MOVICS Pipeline diagram above outlines the concept for this package and such pipeline comprises separate functions that can be run individually (see details about argument list by typing `?function_name()` in R session). In above graphical abstract, all functions of MOVICS are included, which are categorized into three modules using three colors:
 
 * <div style="color:red">**GET Module: get subtypes through multi-omics integrative clustering**</div> 
     * `getElites()`: get elites which are those features that pass the filtering procedure and are used for analyses
@@ -131,12 +135,12 @@ MOVICS Pipeline diagram above outlines the concept for this package and such pip
     * `compMut()`: compare mutational frequency and generate an OncoPrint with significant mutations
     * `compTMB()`: compare total mutation burden among subtypes and generate distribution of Transitions and Transversions
     * `compFGA()`: compare fraction genome altered among subtypes and generate a barplot for distribution comparison
-    * `compDrugsen()`: compare estimated half maximal inhibitory concentration ($IC_{50}$) for drug sensitity and generate a boxviolin for distribution comparison
+    * `compDrugsen()`: compare estimated half maximal inhibitory concentration ($IC_{50}$) for drug sensitivity and generate a boxviolin for distribution comparison
     * `compAgree()`: compare agreement of current subtypes with other pre-existed classifications and generate an alluvial diagram and an agreement barplot  
 </br>
 * <div style="color:blue">**RUN Module: run marker identification and verify subtypes**</div> 
     * `runDEA()`: run differential expression analysis with three popular methods for choosing, including edgeR, DESeq2, and limma
-    * `runMarker()`: run biomarker identification to determine uniquely and significanly differential expressed genes for each subtype
+    * `runMarker()`: run biomarker identification to determine uniquely and significantly differential expressed genes for each subtype
     * `runGSEA()`: run gene set enrichment analysis (GSEA), calculate activity of functional pathways and generate a pathway-specific heatmap 
     * `runNTP()`: run nearest template prediction based on identified biomarkers to evaluate subtypes in external cohorts
     
@@ -191,7 +195,7 @@ elite.tmp <- getElites(dat       = tmp,
 dim(elite.tmp$elite.dat) # all data kept
 elite.tmp$elite.dat[1:3,1:3] # NA values have been imputed 
 
-# scenario 2: considering we are dealing with continous data and use mad or sd to select elites
+# scenario 2: considering we are dealing with continuous data and use mad or sd to select elites
 tmp       <- brca.tcga$mRNA.expr # get expression data with 500 features
 elite.tmp <- getElites(dat       = tmp,
                        method    = "mad",
@@ -201,25 +205,25 @@ dim(elite.tmp$elite.dat) # get 50 elite left
 elite.tmp <- getElites(dat       = tmp,
                        method    = "sd",
                        elite.num = 100, # this time only top 100 features with high sd values are kept
-                       elite.pct = 0.1) # this time elite.pct arugument will be disabled because elite.num has been already indicated.
+                       elite.pct = 0.1) # this time elite.pct argument will be disabled because elite.num has been already indicated.
 dim(elite.tmp$elite.dat) # get 100 elites left
 
 # scenario 3: considering we are dealing with data and use cox to select elite
 tmp       <- brca.tcga$mRNA.expr # get expression data 
 elite.tmp <- getElites(dat       = tmp,
                        method    = "cox",
-                       surv.info = surv.info, # must provide surivival information with 'futime' and 'fustat'
+                       surv.info = surv.info, # must provide survival information with 'futime' and 'fustat'
                        p.cutoff  = 0.05,
-                       elite.num = 100) # this time elite.num arugument will be disabled because cox method refers to p.cutoff to select elites
+                       elite.num = 100) # this time elite.num argument will be disabled because cox method refers to p.cutoff to select elites
 dim(elite.tmp$elite.dat) # get 125 elites
 table(elite.tmp$unicox$pvalue < 0.05) # 125 genes have nominal pvalue < 0.05 in univariate Cox regression
 
 tmp       <- brca.tcga$mut.status # get mutation data 
 elite.tmp <- getElites(dat       = tmp,
                        method    = "cox",
-                       surv.info = surv.info, # must provide surivival information with 'futime' and 'fustat'
+                       surv.info = surv.info, # must provide survival information with 'futime' and 'fustat'
                        p.cutoff  = 0.05,
-                       elite.num = 100) # this time elite.num arugument will be disabled because cox method refers to p.cutoff to select elites
+                       elite.num = 100) # this time elite.num argument will be disabled because cox method refers to p.cutoff to select elites
 dim(elite.tmp$elite.dat) # get 3 elites
 table(elite.tmp$unicox$pvalue < 0.05) # 3 mutations have nominal pvalue < 0.05
 
@@ -254,7 +258,7 @@ optk.brca <- getClustNum(data        = mo.data,
                          fig.name    = "CLUSTER NUMBER OF TCGA-BRCA")
 ```
 
-The above estimation of clustering number gives an arbitrary $k$ of 3. However, the popular PAM50 classifier for breast cancer has 5 classifications and if taking a close look at the descriptive figure, it can be noticed that both CPI and Gaps-statistics does not decline too much at $k$ of 5. Therefore, considering these knowledge, $k$ of 5 is chosen as the optimal clustering number for futher analyses.
+The above estimation of clustering number gives an arbitrary $k$ of 3. However, the popular PAM50 classifier for breast cancer has 5 classifications and if taking a close look at the descriptive figure, it can be noticed that both CPI and Gaps-statistics does not decline too much at $k$ of 5. Therefore, considering these knowledge, $k$ of 5 is chosen as the optimal clustering number for further analyses.
 
 #### <a id="Section.4.2.1.4" style="color:#159957;">4) get results from single algorithm</a>
 In this part I will first show how to use MOVICS to perform multi-omics integrative clustering by specifying one algorithm with detailed parameters. For example, let us try iClusterBayes method like below:
@@ -275,7 +279,7 @@ Otherwise, a unified function can be used for all algorithms individually with d
 iClusterBayes.res <- getMOIC(data        = mo.data,
                              N.clust     = 5,
                              methodslist = "iClusterBayes", # specify only ONE algorithm here
-                             type        = c("gaussian","gaussian","gaussian","binomial"), # data type corresponding to the list of matrics
+                             type        = c("gaussian","gaussian","gaussian","binomial"), # data type corresponding to the list
                              n.burnin    = 1800,
                              n.draw      = 1200,
                              prior.gamma = c(0.5, 0.5, 0.5, 0.5),
@@ -308,7 +312,7 @@ load(file = "moic.res.list.rda")
 ```
 
 #### <a id="Section.4.2.1.6" style="color:#159957;">6) get consensus from different algorithms</a>
-Since now all the clustering results from 10 algorthms are in hand, MOVICS borrows the idea of consensus ensembles<sup>7</sup> for later integration of the clustering results derived from different algorithms, so as to improve the clustering robustness. To be specific, if $t_{max}$ algorithms are specified where $2\le t_{max} \le10$, `getConsensusMOIC()` calculates a matrix $M_{n\times n}^{(t)}$ per algorithm where $n$ is the number of samples, and $M_{ij}^{(t)}=1$ only when the sample $i$ and $j$ are clustered in the same subtype, otherwise $M_{ij}^{(t)}=0$. After get all results from specified algorithms, MOVICS calculates a consensus matrix $CM=\sum_{t=1}^{t_{max}}M^{(t)}$, and $cm_{ij}\in[0,10]$. Such matrix represents a robust pairwise similarities for samples because it considers different multi-omics integrative clustering algorithms. MOVICS then searches for a stable clustering result by applying hierarchical clustering to $CM$. 
+Since now all the clustering results from 10 algorithms are in hand, MOVICS borrows the idea of consensus ensembles<sup>7</sup> for later integration of the clustering results derived from different algorithms, so as to improve the clustering robustness. To be specific, if $t_{max}$ algorithms are specified where $2\le t_{max} \le10$, `getConsensusMOIC()` calculates a matrix $M_{n\times n}^{(t)}$ per algorithm where $n$ is the number of samples, and $M_{ij}^{(t)}=1$ only when the sample $i$ and $j$ are clustered in the same subtype, otherwise $M_{ij}^{(t)}=0$. After get all results from specified algorithms, MOVICS calculates a consensus matrix $CM=\sum_{t=1}^{t_{max}}M^{(t)}$, and $cm_{ij}\in[0,10]$. Such matrix represents a robust pairwise similarities for samples because it considers different multi-omics integrative clustering algorithms. MOVICS then searches for a stable clustering result by applying hierarchical clustering to $CM$. 
 The simplest way to perform `getConsensusMOIC()` is to pass a list of object returned by multiple `get%algorithm_name%()` or by `getMOIC()` with specific argument of `methodslist`. This can be done like below:
 ```{r, fig.align="center", fig.width=7, fig.height=6, fig.cap="Figure 2. Consensus heatmap based on results from 10 multi-omics integrative clustering algorithms with cluster number of 5.", eval=TRUE}
 cmoic.brca <- getConsensusMOIC(moic.res.list = moic.res.list,
@@ -320,9 +324,9 @@ cmoic.brca <- getConsensusMOIC(moic.res.list = moic.res.list,
 Remember, you must choose at least two methods to perform the above consensus clustering by `getConsensusMOIC()`, and this function will return a consensus matrix (a probability matrix represents how many times samples belonging to the same subtype can be clustered together by different multi-omics clustering methods) and a corresponding consensus heatmap. Ideally, the consensus heatmap will show a perfect diagonal rectangle, and the input values are 0 and 1 only because all algorithms derived the same clustering results.
 
 #### <a id="Section.4.2.1.7" style="color:#159957;">7) get multi-omics heatmap based on clustering result</a>
-Genome-wide heatmaps are widely used to graphically display potential underlying patterns within the large genomic dataset. They have been used to reveal information about how the samples/genes cluster together and provide insights into potential sample biases or other artifacts. Herein MOVICS provides `getMoHeatmap` to visually deal with preclustered multi-omics data and generate an exquisite heatmap for publication requirement.
+Genome-wide heatmaps are widely used to graphically display potential underlying patterns within the large genomic dataset. They have been used to reveal information about how the samples/genes cluster together and provide insights into potential sample biases or other artifacts. Herein MOVICS provides `getMoHeatmap` to visually deal with pre-clustered multi-omics data and generate an exquisite heatmap for publication requirement.
 Before using `getMoHeatmap()`, omics data should be properly processed by using the function of `getStdiz()` which returns a list storing normalized omics data. Omics data, especially for expression (*e.g.*, RNA and protein), should be centered (`centerFlag = TRUE`) or scaled (`scaleFlag = TRUE`) or z-scored (both centered and scaled). Generally, DNA methylation data ($\beta$ matrix ranging from 0 to 1) and somatic mutation (0 and 1 binary matrix) should not be normalized. However, it is a good choice to convert the methylation $\beta$ value to M value following the formula of $M=log_2\frac{\beta}{1-\beta}$ for its stronger signal in visualization and M value is suitable for normalization.
-This function also provides an argument of `halfwidth` for continuous omics data; such argument is used to truncate the 'extremum' after normalization; specifically, normalized values that exceed the halfwidth boundaries will be replaced by the halfwidth, which is beneficial to map colors in heatmap.
+This function also provides an argument of `halfwidth` for continuous omics data; such argument is used to truncate the 'extremum' after normalization; specifically, normalized values that exceed the `halfwidth` boundaries will be replaced by the `halfwidth`, which is beneficial to map colors in heatmap.
 ```{r, eval=TRUE}
 # convert beta value to M value for stronger signal
 indata <- mo.data
@@ -429,12 +433,12 @@ getMoHeatmap(data          = plotdata,
 ```
 
 ### <a id="Section.4.2.2" style="color:#159957;">4.2.2 COMP Module</a>
-After identification of cancer subtypes, it is essential to further characterize each subtype by discovering their difference from multiple aspects. To this end, MOVICS provides commonly used downstream analyses in cancer subtyping researches for easily cohesion with results derived from <span style="color:red">**GET Module**</span>. Now let us check them out.
+After identification of CS, it is essential to further characterize each subtype by discovering their difference from multiple aspects. To this end, MOVICS provides commonly used downstream analyses in cancer subtyping researches for easily cohesion with results derived from <span style="color:red">**GET Module**</span>. Now let us check them out.
 
 #### <a id="Section.4.2.2.1" style="color:#159957;">1) compare survival outcome</a>
-I start with comparing the prognosis among different subtypes. MOVICS provides function of `compSurv()` which not only calculates the overall nominal *P* value by log-rank test, but also performs pairwise comparsion and derives adjusted *P* values if more than two subtypes are identified. These information will be all printed in the Kaplan-Meier Curve which is convenient for researchers to refer. Except for clustering results (*e.g.*, `cmoic.brca` in this example), you must additionally provide `surv.info` argument which should be a data.frame (must has row names of samples) that stores a `futime` column for survival time (**unit of day**) and another `fustat` column for survival outcome (0 = censor; 1 = event).
+I start with comparing the prognosis among different subtypes. MOVICS provides function of `compSurv()` which not only calculates the overall nominal *P* value by log-rank test, but also performs pairwise comparison and derives adjusted *P* values if more than two subtypes are identified. These information will be all printed in the Kaplan-Meier Curve which is convenient for researchers to refer. Except for clustering results (*e.g.*, `cmoic.brca` in this example), you must additionally provide `surv.info` argument which should be a data.frame (must has row names of samples) that stores a `futime` column for survival time (**unit of day**) and another `fustat` column for survival outcome (0 = censor; 1 = event).
 ```{r, fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 6. Kaplan-Meier survival curve of 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE}
-# survival comparsion
+# survival comparison
 surv.brca <- compSurv(moic.res         = cmoic.brca,
                       surv.info        = surv.info,
                       convt.time       = "m", # convert day unit to month
@@ -445,7 +449,7 @@ print(surv.brca)
 ```
 
 #### <a id="Section.4.2.2.2" style="color:#159957;">2) compare clinical features</a>
-Then compare the clinical features among different subtypes. MOVICS provides function of `compClinvar()` which enables summarizing both continous and categorical variables and performing proper statistical tests. This function can give a table in .docx format that is easy to use in medical research papers.
+Then compare the clinical features among different subtypes. MOVICS provides function of `compClinvar()` which enables summarizing both continuous and categorical variables and performing proper statistical tests. This function can give a table in .docx format that is easy to use in medical research papers.
 ```{r, eval=TRUE}
 clin.brca <- compClinvar(moic.res      = cmoic.brca,
                          var2comp      = surv.info, # data.frame needs to summarize (must has row names of samples)
@@ -570,9 +574,9 @@ head(fga.brca$summary) %>%
 ```
 
 #### <a id="Section.4.2.2.6" style="color:#159957;">6) compare drug sensitivity</a>
-Predicting response to medication is particularly important for drugs with a narrow therapeutic index, for example chemotherapeutic agents, because response is highly variable and side effects are potentially lethal. Therefore, Paul Geeleher et al. (2014)<sup>10</sup> used baseline gene expression and $in\;vitro$ drug sensitivity derived from cell lines, coupled with $in\;vivo$ baseline tumor gene expression, to predict patients' response to drugs. Paul developped an R package pRRophetic for prediction of clinical chemotherapeutic response from tumor gene expression levels<sup>11</sup>, and now this function has been involved in MOVICS to examine difference of drug sensitivity among different subtypes Here I estimate the $IC_{50}$ of Cisplatin and Paclitaxel for 5 identified subtypes of breast cancer in TCGA cohort.
+Predicting response to medication is particularly important for drugs with a narrow therapeutic index, for example chemotherapeutic agents, because response is highly variable and side effects are potentially lethal. Therefore, Paul Geeleher et al. (2014)<sup>10</sup> used baseline gene expression and $in\;vitro$ drug sensitivity derived from cell lines, coupled with $in\;vivo$ baseline tumor gene expression, to predict patients' response to drugs. Paul developped an R package pRRophetic for prediction of clinical chemotherapeutic response from tumor gene expression levels<sup>11</sup>, and now this function has been involved in MOVICS to examine difference of drug sensitivity among different subtypes Here I estimate the $IC_{50}$ of *Cisplatin* and *Paclitaxel* for 5 identified subtypes of breast cancer in TCGA cohort.
 ```{r, fig.show = "hold", out.width = "50%", fig.align = "default", fig.width=8, fig.height=6, fig.cap="Figure 10. Boxviolins for estimated IC50 of Cisplatin and Paclitaxel among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE}
-# drug sensitivity comparsion
+# drug sensitivity comparison
 drug.brca <- compDrugsen(moic.res    = cmoic.brca,
                          norm.expr   = fpkm[,cmoic.brca$clust.res$samID], # double guarantee sample order
                          drugs       = c("Cisplatin", "Paclitaxel"), # a vector of names of drug in GDSC
@@ -597,7 +601,7 @@ At present, many cancers have traditional classifications, and evaluating the co
 # customize the factor level for pstage
 surv.info$pstage <- factor(surv.info$pstage, levels = c("TX","T1","T2","T3","T4"))
 
-# agreement comparsion (support up to 6 classifications include current subtype)
+# agreement comparison (support up to 6 classifications include current subtype)
 agree.brca <- compAgree(moic.res  = cmoic.brca,
                         subt2comp = surv.info[,c("PAM50","pstage")],
                         doPlot    = TRUE,
@@ -619,7 +623,7 @@ agree.brca %>%
 Take a deep breath, we successfully enter the last <span style="color:blue">**RUN Module**</span>, and victory is in sight. In this module, MOVICS aims to characterize different subtypes by identifying their potential predictive biomarkers and functional pathways. Identifying and applying molecular biomarkers to predict subtype with efficiency is particularly important for disease management and treatment, thus improving clinical outcome. In this context, MOVICS searches for subtype-specific biomarkers by starting with differential expression analysis (DEA). 
 
 #### <a id="Section.4.2.3.1" style="color:#159957;">1) run differential expression analysis</a>
-MOVICS provides `runDEA()` function which embeds three state-of-the-art DEA approches to identify differentially expressed genes (DEGs), including edgeR and DESeq2 for RNA-Seq count data and limma for microarray profile or normalized expression data. **Notably, since `runDEA()` checks the data scale automatically when choosing limma algorithm, it is recommended to provide a microarray expression profile or normalized expression data (*e.g.*, RSEM, FPKM, TPM) witout z-score or log2 transformation.**
+MOVICS provides `runDEA()` function which embeds three state-of-the-art DEA approches to identify differentially expressed genes (DEGs), including edgeR and DESeq2 for RNA-Seq count data and limma for microarray profile or normalized expression data. **Notably, since `runDEA()` checks the data scale automatically when choosing limma algorithm, it is recommended to provide a microarray expression profile or normalized expression data (*e.g.*, RSEM, FPKM, TPM) without z-score or log2 transformation.**
 This step is also quite time-consuming, especially in the case of using raw count data, so release your hand from the keyboard, close your eyes, and relax for a moment.
 ```{r, eval=TRUE}
 # run DEA with edgeR
@@ -644,7 +648,7 @@ runDEA(dea.method = "limma",
 Each identified cancer subtype will be compared with the rest (Others) and the corresponding .txt file will be stored according to the argument of `res.path`. By default, these files will be saved under the current working directory.
 
 #### <a id="Section.4.2.3.2" style="color:#159957;">2) run biomarker identification procedure</a>
-In this procedure, the most differentially expressed genes sorted by log2FoldChange are chosen as the biomarkers for each subtype (200 biomarkers for each subtype by default). These biomarkers should pass the significance threshold (*e.g.*, nominal $P$ value < 0.05 and adjusted $P$ value < 0.05) and must not overlap with any biomarkers indentified for other subtypes.
+In this procedure, the most differentially expressed genes sorted by log2FoldChange are chosen as the biomarkers for each subtype (200 biomarkers for each subtype by default). These biomarkers should pass the significance threshold (*e.g.*, nominal $P$ value < 0.05 and adjusted $P$ value < 0.05) and must not overlap with any biomarkers identified for other subtypes.
 ```{r, fig.align="center", fig.width=7, fig.height=6, fig.cap="Figure 12. Heatmap of subtype-specific upregulated biomarkers using edgeR for 5 identified subtypes in TCGA-BRCA cohort.", eval=TRUE}
 # choose edgeR result to identify subtype-specific up-regulated biomarkers
 marker.up <- runMarker(moic.res      = cmoic.brca,
@@ -789,7 +793,7 @@ print(surv.yau)
 
 I further check the agreement between the predicted subtype and PAM50 classification.
 ```{r, fig.align="center", fig.width=8, fig.height=5, fig.cap="Figure 18. Agreement of predicted 5 subtypes of breast cancer with PAM50 classification in Yau cohort.", eval=TRUE}
-# compare agreemeng in Yau cohort
+# compare agreement in Yau cohort
 agree.yau <- compAgree(moic.res  = brca.pred,
                        subt2comp = brca.yau$clin.info[, "PAM50", drop = FALSE],
                        doPlot    = TRUE,
@@ -810,7 +814,7 @@ agree.yau %>%
 It is clearly that the predicted subtypes of breast cancer in Yau cohort can distinguish prognosis well and also show similar pattern of agreement with PAM50 classification as compared to TCGA-BRCA to some extent.
 
 # <a id="Section.5" style="color:#159957;">5. Little Trick</a>
-Indeed, the `moic.res` parameter is necessary for almost all the functions, especially for downstream analyses. You may deem that if the `moic.res` object is not obtained properly through the module of <span style="color:red">**GET**</span>, downstream analyses cannot run smoothly. But in fact, you can fool downstream modules (<span style="color:green">**COMP**</span> and <span style="color:blue">**RUN**</span>) with little tricks. The core information stored in `moic.res` is a data.frame named `clust.res` with a `samID` column (character) for samples name (should be exactly the same with row names) and a `clust` column (integer) for subtype indicator. Another information requried for some functions in downstream analyses is `mo.method`, a stringe value that is usually considered as prefix for output files. For example, if I want to check the prognostic value of PAM50 classification, the only thing I have to prepare is a pseudo `moic.res` object with a customized `mo.method` just like below:
+Indeed, the `moic.res` parameter is necessary for almost all the functions, especially for downstream analyses. You may deem that if the `moic.res` object is not obtained properly through the module of <span style="color:red">**GET**</span>, downstream analyses cannot run smoothly. But in fact, you can fool downstream modules (<span style="color:green">**COMP**</span> and <span style="color:blue">**RUN**</span>) with little tricks. The core information stored in `moic.res` is a data.frame named `clust.res` with a `samID` column (character) for samples name (should be exactly the same with row names) and a `clust` column (integer) for subtype indicator. Another information required for some functions in downstream analyses is `mo.method`, a string value that is usually considered as prefix for output files. For example, if I want to check the prognostic value of PAM50 classification, the only thing I have to prepare is a pseudo `moic.res` object with a customized `mo.method` just like below:
 ```{r, eval=TRUE}
 # include original clinical information as `clust.res` and a string value for `mo.method` to a list
 pseudo.moic.res                 <- list("clust.res" = surv.info,
@@ -842,7 +846,7 @@ head(pseudo.moic.res$clust.res) %>%
 
 Ok everything is ready, just keep in mind how your interested subtypes are mapped and feel free to use such pseudo object to perform downstream analyses such as `compSurv()` as follows:
 ```{r, fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 19. Kaplan-Meier survival curve of PAM50 subtypes of breast cancer with pseudo input in TCGA-BRCA cohort.", eval=TRUE}
-# survival comparsion
+# survival comparison
 pam50.brca <- compSurv(moic.res         = pseudo.moic.res,
                        surv.info        = surv.info,
                        convt.time       = "y", # convert day unit to year
@@ -851,7 +855,7 @@ pam50.brca <- compSurv(moic.res         = pseudo.moic.res,
 ```
 
 # <a id="Section.6" style="color:#159957;">6. Summary</a>
-I have introduced the pipeline and described the functions included in MOVICS in almost detail. This package is rather young and I hope to improve it further in the future, along with more functionality. If you have any questions, bug reports, or suggestions for improving MOVICS, please email them to xlu.cpu@foxmail.com. Feeback is crucial for improving a package that tries to seamlessly incorporate functionality and flexibility from many other useful tools.
+I have introduced the pipeline and described the functions included in MOVICS in almost detail. This package is rather young and I hope to improve it further in the future, along with more functionality. If you have any questions, bug reports, or suggestions for improving MOVICS, please email them to xlu.cpu@foxmail.com. Feedback is crucial for improving a package that tries to seamlessly incorporate functionality and flexibility from many other useful tools.
 
 # <a id="Section.7" style="color:#159957;">7. Session Information</a>
 ```{r, echo=TRUE, eval=TRUE}
@@ -919,7 +923,7 @@ Gene set enrichment analysis uses clusterProfiler R package with the following p
   + Subramanian A, Tamayo P, Mootha V K, et al. (2005). Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proc Natl Acad Sci, 102(43):15545-15550.
   
 \  
-For single sample enrichment analysis, plese cite literatures below appropriately:
+For single sample enrichment analysis, please cite literature below appropriately:
 
    >+ ssgsea: Barbie, D.A. et al (2009). Systematic RNA interference reveals that oncogenic KRAS-driven cancers require TBK1. Nature, 462(5):108-112.
    >+ gsva: Hänzelmann, S., Castelo, R. and Guinney, J. (2013). GSVA: Gene set variation analysis for microarray and RNA-Seq data. BMC Bioinformatics, 14(1):7.

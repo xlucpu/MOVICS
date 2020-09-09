@@ -31,3 +31,4 @@ Sigal, M. J., & Chalmers, R. P. (2016). Play it again: Teaching statistics with 
 \author{
 Phil Chalmers
 }
+\keyword{internal}

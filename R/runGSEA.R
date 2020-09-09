@@ -65,7 +65,7 @@ runGSEA <- function(moic.res     = NULL,
                     p.adj.cutoff = 0.25,
                     gsva.method  = "gsva",
                     norm.method  = "mean",
-                    clust.col    = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627"),
+                    clust.col    = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","9D4EDD"),
                     color        = NULL,
                     fig.name     = NULL,
                     fig.path     = getwd(),
@@ -156,7 +156,7 @@ runGSEA <- function(moic.res     = NULL,
       pathway$dirct <- "up"
 
       for (i in rownames(pathway[[filek]])) {
-        pathcore[[i]] <- msigdb[which(msigdb$ont %in% i),"gene"]
+        pathcore[[i]] <- msigdb[which(msigdb[,1] %in% i),"gene"]
       }
     }
     if(dirct=="down") {
@@ -173,7 +173,7 @@ runGSEA <- function(moic.res     = NULL,
       pathway$dirct <- "down"
 
       for (i in rownames(pathway[[filek]])) {
-        pathcore[[i]] <- msigdb[which(msigdb$ont %in% i),"gene"]
+        pathcore[[i]] <- msigdb[which(msigdb[,1] %in% i),"gene"]
       }
     }
     write.table(outk, file=file.path(res.path, paste(gsub("_gsea_all_results.txt","", filek, fixed = TRUE), outlabel, sep = "_")), row.names = TRUE, col.names = NA, sep = "\t", quote = FALSE)

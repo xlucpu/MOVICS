@@ -24,7 +24,7 @@
 compAgree <- function(moic.res  = NULL,
                       subt2comp = NULL,
                       doPlot    = TRUE,
-                      clust.col = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627"),
+                      clust.col = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","9D4EDD"),
                       box.width = 0.1,
                       fig.name  = NULL,
                       fig.path  = getwd(),

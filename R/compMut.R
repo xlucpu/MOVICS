@@ -48,7 +48,7 @@ compMut <- function(moic.res     = NULL,
                     bg.col       = "#dcddde",
                     p.cutoff     = 0.05,
                     p.adj.cutoff = 0.05,
-                    clust.col    = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627"),
+                    clust.col    = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","9D4EDD"),
                     width        = 8,
                     height       = 4) {
 
