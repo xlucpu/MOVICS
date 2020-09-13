@@ -2,7 +2,7 @@
 
 Multi-Omics integration and VIsualization in Cancer Subtyping
 
-<img src="https://user-images.githubusercontent.com/57204704/93013113-03941980-f5d8-11ea-84f4-8d6b6c546481.jpg" height="200" align="right" />
+<img src="https://user-images.githubusercontent.com/57204704/93013113-03941980-f5d8-11ea-84f4-8d6b6c546481.jpg" height="300" align="right" />
 
 ## Introduction
 
