@@ -1,34 +1,35 @@
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE--------------------------------------------------------------
 Sys.setenv(LANGUAGE = "en")
 
-## ---- warning=FALSE, message=FALSE, echo=TRUE, eval=FALSE----------------
-#  if (!require("devtools")) {
-#    install.packages("devtools")
-#  }
+## ---- warning=FALSE, message=FALSE, echo=TRUE, eval=FALSE---------------------
+#  if (!requireNamespace("BiocManager", quietly = TRUE))
+#      install.packages("BiocManager")
+#  if (!require("devtools"))
+#      install.packages("devtools")
 #  devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
 
-## ---- echo=FALSE, eval=TRUE, warning=FALSE, message=FALSE----------------
+## ---- echo=FALSE, eval=TRUE, warning=FALSE, message=FALSE---------------------
 library("dplyr")
 library("knitr")
 library("kableExtra")
 #library("devtools")
 #load_all()
 
-## ---- eval=TRUE, warning=FALSE, message=FALSE----------------------------
+## ---- eval=TRUE, warning=FALSE, message=FALSE---------------------------------
 library("MOVICS")
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 # load example data of breast cancer
 load(system.file("extdata", "brca.tcga.RData", package = "MOVICS", mustWork = TRUE))
 load(system.file("extdata", "brca.yau.RData",  package = "MOVICS", mustWork = TRUE))
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 # print name of example data
 names(brca.tcga)
 names(brca.yau)
@@ -51,7 +52,7 @@ segment   <- brca.tcga$segment
 # extract survival information
 surv.info <- brca.tcga$clin.info
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 # scenario 1: considering we are dealing with an expression data that have 2 rows with NA values
 tmp       <- brca.tcga$mRNA.expr # get expression data
 dim(tmp) # check data dimension
@@ -70,7 +71,7 @@ elite.tmp <- getElites(dat       = tmp,
 dim(elite.tmp$elite.dat) # all data kept
 elite.tmp$elite.dat[1:3,1:3] # NA values have been imputed 
 
-# scenario 2: considering we are dealing with continous data and use mad or sd to select elites
+# scenario 2: considering we are dealing with continuous data and use mad or sd to select elites
 tmp       <- brca.tcga$mRNA.expr # get expression data with 500 features
 elite.tmp <- getElites(dat       = tmp,
                        method    = "mad",
@@ -80,25 +81,25 @@ dim(elite.tmp$elite.dat) # get 50 elite left
 elite.tmp <- getElites(dat       = tmp,
                        method    = "sd",
                        elite.num = 100, # this time only top 100 features with high sd values are kept
-                       elite.pct = 0.1) # this time elite.pct arugument will be disabled because elite.num has been already indicated.
+                       elite.pct = 0.1) # this time elite.pct argument will be disabled because elite.num has been already indicated.
 dim(elite.tmp$elite.dat) # get 100 elites left
 
 # scenario 3: considering we are dealing with data and use cox to select elite
 tmp       <- brca.tcga$mRNA.expr # get expression data 
 elite.tmp <- getElites(dat       = tmp,
                        method    = "cox",
-                       surv.info = surv.info, # must provide surivival information with 'futime' and 'fustat'
+                       surv.info = surv.info, # must provide survival information with 'futime' and 'fustat'
                        p.cutoff  = 0.05,
-                       elite.num = 100) # this time elite.num arugument will be disabled because cox method refers to p.cutoff to select elites
+                       elite.num = 100) # this time elite.num argument will be disabled because cox method refers to p.cutoff to select elites
 dim(elite.tmp$elite.dat) # get 125 elites
 table(elite.tmp$unicox$pvalue < 0.05) # 125 genes have nominal pvalue < 0.05 in univariate Cox regression
 
 tmp       <- brca.tcga$mut.status # get mutation data 
 elite.tmp <- getElites(dat       = tmp,
                        method    = "cox",
-                       surv.info = surv.info, # must provide surivival information with 'futime' and 'fustat'
+                       surv.info = surv.info, # must provide survival information with 'futime' and 'fustat'
                        p.cutoff  = 0.05,
-                       elite.num = 100) # this time elite.num arugument will be disabled because cox method refers to p.cutoff to select elites
+                       elite.num = 100) # this time elite.num argument will be disabled because cox method refers to p.cutoff to select elites
 dim(elite.tmp$elite.dat) # get 3 elites
 table(elite.tmp$unicox$pvalue < 0.05) # 3 mutations have nominal pvalue < 0.05
 
@@ -127,7 +128,7 @@ optk.brca <- getClustNum(data        = mo.data,
                          try.N.clust = 2:8, # try cluster number from 2 to 8
                          fig.name    = "CLUSTER NUMBER OF TCGA-BRCA")
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 # perform iClusterBayes (may take a while)
 iClusterBayes.res <- getiClusterBayes(data        = mo.data,
                                       N.clust     = 5,
@@ -138,18 +139,18 @@ iClusterBayes.res <- getiClusterBayes(data        = mo.data,
                                       sdev        = 0.05,
                                       thin        = 3)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  iClusterBayes.res <- getMOIC(data        = mo.data,
 #                               N.clust     = 5,
 #                               methodslist = "iClusterBayes", # specify only ONE algorithm here
-#                               type        = c("gaussian","gaussian","gaussian","binomial"), # data type corresponding to the list of matrics
+#                               type        = c("gaussian","gaussian","gaussian","binomial"), # data type corresponding to the list
 #                               n.burnin    = 1800,
 #                               n.draw      = 1200,
 #                               prior.gamma = c(0.5, 0.5, 0.5, 0.5),
 #                               sdev        = 0.05,
 #                               thin        = 3)
 
-## ---- fig.show='hide', message=TRUE, eval=TRUE---------------------------
+## ---- fig.show='hide', message=TRUE, eval=TRUE--------------------------------
 # perform multi-omics integrative clustering with the rest of 9 algorithms
 moic.res.list <- getMOIC(data        = mo.data,
                          methodslist = list("SNF", "PINSPlus", "NEMO", "COCA", "LRAcluster", "ConsensusClustering", "IntNMF", "CIMLR", "MoCluster"),
@@ -163,7 +164,7 @@ moic.res.list <- append(moic.res.list,
 # save moic.res.list to local path
 save(moic.res.list, file = "moic.res.list.rda")
 
-## ---- echo=FALSE, eval=FALSE---------------------------------------------
+## ---- echo=FALSE, eval=FALSE--------------------------------------------------
 #  load(file = "iClusterBayes.res.rda")
 #  load(file = "moic.res.list.rda")
 
@@ -173,7 +174,7 @@ cmoic.brca <- getConsensusMOIC(moic.res.list = moic.res.list,
                                distance      = "euclidean",
                                linkage       = "average")
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 # convert beta value to M value for stronger signal
 indata <- mo.data
 indata$meth.beta <- log2(indata$meth.beta / (1 - indata$meth.beta))
@@ -184,7 +185,7 @@ plotdata <- getStdiz(data       = indata,
                      centerFlag = c(T,T,T,F), # no center for mutation
                      scaleFlag  = c(T,T,T,F)) # no scale for mutation
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 feat   <- iClusterBayes.res$feat.res
 feat1  <- feat[which(feat$dataset == "mRNA.expr"),][1:10,"feature"] 
 feat2  <- feat[which(feat$dataset == "lncRNA.expr"),][1:10,"feature"]
@@ -270,7 +271,7 @@ getMoHeatmap(data          = plotdata,
              fig.name      = "COMPREHENSIVE HEATMAP OF CONSENSUSMOIC")
 
 ## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 6. Kaplan-Meier survival curve of 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
-# survival comparsion
+# survival comparison
 surv.brca <- compSurv(moic.res         = cmoic.brca,
                       surv.info        = surv.info,
                       convt.time       = "m", # convert day unit to month
@@ -279,7 +280,7 @@ surv.brca <- compSurv(moic.res         = cmoic.brca,
 
 print(surv.brca)
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 clin.brca <- compClinvar(moic.res      = cmoic.brca,
                          var2comp      = surv.info, # data.frame needs to summarize (must has row names of samples)
                          strata        = "Subtype", # stratifying variable (e.g., Subtype in this example)
@@ -290,10 +291,10 @@ clin.brca <- compClinvar(moic.res      = cmoic.brca,
                          tab.name      = "SUMMARIZATION OF CLINICAL FEATURES")
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  print(clin.brca$compTab)
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
 clin.brca$compTab %>%
   kbl(caption = "Table 1. Comparison of clinical features among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
@@ -314,18 +315,18 @@ mut.brca <- compMut(moic.res     = cmoic.brca,
                     fig.name     = "ONCOPRINT FOR SIGNIFICANT MUTATIONS",
                     tab.name     = "INDEPENDENT TEST BETWEEN SUBTYPE AND MUTATION")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  print(mut.brca)
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
 mut.brca %>%
   kbl(caption = "Table 2. Comparison of mutational frequency among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 head(maf)
 
-## ---- echo=FALSE, eval=FALSE---------------------------------------------
+## ---- echo=FALSE, eval=FALSE--------------------------------------------------
 #  head(maf) %>%
 #    kbl(caption = "Table . Demo of MAF data with eligible column names.") %>%
 #    kable_classic(full_width = TRUE, html_font = "Calibri")
@@ -340,22 +341,22 @@ tmb.brca <- compTMB(moic.res     = cmoic.brca,
                     test.method  = "nonparametric", # statistical testing method
                     fig.name     = "DISTRIBUTION OF TMB AND TITV")
 
-## ---- eval=FALSE---------------------------------------------------------
-#  head(tmb.brca$TMB)
+## ---- eval=FALSE--------------------------------------------------------------
+#  head(tmb.brca$TMB.dat)
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
-head(tmb.brca$TMB) %>%
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
+head(tmb.brca$TMB.dat) %>%
   kbl(caption = "Table 3. Demo of comparison of TMB among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # change column names of segment data
 colnames(segment) <- c("sample","chrom","start","end","value")
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 head(segment)
 
-## ---- echo=FALSE, eval=FALSE---------------------------------------------
+## ---- echo=FALSE, eval=FALSE--------------------------------------------------
 #  head(segment) %>%
 #    kbl(caption = "Table . Demo of segmented copy number data with eligible column names.") %>%
 #    kable_classic(full_width = TRUE, html_font = "Calibri")
@@ -369,16 +370,16 @@ fga.brca <- compFGA(moic.res     = cmoic.brca,
                     test.method  = "nonparametric", # statistical testing method
                     fig.name     = "BARPLOT OF FGA")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  head(fga.brca$summary)
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
 head(fga.brca$summary) %>%
   kbl(caption = "Table 4. Demo of comparison of fraction genome altered among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
 ## ---- fig.show = "hold", out.width = "50%", fig.align = "default", fig.width=8, fig.height=6, fig.cap="Figure 10. Boxviolins for estimated IC50 of Cisplatin and Paclitaxel among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
-# drug sensitivity comparsion
+# drug sensitivity comparison
 drug.brca <- compDrugsen(moic.res    = cmoic.brca,
                          norm.expr   = fpkm[,cmoic.brca$clust.res$samID], # double guarantee sample order
                          drugs       = c("Cisplatin", "Paclitaxel"), # a vector of names of drug in GDSC
@@ -386,10 +387,10 @@ drug.brca <- compDrugsen(moic.res    = cmoic.brca,
                          test.method = "nonparametric", # statistical testing method
                          prefix      = "BOXVIOLIN OF ESTIMATED IC50") 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  head(drug.brca$Cisplatin)
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
 head(drug.brca$Cisplatin) %>%
   kbl(caption = "Table 5. Demo of estimated IC50 for Cisplatin among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
@@ -398,22 +399,22 @@ head(drug.brca$Cisplatin) %>%
 # customize the factor level for pstage
 surv.info$pstage <- factor(surv.info$pstage, levels = c("TX","T1","T2","T3","T4"))
 
-# agreement comparsion (support up to 6 classifications include current subtype)
+# agreement comparison (support up to 6 classifications include current subtype)
 agree.brca <- compAgree(moic.res  = cmoic.brca,
                         subt2comp = surv.info[,c("PAM50","pstage")],
                         doPlot    = TRUE,
                         box.width = 0.2,
                         fig.name  = "AGREEMENT OF CONSENSUSMOIC WITH PAM50 AND PSTAGE")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  print(agree.brca)
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
 agree.brca %>%
   kbl(caption = "Table 6. Agreement of 5 identified subtypes with PAM50 classification and pathological stage in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 # run DEA with edgeR
 runDEA(dea.method = "edger",
        expr       = count, # raw count data
@@ -450,11 +451,11 @@ marker.up <- runMarker(moic.res      = cmoic.brca,
                        show_rownames = FALSE, # show no rownames (biomarker name)
                        fig.name      = "UPREGULATED BIOMARKER HEATMAP")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  # check the upregulated biomarkers
 #  head(marker.up$templates)
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
 head(marker.up$templates) %>%
   kbl(caption = "Table 7. Demo of subtype-specific upregulated biomarkers for 5 identified subtypes of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
@@ -472,7 +473,7 @@ marker.dn <- runMarker(moic.res      = cmoic.brca,
                        annColors     = annColors,
                        fig.name      = "DOWNREGULATED BIOMARKER HEATMAP")
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 # MUST locate ABSOLUTE path of msigdb file
 MSIGDB.FILE <- system.file("extdata", "c5.bp.v7.1.symbols.xls", package = "MOVICS", mustWork = TRUE)
 
@@ -492,18 +493,18 @@ gsea.up <- runGSEA(moic.res     = cmoic.brca,
                    norm.method  = "mean", # normalization method to calculate subtype-specific enrichment score
                    fig.name     = "UPREGULATED PATHWAY HEATMAP")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  print(gsea.up$gsea.list$CS1[1:6,3:6])
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
 gsea.up$gsea.list$CS1[1:6,3:6] %>%
   kbl(caption = "Table 8. Demo of GSEA results for the first cancer subtype (CS1) of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  head(round(gsea.up$grouped.es,3))
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
 head(round(gsea.up$grouped.es,3)) %>%
   kbl(caption = "Table 9. Demo of subtype-specific enrichment scores among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
@@ -531,10 +532,10 @@ brca.pred <- runNTP(expr      = brca.yau$mRNA.expr,
                     doPlot    = TRUE, # to generate heatmap
                     fig.name  = "NTP HEATMAP FOR YAU") 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  head(brca.pred$ntp.res)
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
 head(brca.pred$ntp.res) %>%
   kbl(caption = "Table 10. Demo of predicted subtypes in Yau cohort by NTP using subtype-specific upregulated biomarkers identified from TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
@@ -550,22 +551,22 @@ surv.yau <- compSurv(moic.res         = brca.pred,
 print(surv.yau)
 
 ## ---- fig.align="center", fig.width=8, fig.height=5, fig.cap="Figure 18. Agreement of predicted 5 subtypes of breast cancer with PAM50 classification in Yau cohort.", eval=TRUE----
-# compare agreemeng in Yau cohort
+# compare agreement in Yau cohort
 agree.yau <- compAgree(moic.res  = brca.pred,
                        subt2comp = brca.yau$clin.info[, "PAM50", drop = FALSE],
                        doPlot    = TRUE,
                        fig.name  = "YAU PREDICTEDMOIC WITH PAM50")
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  print(agree.yau)
 
-## ---- echo=FALSE, eval=TRUE----------------------------------------------
+## ---- echo=FALSE, eval=TRUE---------------------------------------------------
 agree.yau %>%
   kbl(caption = "Table 11. Agreement of 5 predicted subtypes of breast cancer with PAM50 classification in Yau cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 # include original clinical information as `clust.res` and a string value for `mo.method` to a list
 pseudo.moic.res                 <- list("clust.res" = surv.info,
                                         "mo.method" = "PAM50")
@@ -582,25 +583,25 @@ pseudo.moic.res$clust.res$clust <- sapply(pseudo.moic.res$clust.res$PAM50,
                                           "LumB"    = 4, # relabel LumnB as 4
                                           "Normal"  = 5) # relabel Normal as 5
 
-## ---- eval=TRUE----------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 head(pseudo.moic.res$clust.res)
 
-## ---- echo=FALSE, eval=FALSE---------------------------------------------
+## ---- echo=FALSE, eval=FALSE--------------------------------------------------
 #  head(pseudo.moic.res$clust.res) %>%
 #    kbl(caption = "Table . Demo of pseudo object for downstream analyses in MOVICS.") %>%
 #    kable_classic(full_width = TRUE, html_font = "Calibri")
 
 ## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 19. Kaplan-Meier survival curve of PAM50 subtypes of breast cancer with pseudo input in TCGA-BRCA cohort.", eval=TRUE----
-# survival comparsion
+# survival comparison
 pam50.brca <- compSurv(moic.res         = pseudo.moic.res,
                        surv.info        = surv.info,
                        convt.time       = "y", # convert day unit to year
                        surv.median.line = "h", # draw horizontal line at median survival
                        fig.name         = "KAPLAN-MEIER CURVE OF PAM50 BY PSEUDO")
 
-## ---- echo=TRUE, eval=TRUE-----------------------------------------------
+## ---- echo=TRUE, eval=TRUE----------------------------------------------------
 sessionInfo()
 
-## ---- echo=FALSE, eval=FALSE---------------------------------------------
+## ---- echo=FALSE, eval=FALSE--------------------------------------------------
 #  save.image("MOVICS.RData")
 

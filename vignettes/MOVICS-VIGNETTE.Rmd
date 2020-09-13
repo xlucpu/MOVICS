@@ -98,7 +98,7 @@ library("kableExtra")
 #load_all()
 ```
 
-When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, you can refer to the `Imports` in the *DESCRIPTION* file from https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION, try to install all the R dependencies, and then install MOVICS. After installation, you should be able to load the MOVICS package in your R session:
+When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, you can refer to the `Imports` in the [DESCRIPTION](https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION) file, try to install all the R dependencies, and then install MOVICS. After installation, you should be able to load the MOVICS package in your R session:
 ```{r, eval=TRUE, warning=FALSE, message=FALSE}
 library("MOVICS")
 ```
@@ -111,7 +111,7 @@ load(system.file("extdata", "brca.tcga.RData", package = "MOVICS", mustWork = TR
 load(system.file("extdata", "brca.yau.RData",  package = "MOVICS", mustWork = TRUE))
 ```
 
-Since in most cases, multi-omics clustering procedure is rather time-consuming, the TCGA-BRCA dataset was threfore first pre-processed to extract top 500 mRNAs, 500 lncRNA, 1,000 promoter CGI probes/genes with high variation using statistics of median absolute deviation (MAD), and 30 genes that mutated in at least 3% of the entire cohort. All these features are used in the following clustering analyses.
+Since in most cases, multi-omics clustering procedure is rather time-consuming, the TCGA-BRCA dataset was therefore first pre-processed to extract top 500 mRNAs, 500 lncRNA, 1,000 promoter CGI probes/genes with high variation using statistics of median absolute deviation (MAD), and 30 genes that mutated in at least 3% of the entire cohort. All these features are used in the following clustering analyses.
 
 # <a id="Section.4" style="color:#159957;">4. MOVICS Pipeline</a>
 ## <a id="Section.4.1" style="color:#159957;">4.1 Pipeline Introduction</a>
@@ -149,7 +149,7 @@ Basically, the above three connected modules explain the workflow of this R pack
 
 ### <a id="Section.4.2.1" style="color:#159957;">4.2.1 GET Module</a>
 #### <a id="Section.4.2.1.1" style="color:#159957;">1) get data from example files</a>
-Data used for this vignette should be first extracted from the list of `brca.tcga`, including 4 types of multi-omics data. Except for omics data, this list also contains RNA-Seq raw count, FPKM matrix, MAF data, segmented copy number, clinical and survival information for downstream analyses.  **Notably, all these omics data used for clustering share exactly the same samples with exactly the same order, and please make sure of this when using MOVICS on your own data.** 
+Data used for this vignette should be first extracted from the list of `brca.tcga`, including 4 types of multi-omics data. Except for omics data, this list also contains RNA-Seq raw count, FPKM matrix, MAF data, segmented copy number, clinical and survival information for downstream analyses. **Notably, all these omics data used for clustering share exactly the same samples with exactly the same order, and please make sure of this when using MOVICS on your own data.** 
 ```{r, eval=TRUE}
 # print name of example data
 names(brca.tcga)
@@ -232,13 +232,13 @@ tmp       <- brca.tcga$mut.status # get mutation data
 rowSums(tmp) # check mutation frequency
 elite.tmp <- getElites(dat       = tmp,
                        method    = "freq", # must set as 'freq'
-                       elite.num = 80, # note: in this scenario elite.num refer to frequency of mutation
+                       elite.num = 80, # note: in this scenario elite.num refers to frequency of mutation
                        elite.pct = 0.1) # discard because elite.num has been already indicated
 rowSums(elite.tmp$elite.dat) # only genes that are mutated in over than 80 samples are kept as elites
 
 elite.tmp <- getElites(dat       = tmp,
                        method    = "freq", # must set as 'freq'
-                       elite.pct = 0.2) # note: in this scenario elite.pct refer to frequency of mutation / sample size
+                       elite.pct = 0.2) # note: in this scenario elite.pct refers to frequency of mutation / sample size
 rowSums(elite.tmp$elite.dat) # only genes that are mutated in over than 0.2*643=128.6 samples are kept as elites
 
 # get mo.data list just like below (not run)
@@ -433,7 +433,7 @@ getMoHeatmap(data          = plotdata,
 ```
 
 ### <a id="Section.4.2.2" style="color:#159957;">4.2.2 COMP Module</a>
-After identification of CS, it is essential to further characterize each subtype by discovering their difference from multiple aspects. To this end, MOVICS provides commonly used downstream analyses in cancer subtyping researches for easily cohesion with results derived from <span style="color:red">**GET Module**</span>. Now let us check them out.
+After identification of cancer subtypes, it is essential to further characterize each subtype by discovering their difference from multiple aspects. To this end, MOVICS provides commonly used downstream analyses in cancer subtyping researches for easily cohesion with results derived from <span style="color:red">**GET Module**</span>. Now let us check them out.
 
 #### <a id="Section.4.2.2.1" style="color:#159957;">1) compare survival outcome</a>
 I start with comparing the prognosis among different subtypes. MOVICS provides function of `compSurv()` which not only calculates the overall nominal *P* value by log-rank test, but also performs pairwise comparison and derives adjusted *P* values if more than two subtypes are identified. These information will be all printed in the Kaplan-Meier Curve which is convenient for researchers to refer. Except for clustering results (*e.g.*, `cmoic.brca` in this example), you must additionally provide `surv.info` argument which should be a data.frame (must has row names of samples) that stores a `futime` column for survival time (**unit of day**) and another `fustat` column for survival outcome (0 = censor; 1 = event).
@@ -442,8 +442,8 @@ I start with comparing the prognosis among different subtypes. MOVICS provides f
 surv.brca <- compSurv(moic.res         = cmoic.brca,
                       surv.info        = surv.info,
                       convt.time       = "m", # convert day unit to month
-                      surv.median.line = "h",
-                      fig.name         = "KAPLAN-MEIER CURVE OF CONSENSUSMOIC") # draw horizontal line at median survival
+                      surv.median.line = "h", # draw horizontal line at median survival
+                      fig.name         = "KAPLAN-MEIER CURVE OF CONSENSUSMOIC")
 
 print(surv.brca)
 ```
@@ -502,7 +502,7 @@ mut.brca %>%
 ```
 
 #### <a id="Section.4.2.2.4" style="color:#159957;">4) compare total mutation burden</a>
-Needless to say, immunotherapy is becoming a pillar of modern cancer treatment. Recent analyses have linked the tumoral genomic landscape with antitumor immunity. In particular, it has been proposed that overall mutational load might drive T-cell responses<sup>8</sup>, whereas tumor aneuploidy correlates with markers of immune evasion and reduced response to immunotherapy<sup>9</sup>. To quantify these genomic alterations that may affect immunotherapy, MOVICS provides two functions to calculate total mutation burden (TMB) and fraction genome altered (FGA). To be specific, Total Mutations Burden (TMB) refers to the number of mutations that are found in the tumor genome, while FGA is the percentage of genome that has been affected by copy number gains or losses . Both attributes are useful for genetic researchers as they provide them with more in-depth information on the genomic make-up of the tumors. Let me show you how to use these two functions by starting with `compTMB()`. First of all, the input maf data for this function must have the following 10 columns at least:
+Needless to say, immunotherapy is becoming a pillar of modern cancer treatment. Recent analyses have linked the tumoral genomic landscape with antitumor immunity. In particular, it has been proposed that overall mutational load might drive T-cell responses<sup>8</sup>, whereas tumor aneuploidy correlates with markers of immune evasion and reduced response to immunotherapy<sup>9</sup>. To quantify these genomic alterations that may affect immunotherapy, MOVICS provides two functions to calculate total mutation burden (TMB) and fraction genome altered (FGA). To be specific, Total Mutations Burden (TMB) refers to the number of mutations that are found in the tumor genome, while FGA is the percentage of genome that has been affected by copy number gains or losses. Both attributes are useful for genetic researchers as they provide them with more in-depth information on the genomic make-up of the tumors. Let me show you how to use these two functions by starting with `compTMB()`. First of all, the input maf data for this function must have the following 10 columns at least:
 ```{r, eval=TRUE}
 head(maf)
 ```
@@ -574,7 +574,7 @@ head(fga.brca$summary) %>%
 ```
 
 #### <a id="Section.4.2.2.6" style="color:#159957;">6) compare drug sensitivity</a>
-Predicting response to medication is particularly important for drugs with a narrow therapeutic index, for example chemotherapeutic agents, because response is highly variable and side effects are potentially lethal. Therefore, Paul Geeleher et al. (2014)<sup>10</sup> used baseline gene expression and $in\;vitro$ drug sensitivity derived from cell lines, coupled with $in\;vivo$ baseline tumor gene expression, to predict patients' response to drugs. Paul developped an R package pRRophetic for prediction of clinical chemotherapeutic response from tumor gene expression levels<sup>11</sup>, and now this function has been involved in MOVICS to examine difference of drug sensitivity among different subtypes Here I estimate the $IC_{50}$ of *Cisplatin* and *Paclitaxel* for 5 identified subtypes of breast cancer in TCGA cohort.
+Predicting response to medication is particularly important for drugs with a narrow therapeutic index, for example chemotherapeutic agents, because response is highly variable and side effects are potentially lethal. Therefore, Paul Geeleher et al. (2014)<sup>10</sup> used baseline gene expression and $in\;vitro$ drug sensitivity derived from cell lines, coupled with $in\;vivo$ baseline tumor gene expression, to predict patients' response to drugs. Paul developped an R package pRRophetic for prediction of clinical chemotherapeutic response from tumor gene expression levels<sup>11</sup>, and now this function has been involved in MOVICS to examine difference of drug sensitivity among different subtypes. Here I estimate the $IC_{50}$ of *Cisplatin* and *Paclitaxel* for 5 identified subtypes of breast cancer in TCGA cohort.
 ```{r, fig.show = "hold", out.width = "50%", fig.align = "default", fig.width=8, fig.height=6, fig.cap="Figure 10. Boxviolins for estimated IC50 of Cisplatin and Paclitaxel among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE}
 # drug sensitivity comparison
 drug.brca <- compDrugsen(moic.res    = cmoic.brca,
@@ -596,7 +596,7 @@ head(drug.brca$Cisplatin) %>%
 ```
 
 #### <a id="Section.4.2.2.7" style="color:#159957;">7) compare agreement with other subtypes</a>
-At present, many cancers have traditional classifications, and evaluating the consistency of new subtypes with previous classifications is critical to reflect the robustness of clustering analysis and to determine potential but novel subtypes. To measure the agreement (similarity) between the current subtypes and other pre-existed classifications MOVICS provides function of `compAgree()` to calculate four statistics: Rand Index (RI)<sup>12</sup>, Adjusted Mutual Information (AMI)<sup>13</sup>, Jaccard Index (JI)<sup>14</sup>, and Fowlkes-Mallows (FM)<sup>15</sup>; all these measurements range from 0 to 1 and the larger the value is, the more similar the two appraises are. This function can also generate an alluvial diagram to visualize the agreement of two appraises with the current subtypes as reference. 
+At present, many cancers have traditional classifications, and evaluating the consistency of new subtypes with previous classifications is critical to reflect the robustness of clustering analysis and to determine potential but novel subtypes. To measure the agreement (similarity) between the current subtypes and other pre-existed classifications, MOVICS provides function of `compAgree()` to calculate four statistics: Rand Index (RI)<sup>12</sup>, Adjusted Mutual Information (AMI)<sup>13</sup>, Jaccard Index (JI)<sup>14</sup>, and Fowlkes-Mallows (FM)<sup>15</sup>; all these measurements range from 0 to 1 and the larger the value is, the more similar the two appraises are. This function can also generate an alluvial diagram to visualize the agreement of two appraises with the current subtypes as reference. 
 ```{r, fig.align="center", fig.width=8, fig.height=5, fig.cap="Figure 11. Agreement of 5 identified subtypes of breast cancer with PAM50 classification and pathological stage in TCGA-BRCA cohort.", eval=TRUE}
 # customize the factor level for pstage
 surv.info$pstage <- factor(surv.info$pstage, levels = c("TX","T1","T2","T3","T4"))
@@ -833,7 +833,7 @@ pseudo.moic.res$clust.res$clust <- sapply(pseudo.moic.res$clust.res$PAM50,
                                           "Normal"  = 5) # relabel Normal as 5
 ```
 
-Let check how the pseudo `moic.res` object looks like.
+Let's check how the pseudo `moic.res` object looks like.
 ```{r, eval=TRUE}
 head(pseudo.moic.res$clust.res)
 ```
@@ -886,7 +886,7 @@ Please cite corresponding literature below for multi-omic clustering algorithm i
   + LRAcluster: Wu D, Wang D, Zhang MQ, Gu J (2015). Fast dimension reduction and integrative clustering of multi-omics data using low-rank approximation: application to cancer molecular classification. BMC Genomics, 16(1):1022.
   + NEMO: Rappoport N, Shamir R (2019). NEMO: cancer subtyping by integration of partial multi-omic data. Bioinformatics, 35(18):3348-3356.
   + PINSPlus: Nguyen H, Shrestha S, Draghici S, Nguyen T (2019). PINSPlus: a tool for tumor subtype discovery in integrated genomic data. Bioinformatics, 35(16):2843-2846.
-  + SNF`: Wang B, Mezlini AM, Demir F, et al (2014). Similarity network fusion for aggregating data types on a genomic scale. Nat Methods, 11(3):333-337.
+  + SNF: Wang B, Mezlini AM, Demir F, et al (2014). Similarity network fusion for aggregating data types on a genomic scale. Nat Methods, 11(3):333-337.
   
 Heatmap generated by MOVICS uses ComplexHeatmap R package, so please cite if any heatmap is created:
 
@@ -943,7 +943,7 @@ External validation uses nearest template prediction as implanted in CMScaller R
 5. Chalise P, Fridley BL (2017). Integrative clustering of multi-level omic data based on non-negative matrix factorization algorithm. PLoS One, 12(5):e0176278.
 6. Tibshirani, R., Walther, G., Hastie, T. (2001). Estimating the number of data clusters via the Gap statistic. J R Stat Soc Series B Stat Methodol, 63(2):411-423.
 7. Strehl, Alexander; Ghosh, Joydeep. (2002). Cluster ensembles – a knowledge reuse framework for combining multiple partitions. J Mach Learn Res, 3(Dec):583–617.
-8. Le DT, Uram JN, Wang H, et al. (2015). PD-1 Blockade in tumors with mismatch-repair deﬁciency. N Engl J Med, 372(26):2509–2520.
+8. Le DT, Uram JN, Wang H, et al. (2015). PD-1 Blockade in tumors with mismatch-repair deficiency. N Engl J Med, 372(26):2509–2520.
 9. Davoli T, Uno H, Wooten E C, et al. (2017). Tumor aneuploidy correlates with markers of immune evasion and with reduced response to immunotherapy. Science, 355(6322):261-U75.
 10. Geeleher P, Cox N J, Huang R S (2014). Clinical drug response can be predicted using baseline gene expression levels and in vitro drug sensitivity in cell lines. Genome Biol, 15(3):1-12.
 11. Geeleher P, Cox N, Huang R S (2014). pRRophetic: an R package for prediction of clinical chemotherapeutic response from tumor gene expression levels. PLoS One, 9(9):e107468.
