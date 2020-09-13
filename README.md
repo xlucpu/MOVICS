@@ -1,15 +1,8 @@
----
-output:
-  md_document:
-    variant: gfm
-html_preview: false
----
-
 # MOVICS
 
 Multi-Omics integration and VIsualization in Cancer Subtyping
 
-<img src="https://github.com/xlucpu/MOVICS/tree/master/man/figure/hexsticker.jpg" height="200" align="right" />
+<img src="https://github.com/xlucpu/MOVICS/tree/master/man/figure/hexsticker.png" height="200" align="right" />
 
 ## Introduction
 
