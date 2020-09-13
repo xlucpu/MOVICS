@@ -22,8 +22,8 @@ devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
 When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, you can refer to the `Imports` in the [DESCRIPTION](https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION) file, try to install all the R dependencies, and then install MOVICS.
 
 ## Guidance
-
-A detailed guide of how to use MOVICS could be find in the HTML vignette by typing the following code to R session.
+![pipeline](https://user-images.githubusercontent.com/57204704/93013330-11e33500-f5da-11ea-96af-d2ab3d59e436.jpg)
+MOVICS Pipeline diagram above outlines the concept for this package, and a detailed guide of how to use MOVICS could be find in the HTML vignette by typing the following code to R session.
 ```{r}
 browseVignettes("MOVICS")
 ```
