@@ -10,7 +10,7 @@ The goal of MOVICS is to provide a unified interface for 10 state-of-the-art mul
 analyses. MOVICS incorporates the most commonly used downstream analyses in cancer subtyping researches and enables creating feature rich customizable visualizations with minimal effort.
 
 ## Installation
-It is essential that you have [R 4.0.0](https://www.r-project.org/) or above already installed on your computer or server. MOVICS is a pipeline that utilizes many other R packages that are currently available from CRAN and Bioconductor. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version ([BiocManager v3.11](https://www.bioconductor.org/install/)).
+It is essential that you have [R 4.0.2](https://www.r-project.org/) or above already installed on your computer or server. MOVICS is a pipeline that utilizes many other R packages that are currently available from CRAN and Bioconductor. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version ([BiocManager v3.11](https://www.bioconductor.org/install/)).
 After you have R and Bioconductor installed properly, type the following code into your R session:
 ``` {r}
 if (!requireNamespace("BiocManager", quietly = TRUE))

@@ -164,11 +164,11 @@ compSurv <- function(moic.res         = NULL,
                             p.adjust.method = p.adjust.method)
 
     # add pair-wise comparison table
-    options(stringsAsFactors = FALSE)
+    # options(stringsAsFactors = FALSE)
     addTab <- as.data.frame(as.matrix(ifelse(round(ps$p.value, 3) < 0.001, "<0.001",
                                              round(ps$p.value, 3))))
     addTab[is.na(addTab)] <- "-"
-    options(stringsAsFactors = TRUE)
+    # options(stringsAsFactors = TRUE)
 
     df <- tibble(x = 0, y = 0, tb = list(addTab))
     p$plot <- p$plot + geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE)
