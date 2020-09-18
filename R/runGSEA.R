@@ -198,7 +198,7 @@ runGSEA <- function(moic.res     = NULL,
   }
 
   if(max(norm.expr) < 25 | (max(norm.expr) >= 25 & min(norm.expr) < 0)) {
-    message("--expression profile seems to have veen standardised (z-score or log transformation), no more action will be performed.")
+    message("--expression profile seems to have been standardised (z-score or log transformation), no more action will be performed.")
     gset <- norm.expr
   }
   if(max(norm.expr) >= 25 & min(norm.expr) >= 0){

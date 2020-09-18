@@ -7,8 +7,8 @@
 runNTP(
   expr = NULL,
   templates = NULL,
-  scale = FALSE,
-  center = FALSE,
+  scale = TRUE,
+  center = TRUE,
   nPerm = 1000,
   distance = "cosine",
   seed = 123456,

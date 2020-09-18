@@ -6,8 +6,7 @@ Multi-Omics integration and VIsualization in Cancer Subtyping
 
 ## Introduction
 
-The goal of MOVICS is to provide a unified interface for 10 state-of-the-art multi-omics clustering algorithms, and standardizes the output for each algorithm so as to form a pipeline for downstream
-analyses. MOVICS incorporates the most commonly used downstream analyses in cancer subtyping researches and enables creating feature rich customizable visualizations with minimal effort.
+The goal of MOVICS is to provide a unified interface for 10 state-of-the-art multi-omics clustering algorithms, and standardizes the output for each algorithm so as to form a pipeline for downstream analyses. MOVICS incorporates the most commonly used downstream analyses in cancer subtyping researches and enables creating feature rich customizable visualizations with minimal effort.
 
 ## Installation
 It is essential that you have [R 4.0.2](https://www.r-project.org/) or above already installed on your computer or server. MOVICS is a pipeline that utilizes many other R packages that are currently available from CRAN and Bioconductor. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version ([BiocManager v3.11](https://www.bioconductor.org/install/)).
@@ -22,7 +21,7 @@ devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
 When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, you can refer to the `Imports` in the [DESCRIPTION](https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION) file, try to install all the R dependencies, and then install MOVICS.
 
 ## Guidance
-![pipeline](https://user-images.githubusercontent.com/57204704/93013330-11e33500-f5da-11ea-96af-d2ab3d59e436.jpg)
+![pkg_pipeline](https://user-images.githubusercontent.com/57204704/93575148-d9719b80-f9cb-11ea-8ceb-5a7d1178377c.jpg)
 MOVICS Pipeline diagram above outlines the concept for this package, and a detailed guide of how to use MOVICS could be find in the HTML vignette by typing the following code to R session.
 ```{r}
 browseVignettes("MOVICS")
@@ -31,11 +30,10 @@ Please email to <xlu.cpu@foxmail.com> if you have any questions, bug reports, or
 
 ## Citation
 
-If you use MOVICS R package in published research, please cite:
+For now, if you use MOVICS R package in published research, please cite:
 
-  - HAVE NOT BEEN PUBLISHED
+  - Lu, X., Meng, J., Zhou, Y., Jiang, L., and Yan, F. (2020). MOVICS: an R package for multi-omics integration and visualization in cancer subtyping. bioRxiv, 2020.2009.2015.297820. [doi.org/10.1101/2020.09.15.297820]
 
 ## Acknowledgement
 
-I would like to express my gratitude to *Dr. Morgane Pierre-Jean* for the inspiration brought by the study of evaluating unsupervised methods for multi-omics data integration. I also want to thank *Dr. Enyu Lin* for the helping in calculation and visualization of fraction genome altered, and
-to thank *Dr. Rongfang Shen* for the assistance in visualization of Transitions and Transversions. At last, sincere thanks to the brilliant contributors of all the functions incorporated in MOVICS package.
+I would like to express my gratitude to *Dr. Morgane Pierre-Jean* for the inspiration brought by the study of evaluating unsupervised methods for multi-omics data integration. I also want to thank *Dr. Enyu Lin* for the helping in calculation and visualization of fraction genome altered, and to thank *Dr. Rongfang Shen* for the assistance in visualization of Transitions and Transversions. At last, sincere thanks to the brilliant contributors of all the functions incorporated in MOVICS package.

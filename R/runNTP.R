@@ -28,8 +28,8 @@
 #' @references Hoshida, Y. (2010). Nearest Template Prediction: A Single-Sample-Based Flexible Class Prediction with Confidence Assessment. PLoS ONE 5, e15543.
 runNTP <- function(expr      = NULL,
                    templates = NULL,
-                   scale     = FALSE,
-                   center    = FALSE,
+                   scale     = TRUE,
+                   center    = TRUE,
                    nPerm     = 1000,
                    distance  = "cosine",
                    seed      = 123456,
@@ -47,7 +47,7 @@ runNTP <- function(expr      = NULL,
   }
 
   com_feat <- intersect(rownames(expr), templates$probe)
-  message(paste0("--original template has ",nrow(templates), " biomarkers and ", length(com_feat)," are matched in external expression profiling."))
+  message(paste0("--original template has ",nrow(templates), " biomarkers and ", length(com_feat)," are matched in external expression profile."))
   expr <- expr[com_feat, , drop = FALSE]
   templates <- templates[which(templates$probe %in% com_feat), , drop = FALSE]
 

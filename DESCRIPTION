@@ -1,6 +1,6 @@
 Package: MOVICS
 Title: Multi-Omics integration and VIsualization in Cancer Subtyping
-Version: 0.99.0
+Version: 0.99.1
 Authors@R: 
     person(given = "Xiaofan",
            family = "Lu",
@@ -61,7 +61,9 @@ Imports:
     grDevices,
     maftools,
     patchwork,
-    ComplexHeatmap (>= 2.5.4)
+    ComplexHeatmap (>= 2.5.4),
+    pamr,
+    clusterRepro
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 biocViews: Clustering, DifferentialExpression, GeneSetEnrichment, MultipleComparison, SomaticMutation, CopyNumberVariation, Survival
@@ -95,6 +97,8 @@ Collate:
     'runGSEA.R'
     'runMarker.R'
     'runNTP.R'
+	'runPAM.R'
+	'runKappa.R'
     'pRRophetic.R'
     'LRAcluster.R'
     'quiet.R'
