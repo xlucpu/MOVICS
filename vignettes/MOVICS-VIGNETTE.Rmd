@@ -832,7 +832,7 @@ print(yau.pam.pred$IGP)
 
 #### <a id="Section.4.2.3.5" style="color:#159957;">6) run consistency evaluation using Kappa statistics</a>
 Want to know how accurate the NTP or PAM is when using discovery cohort? Want to know how consistent the different prediction results are? Use `runKappa()` then:
-```{r, fig.show = "hold", out.width = "33.3%", fig.align = "default", fig.width=10, fig.height=3.5, fig.cap="Figure 19. Consistency heatmap using Kappa statistics.", eval=TRUE}
+```{r, fig.show = "hold", out.width = "33.3%", fig.align = "default", fig.width=10, fig.height=9, fig.cap="Figure 19. Consistency heatmap using Kappa statistics.", eval=TRUE}
 # predict subtype in discovery cohort using NTP
 tcga.ntp.pred <- runNTP(expr      = fpkm,
                         templates = marker.up$templates,
@@ -990,7 +990,7 @@ External validation uses nearest template prediction as implanted in CMScaller R
 If using partition around medoids classifier, then cite:
 
   >+ Tibshirani R, Hastie T, Narasimhan B and Chu G (2002). Diagnosis of multiple cancer types by shrunken centroids of gene expression. Proc Natl Acad Sci, 99,6567–6572.
-  + Kapp A V, Tibshirani R. (2007). Are clusters found in one dataset present in another dataset?. Biostatistics, 8(1):9-31.
+  + Kapp A V, Tibshirani R. (2007). Are clusters found in one dataset present in another dataset? Biostatistics, 8(1):9-31.
 
 # <a id="Section.9" style="color:#159957;">REFERENCES</a> 
 >1. Pierre-Jean M, Deleuze J F, Le Floch E, et al (2019). Clustering and variable selection evaluation of 13 unsupervised methods for multi-omics data integration. Brief Bioinformatics.
@@ -1010,4 +1010,4 @@ If using partition around medoids classifier, then cite:
 15. Fowlkes E B, Mallows C L. (1983). A method for comparing two hierarchical clusterings. J Am Stat Assoc, 78(383):553-569.
 16. Hoshida, Y. (2010). Nearest Template Prediction: A Single-Sample-Based Flexible Class Prediction with Confidence Assessment. PLoS One, 5(11):e15543.
 17. Tibshirani R, Hastie T, Narasimhan B and Chu G (2002). Diagnosis of multiple cancer types by shrunken centroids of gene expression. Proc Natl Acad Sci, 99,6567–6572.
-18. Kapp A V, Tibshirani R. (2007). Are clusters found in one dataset present in another dataset?. Biostatistics, 8(1):9-31.
+18. Kapp A V, Tibshirani R. (2007). Are clusters found in one dataset present in another dataset?, Biostatistics, 8(1):9-31.

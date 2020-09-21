@@ -3,7 +3,7 @@
 #' @description Create a table summarizing all baseline variables (both continuous and categorical) stratifying by current identified Subtypes and performing statistical tests. The object gives a table that is easy to use in medical research papers.
 #' @param moic.res An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.
 #' @param var2comp A data.frame of clinical variables that need to compare among current subtypes with rownames for samples and columns for variable names.
-#' @param strata A string value to indicate the stratifying (subtype) variable; 'Subtype' by default.
+#' @param strata A string value to indicate the stratifying variable. This function will generate an internal 'Subtype' variable which concatenates a string of 'CS' and values from 'clust' column of 'clust.res' in argument of `moic.res`. This argument is set as NULL by default and in this case using 'Subtype' variable as strata.
 #' @param factorVars A string vectors to indicate the categorical variables. If omitted, only factors are considered categorical variables.
 #' @param nonnormalVars A string vector to specify the variables for which the p-values should be those of nonparametric tests. By default all p-values are from normal assumption-based tests (oneway.test)., Default: NULL
 #' @param exactVars A string vector to specify the variables for which the p-values should be those of exact tests. By default all p-values are from large sample approximation tests (chisq.test)., Default: NULL
@@ -20,7 +20,7 @@
 #' @examples # There is no example and please refer to vignette.
 compClinvar <- function(moic.res      = NULL,
                         var2comp      = NULL,
-                        strata        = "Subtype",
+                        strata        = NULL,
                         factorVars    = NULL,
                         nonnormalVars = NULL,
                         exactVars     = NULL,
@@ -44,6 +44,12 @@ compClinvar <- function(moic.res      = NULL,
   dat <- cbind.data.frame("Subtype" = dat[com_sam, "Subtype", drop = FALSE], var2comp[com_sam, , drop = FALSE])
 
   # summarizing
+  if(is.null(strata)) {
+    strata <- "Subtype"
+  }
+  if(!is.element(strata, colnames(dat))) {
+    stop("fail to find this strata in var2comp. Consider using NULL by default.")
+  }
   stabl <- jstable::CreateTableOne2(vars = setdiff(colnames(dat), strata),
                                     strata = strata,
                                     data = dat,
@@ -69,7 +75,7 @@ compClinvar <- function(moic.res      = NULL,
 
   # generate WORD format
   if(doWord){
-
+    #comtable$p <- gsub("<","\\\\<",comtable$p)
     table_subtitle <- colnames(comtable)
 
     title_name <- paste0("Table *. ", gsub(".txt", "", outFile, fixed = TRUE))

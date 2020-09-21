@@ -108,13 +108,13 @@ tmp       <- brca.tcga$mut.status # get mutation data
 rowSums(tmp) # check mutation frequency
 elite.tmp <- getElites(dat       = tmp,
                        method    = "freq", # must set as 'freq'
-                       elite.num = 80, # note: in this scenario elite.num refer to frequency of mutation
+                       elite.num = 80, # note: in this scenario elite.num refers to frequency of mutation
                        elite.pct = 0.1) # discard because elite.num has been already indicated
 rowSums(elite.tmp$elite.dat) # only genes that are mutated in over than 80 samples are kept as elites
 
 elite.tmp <- getElites(dat       = tmp,
                        method    = "freq", # must set as 'freq'
-                       elite.pct = 0.2) # note: in this scenario elite.pct refer to frequency of mutation / sample size
+                       elite.pct = 0.2) # note: in this scenario elite.pct refers to frequency of mutation / sample size
 rowSums(elite.tmp$elite.dat) # only genes that are mutated in over than 0.2*643=128.6 samples are kept as elites
 
 # get mo.data list just like below (not run)
@@ -275,8 +275,8 @@ getMoHeatmap(data          = plotdata,
 surv.brca <- compSurv(moic.res         = cmoic.brca,
                       surv.info        = surv.info,
                       convt.time       = "m", # convert day unit to month
-                      surv.median.line = "h",
-                      fig.name         = "KAPLAN-MEIER CURVE OF CONSENSUSMOIC") # draw horizontal line at median survival
+                      surv.median.line = "h", # draw horizontal line at median survival
+                      fig.name         = "KAPLAN-MEIER CURVE OF CONSENSUSMOIC")
 
 print(surv.brca)
 
@@ -525,24 +525,24 @@ gsea.dn <- runGSEA(moic.res     = cmoic.brca,
 
 ## ---- fig.align="center", fig.width=6, fig.height=6, fig.cap="Figure 16. Heatmap of NTP in Yau cohort using subtype-specific upregulated biomarkers identified from TCGA-BRCA cohort", eval=TRUE----
 # run NTP in Yau cohort by using up-regulated biomarkers
-brca.pred <- runNTP(expr      = brca.yau$mRNA.expr,
-                    templates = marker.up$templates, # the template has been already prepared in runMarker()
-                    scale     = TRUE, # scale input data
-                    center    = TRUE, # center input data
-                    doPlot    = TRUE, # to generate heatmap
-                    fig.name  = "NTP HEATMAP FOR YAU") 
+yau.ntp.pred <- runNTP(expr      = brca.yau$mRNA.expr,
+                       templates = marker.up$templates, # the template has been already prepared in runMarker()
+                       scale     = TRUE, # scale input data (by default)
+                       center    = TRUE, # center input data (by default)
+                       doPlot    = TRUE, # to generate heatmap
+                       fig.name  = "NTP HEATMAP FOR YAU") 
 
 ## ---- eval=FALSE--------------------------------------------------------------
-#  head(brca.pred$ntp.res)
+#  head(yau.ntp.pred$ntp.res)
 
 ## ---- echo=FALSE, eval=TRUE---------------------------------------------------
-head(brca.pred$ntp.res) %>%
+head(yau.ntp.pred$ntp.res) %>%
   kbl(caption = "Table 10. Demo of predicted subtypes in Yau cohort by NTP using subtype-specific upregulated biomarkers identified from TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
 ## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 17. Kaplan-Meier survival curve of predicted 5 subtypes of breast cancer in Yau cohort.", eval=TRUE----
 # compare survival outcome in Yau cohort
-surv.yau <- compSurv(moic.res         = brca.pred,
+surv.yau <- compSurv(moic.res         = yau.ntp.pred,
                      surv.info        = brca.yau$clin.info,
                      convt.time       = "m", # switch to year
                      surv.median.line = "hv", # switch to both
@@ -552,7 +552,7 @@ print(surv.yau)
 
 ## ---- fig.align="center", fig.width=8, fig.height=5, fig.cap="Figure 18. Agreement of predicted 5 subtypes of breast cancer with PAM50 classification in Yau cohort.", eval=TRUE----
 # compare agreement in Yau cohort
-agree.yau <- compAgree(moic.res  = brca.pred,
+agree.yau <- compAgree(moic.res  = yau.ntp.pred,
                        subt2comp = brca.yau$clin.info[, "PAM50", drop = FALSE],
                        doPlot    = TRUE,
                        fig.name  = "YAU PREDICTEDMOIC WITH PAM50")
@@ -565,6 +565,46 @@ agree.yau <- compAgree(moic.res  = brca.pred,
 agree.yau %>%
   kbl(caption = "Table 11. Agreement of 5 predicted subtypes of breast cancer with PAM50 classification in Yau cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
+
+## ---- eval=TRUE---------------------------------------------------------------
+yau.pam.pred <- runPAM(train.expr  = fpkm,
+                       moic.res    = cmoic.brca,
+                       test.expr   = brca.yau$mRNA.expr)
+
+## ---- eval=TRUE---------------------------------------------------------------
+print(yau.pam.pred$IGP)
+
+## ---- fig.show = "hold", out.width = "33.3%", fig.align = "default", fig.width=10, fig.height=9, fig.cap="Figure 19. Consistency heatmap using Kappa statistics.", eval=TRUE----
+# predict subtype in discovery cohort using NTP
+tcga.ntp.pred <- runNTP(expr      = fpkm,
+                        templates = marker.up$templates,
+                        doPlot    = FALSE) 
+
+# predict subtype in discovery cohort using PAM
+tcga.pam.pred <- runPAM(train.expr  = fpkm,
+                        moic.res    = cmoic.brca,
+                        test.expr   = fpkm)
+
+# check consistency between current and NTP-predicted subtype in discovery TCGA-BRCA
+runKappa(subt1     = cmoic.brca$clust.res$clust,
+         subt2     = tcga.ntp.pred$clust.res$clust,
+         subt1.lab = "CMOIC",
+         subt2.lab = "NTP",
+         fig.name  = "CONSISTENCY HEATMAP FOR TCGA between CMOIC and NTP")
+
+# check consistency between current and PAM-predicted subtype in discovery TCGA-BRCA
+runKappa(subt1     = cmoic.brca$clust.res$clust,
+         subt2     = tcga.pam.pred$clust.res$clust,
+         subt1.lab = "CMOIC",
+         subt2.lab = "PAM",
+         fig.name  = "CONSISTENCY HEATMAP FOR TCGA between CMOIC and PAM")
+
+# check consistency between NTP and PAM-predicted subtype in validation Yau-BRCA
+runKappa(subt1     = yau.ntp.pred$clust.res$clust,
+         subt2     = yau.pam.pred$clust.res$clust,
+         subt1.lab = "NTP",
+         subt2.lab = "PAM",
+         fig.name  = "CONSISTENCY HEATMAP FOR YAU")
 
 ## ---- eval=TRUE---------------------------------------------------------------
 # include original clinical information as `clust.res` and a string value for `mo.method` to a list
@@ -591,7 +631,7 @@ head(pseudo.moic.res$clust.res)
 #    kbl(caption = "Table . Demo of pseudo object for downstream analyses in MOVICS.") %>%
 #    kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 19. Kaplan-Meier survival curve of PAM50 subtypes of breast cancer with pseudo input in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 20. Kaplan-Meier survival curve of PAM50 subtypes of breast cancer with pseudo input in TCGA-BRCA cohort.", eval=TRUE----
 # survival comparison
 pam50.brca <- compSurv(moic.res         = pseudo.moic.res,
                        surv.info        = surv.info,

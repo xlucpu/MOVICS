@@ -9,7 +9,7 @@ Multi-Omics integration and VIsualization in Cancer Subtyping
 The goal of MOVICS is to provide a unified interface for 10 state-of-the-art multi-omics clustering algorithms, and standardizes the output for each algorithm so as to form a pipeline for downstream analyses. MOVICS incorporates the most commonly used downstream analyses in cancer subtyping researches and enables creating feature rich customizable visualizations with minimal effort.
 
 ## Installation
-It is essential that you have [R 4.0.2](https://www.r-project.org/) or above already installed on your computer or server. MOVICS is a pipeline that utilizes many other R packages that are currently available from CRAN and Bioconductor. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version ([BiocManager v3.11](https://www.bioconductor.org/install/)).
+It is essential that you have [R 4.0.2](https://www.r-project.org/) or above already installed on your computer. MOVICS is a pipeline that utilizes many other R packages that are currently available from CRAN and Bioconductor. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version ([BiocManager v3.11](https://www.bioconductor.org/install/)).
 After you have R and Bioconductor installed properly, type the following code into your R session:
 ``` {r}
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -22,7 +22,7 @@ When you are installing MOVICS, you may encounter some errors saying that some p
 
 ## Guidance
 ![pkg_pipeline](https://user-images.githubusercontent.com/57204704/93575148-d9719b80-f9cb-11ea-8ceb-5a7d1178377c.jpg)
-MOVICS Pipeline diagram above outlines the concept for this package, and a detailed guide of how to use MOVICS could be find in the HTML vignette by typing the following code to R session.
+MOVICS Pipeline diagram above outlines the concept for this package, and a detailed guide of how to use MOVICS could be find directly in the [HTML vignette](https://xlucpu.github.io/MOVICS/MOVICS-VIGNETTE.html), or by typing the following code to R session.
 ```{r}
 browseVignettes("MOVICS")
 ```
