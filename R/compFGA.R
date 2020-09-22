@@ -47,7 +47,7 @@ compFGA <- function(moic.res     = NULL,
 
   # check arguments
   if(!all(is.element(c("sample","chrom","start","end","value"), colnames(segment)))) {
-    stop("segment data must have the following columns: sample, Chrom, Start, End, value.")
+    stop("segment data must have the following columns: sample, chrom, start, end, value.")
   }
 
   if(iscopynumber) {
