@@ -1,6 +1,6 @@
 Package: MOVICS
 Title: Multi-Omics integration and VIsualization in Cancer Subtyping
-Version: 0.99.1
+Version: 0.99.2
 Authors@R: 
     person(given = "Xiaofan",
            family = "Lu",
@@ -18,7 +18,7 @@ Suggests:
     rmarkdown,
     kableExtra
 Remotes: 
-    github::danro9685/CIMLR@R, github::Lothelab/CMScaller@master, github::jokergoo/ComplexHeatmap@master
+    github::danro9685/CIMLR@R, github::Lothelab/CMScaller@master, github::jokergoo/ComplexHeatmap@master, github::davidgohel/officer@master
 Imports: 
     CIMLR,
     ClassDiscovery,
@@ -40,7 +40,6 @@ Imports:
     limma,
     DESeq2,
     edgeR,
-    officer,
     aricode,
     ggalluvial,
     flexclust,

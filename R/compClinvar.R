@@ -75,7 +75,6 @@ compClinvar <- function(moic.res      = NULL,
 
   # generate WORD format
   if(doWord){
-    comtable$p <- gsub("<","＜",comtable$p) # less-than sign of < will be translated to &lt
     table_subtitle <- colnames(comtable)
 
     title_name <- paste0("Table *. ", gsub(".txt", "", outFile, fixed = TRUE))

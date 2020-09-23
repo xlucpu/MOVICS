@@ -1009,5 +1009,5 @@ If using partition around medoids classifier, then cite:
 14. Jaccard Distance (Jaccard Index, Jaccard Similarity Coefficient). Dictionary of Bioinformatics and Computational Biology.
 15. Fowlkes E B, Mallows C L. (1983). A method for comparing two hierarchical clusterings. J Am Stat Assoc, 78(383):553-569.
 16. Hoshida, Y. (2010). Nearest Template Prediction: A Single-Sample-Based Flexible Class Prediction with Confidence Assessment. PLoS One, 5(11):e15543.
-17. Tibshirani R, Hastie T, Narasimhan B and Chu G (2002). Diagnosis of multiple cancer types by shrunken centroids of gene expression. Proc Natl Acad Sci, 99,6567–6572.
+17. Tibshirani R, Hastie T, Narasimhan B and Chu G (2002). Diagnosis of multiple cancer types by shrunken centroids of gene expression. Proc Natl Acad Sci, 99(10):6567–6572.
 18. Kapp A V, Tibshirani R. (2007). Are clusters found in one dataset present in another dataset?, Biostatistics, 8(1):9-31.
