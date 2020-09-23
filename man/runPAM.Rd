@@ -40,7 +40,7 @@ This function first trains a partition around medoids (PAM) classifier in the di
 # There is no example and please refer to vignette.
 }
 \references{
-Robert Tibshirani, Trevor Hastie, Balasubramanian Narasimhan, and Gilbert Chu Diagnosis of multiple cancer types by shrunken centroids of gene expression PNAS 99: 6567-6572. 
+Tibshirani R, Hastie T, Narasimhan B and Chu G (2002). Diagnosis of multiple cancer types by shrunken centroids of gene expression. Proc Natl Acad Sci, 99,6567–6572.
 
 Kapp A V, Tibshirani R. (2007). Are clusters found in one dataset present in another dataset?. Biostatistics, 8(1):9-31.
 }

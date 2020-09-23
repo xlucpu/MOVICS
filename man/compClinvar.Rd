@@ -7,7 +7,7 @@
 compClinvar(
   moic.res = NULL,
   var2comp = NULL,
-  strata = "Subtype",
+  strata = NULL,
   factorVars = NULL,
   nonnormalVars = NULL,
   exactVars = NULL,
@@ -23,7 +23,7 @@ compClinvar(
 
 \item{var2comp}{A data.frame of clinical variables that need to compare among current subtypes with rownames for samples and columns for variable names.}
 
-\item{strata}{A string value to indicate the stratifying (subtype) variable; 'Subtype' by default.}
+\item{strata}{A string value to indicate the stratifying variable. This function will generate an internal 'Subtype' variable which concatenates a string of 'CS' and values from 'clust' column of 'clust.res' in argument of `moic.res`. This argument is set as NULL by default and in this case using 'Subtype' variable as strata.}
 
 \item{factorVars}{A string vectors to indicate the categorical variables. If omitted, only factors are considered categorical variables.}
 
