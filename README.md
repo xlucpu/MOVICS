@@ -20,6 +20,32 @@ devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
 ```
 When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, you can refer to the `Imports` in the [DESCRIPTION](https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION) file, try to install all the R dependencies, and then install MOVICS.
 
+This package has been tested for installation in Windows 10 and macOS Catalina 10.15.6. Windows users may encounter network problems when installing dependencies (*e.g.*, CMScaller, ComplexHeatmap, CIMLR) stored in GitHub, please be very patient and try a few more times. In addition to network problems, Mac users may encounter error messages when installing CIMLR and ridge packages. The following are the solutions to the problems I met during the test installation on macOS.
+
+To successfully install CIMLR in macOS, first you must make sure that you have installed Xcode and GNU Fortran compiler, and please follow the [instruction](https://mac.r-project.org/tools/) to get them installed. Afterwards if R GUI (I use [RStudio](https://rstudio.com/)) still pops up a message of `building r package from source requires installation of additional build tools mac` which prevents you from continuing to install CIMLR, try typing the following code to your R session to shut this message down:
+```{r}
+options(buildtools.check = function(action) TRUE)
+```
+Then, if you encounter error of `unable to locate xcodebuild, please make sure the path to the Xcode folder is set correctly!`, try using the following command to your macOS Terminal:
+```{bash}
+sudo xcode-select --switch /Library/Developer/CommandLineTools/
+```
+Retry installing CIMLR, there should be no problems then.
+
+If you got error when installing ridge, maybe you have not installed lib gsl correctly. Please refer to this [thread](https://github.com/SteffenMoritz/ridge/issues/14), type the following command to your macOS Terminal:
+```{bash}
+brew install gsl
+```
+If the Terminal tells you that `–bash: brew: command not found`, which means you do not have brew installed. Please refer to the [instruction](https://brew.sh/) or just paste the following command to the Terminal:
+```{bash}
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+Afterwards would be nice if you could post the Mac OS Terminal output of 
+```{bash}
+which gsl-config
+```
+Then retry installing ridge, it should be fine.
+
 ## Guidance
 ![pkg_pipeline](https://user-images.githubusercontent.com/57204704/93575148-d9719b80-f9cb-11ea-8ceb-5a7d1178377c.jpg)
 MOVICS Pipeline diagram above outlines the concept for this package, and a detailed guide of how to use MOVICS could be find directly in the [HTML vignette](https://xlucpu.github.io/MOVICS/MOVICS-VIGNETTE.html), or by typing the following code to R session.
