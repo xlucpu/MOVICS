@@ -149,11 +149,19 @@ getElites <- function(dat        = NULL,
   if(method %in% c("sd", "mad")) {
     if(!is.null(elite.num) & !is.null(elite.pct)) {
       message("elite.num has been provided then discards elite.pct.")
-      elite <- names(statistic)[1:elite.num]
+      if(elite.num > length(statistic)) {
+        stop(paste0("number of remaining features (n=", length(statistic), ") less than elite.num of ",elite.num,", please consider to use elite.pct."))
+      } else {
+        elite <- names(statistic)[1:elite.num]
+      }
     }
     if(!is.null(elite.num) & is.null(elite.pct)) {
       message("missing elite.pct then use elite.num.")
-      elite <- names(statistic)[1:elite.num]
+      if(elite.num > length(statistic)) {
+        stop(paste0("number of remaining features (n=", length(statistic), ") less than elite.num of ",elite.num,", please consider to use elite.pct."))
+      } else {
+        elite <- names(statistic)[1:elite.num]
+      }
     }
     if(is.null(elite.num) & !is.null(elite.pct)) {
       message("missing elite.num then use elite.pct")
