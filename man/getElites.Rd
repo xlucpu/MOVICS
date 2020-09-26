@@ -29,7 +29,7 @@ getElites(
 
 \item{doLog2}{A logic value to indicate if performing log2 transformation for data before calculating statistics (e.g., sd, mad and cox). FALSE by default.}
 
-\item{lowpct}{A numeric cutoff for removing low expression values. NULL by default; 0.1 is recommended for continuous data which means features that have no expression in more than 10% samples will be removed. Otherwise default value of NULL should be kept for binary data.}
+\item{lowpct}{A numeric cutoff for removing low expression values. NULL by default; 0.1 is recommended for continuous data which means features that have no expression in more than 10\% samples will be removed. Otherwise default value of NULL should be kept for binary data.}
 
 \item{p.cutoff}{A numeric cutoff for nominal p value derived from univariate Cox proportional hazards regression; 0.05 by default.}
 
