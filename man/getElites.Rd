@@ -10,6 +10,7 @@ getElites(
   method = "mad",
   na.action = "rm",
   doLog2 = FALSE,
+  lowpct = NULL,
   p.cutoff = 0.05,
   elite.pct = NULL,
   elite.num = NULL,
@@ -18,7 +19,7 @@ getElites(
 )
 }
 \arguments{
-\item{dat}{A data.frame of one omics data, can be continous or binary data.}
+\item{dat}{A data.frame of one omics data, can be continuous or binary data.}
 
 \item{surv.info}{A data.frame with rownames of observations and with at least two columns of `futime` for survival time and `fustat` for survival status (0: censoring; 1: event)}
 
@@ -28,15 +29,17 @@ getElites(
 
 \item{doLog2}{A logic value to indicate if performing log2 transformation for data before calculating statistics (e.g., sd, mad and cox). FALSE by default.}
 
+\item{lowpct}{A numeric cutoff for removing low expression values. NULL by default; 0.1 is recommended for continuous data which means features that have no expression in more than 10% samples will be removed. Otherwise default value of NULL should be kept for binary data.}
+
 \item{p.cutoff}{A numeric cutoff for nominal p value derived from univariate Cox proportional hazards regression; 0.05 by default.}
 
-\item{elite.pct}{A numberic cutoff of percentage for selecting elites. NOTE: epite.pct works for all methods except for 'cox', but two scenarios exist. 1) when using method of 'mad' or 'sd', features will be descending sorted by mad or sd, and top elites.pct \* feature size of elites (features) will be selected; 2) when using method of 'freq' for binary data, frequency for value of 1 will be calculated for each feature, and features that have value of 1 in greater than elites.pct \* sample size will be considered elites. This argument will be discarded if elite.num is provided simultaneously. Set this argument with 1 and leave elite.num NULL will return all the features as elites after dealing with NA values.}
+\item{elite.pct}{A numeric cutoff of percentage for selecting elites. NOTE: epite.pct works for all methods except for 'cox', but two scenarios exist. 1) when using method of 'mad' or 'sd', features will be descending sorted by mad or sd, and top elites.pct \* feature size of elites (features) will be selected; 2) when using method of 'freq' for binary data, frequency for value of 1 will be calculated for each feature, and features that have value of 1 in greater than elites.pct \* sample size will be considered elites. This argument will be discarded if elite.num is provided simultaneously. Set this argument with 1 and leave elite.num NULL will return all the features as elites after dealing with NA values.}
 
 \item{elite.num}{A integer cutoff of exact number for selecting elites. NOTE: elite.num works for all methods except for 'cox', but two scenarios exist. 1) when using method of 'mad' or 'sd', features will be descending sorted by mad or sd, and top elite.num of elites (features) will be selected; 2) when using method of 'freq' for binary data, frequency for value of 1 will be calculated for each feature, and features that have value of 1 in greater than elite.num of sample size will be considered elites.}
 
 \item{scaleFlag}{A logic value to indicate if scaling the data after filtering. FALSE by default.}
 
-\item{centerFlag}{A logic value to indicate if centerring the data after filtering. FALSE by default.}
+\item{centerFlag}{A logic value to indicate if centering the data after filtering. FALSE by default.}
 }
 \value{
 A list containing the following components:
