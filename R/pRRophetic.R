@@ -72,8 +72,8 @@ calcPhenotype <- function(trainingExprData, trainingPtype, testExprData, batchCo
 {
 
   # check if the supplied data are of the correct classes
-  if(class(testExprData) != "matrix") stop("ERROR: \"testExprData\" must be a matrix.");
-  if(class(trainingExprData) != "matrix") stop("ERROR: \"trainingExprData\" must be a matrix.");
+  if(class(testExprData)[1] != "matrix") stop("ERROR: \"testExprData\" must be a matrix.");
+  if(class(trainingExprData)[1] != "matrix") stop("ERROR: \"trainingExprData\" must be a matrix.");
   if(class(trainingPtype) != "numeric") stop("ERROR: \"trainingPtype\" must be a numeric vector.");
   if(ncol(trainingExprData) != length(trainingPtype)) stop("The training phenotype must be of the same length as the number of columns of the training expressin matrix.");
 
@@ -566,6 +566,10 @@ homogenizeData <- function(testExprMat, trainExprMat, batchCorrect="eb", selecti
 pRRopheticPredict <- function(testMatrix, drug, tissueType="all", batchCorrect="eb", powerTransformPhenotype=TRUE, removeLowVaryingGenes=.2, minNumSamples=10, selection=-1, printOutput=TRUE, removeLowVaringGenesFrom="homogenizeData", dataset="cgp2014")
 {
   cgpTrainData <- getCGPinfo(drug, tissueType, dataset) # get the IC50 and expression data for this drug/tissueType
+
+  if(!all(!duplicated(colnames(cgpTrainData$trainDataOrd)))) { # duplicated gene expression in the same cell lines
+    cgpTrainData$trainDataOrd <- cgpTrainData$trainDataOrd[,!duplicated(colnames(cgpTrainData$trainDataOrd))]
+  }
 
   predictedPtype <- calcPhenotype(cgpTrainData$trainDataOrd, cgpTrainData$ic50sOrd, testMatrix, batchCorrect=batchCorrect, powerTransformPhenotype=powerTransformPhenotype, removeLowVaryingGenes=removeLowVaryingGenes, minNumSamples=minNumSamples, selection=selection, printOutput=printOutput, removeLowVaringGenesFrom=removeLowVaringGenesFrom)
 

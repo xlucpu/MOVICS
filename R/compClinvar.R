@@ -50,19 +50,51 @@ compClinvar <- function(moic.res      = NULL,
   if(!is.element(strata, colnames(dat))) {
     stop("fail to find this strata in var2comp. Consider using NULL by default.")
   }
-  stabl <- jstable::CreateTableOne2(vars = setdiff(colnames(dat), strata),
-                                    strata = strata,
-                                    data = dat,
-                                    factorVars = factorVars,
-                                    nonnormal = nonnormalVars,
-                                    exact = exactVars,
-                                    includeNA = includeNA,
-                                    showAllLevels = TRUE,
-                                    ...)
+
+  warn <- NULL
+  tryCatch(stabl <-
+             jstable::CreateTableOne2(vars = setdiff(colnames(dat), strata),
+                                     strata = strata,
+                                     data = dat,
+                                     factorVars = factorVars,
+                                     nonnormal = nonnormalVars,
+                                     exact = exactVars,
+                                     includeNA = includeNA,
+                                     showAllLevels = TRUE,
+                                     ...),
+           warning=function(w) {
+             warn <<- append(warn, conditionMessage(w))}
+           )
+  if(grepl("NA", warn, fixed = TRUE)) { # if get warning, probably due to the failure of computing exact p value in large data
+    set.seed(19991018)
+    stabl <- jstable::CreateTableOne2(vars = setdiff(colnames(dat), strata),
+                                      strata = strata,
+                                      data = dat,
+                                      factorVars = factorVars,
+                                      nonnormal = nonnormalVars,
+                                      exact = exactVars,
+                                      includeNA = includeNA,
+                                      showAllLevels = TRUE,
+                                      argsExact = list(simulate.p.value = T), # use simulated P values then
+                                      ...)
+  } else {
+    stabl <- jstable::CreateTableOne2(vars = setdiff(colnames(dat), strata),
+                                      strata = strata,
+                                      data = dat,
+                                      factorVars = factorVars,
+                                      nonnormal = nonnormalVars,
+                                      exact = exactVars,
+                                      includeNA = includeNA,
+                                      showAllLevels = TRUE,
+                                      ...)
+  }
+
+  # trim output
   comtable <- as.data.frame(stabl)
   comtable <- cbind.data.frame(var = rownames(stabl), comtable)
   rownames(comtable) <- NULL; colnames(comtable)[1] <- " "
   comtable[is.na(comtable)] <- ""
+  comtable <- comtable[,setdiff(colnames(comtable),"sig")] # remove significance
   #print(comtable)
 
   if(is.null(tab.name)) {

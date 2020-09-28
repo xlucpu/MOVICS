@@ -125,7 +125,8 @@ getClustNum <- function(data        = NULL,
   par(bty="o", mgp = c(1.9,.33,0), mar=c(3.1,3.1,2.1,3.1)+.1, las=1, tcl=-.25)
   plot(NULL, NULL,
        xlim = c(min(try.N.clust),max(try.N.clust)),
-       ylim = c(min(optk1), max(optk1)),
+       #ylim = c(min(optk1), max(optk1)),
+       ylim = c(0,1),
        xlab = "Number of Multi-Omics Clusters",ylab = "")
   rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = "#EAE9E9",border = FALSE)
   grid(col = "white", lty = 1, lwd = 1.5)
@@ -137,7 +138,8 @@ getClustNum <- function(data        = NULL,
   par(new = TRUE, xpd = FALSE)
   plot(NULL,NULL,
        xlim = c(min(try.N.clust),max(try.N.clust)),
-       ylim = c(min(optk2$gap), max(optk2$gap)),
+       #ylim = c(min(optk2$gap), max(optk2$gap)),
+       ylim = c(0,1),
        xlab = "",ylab = "",xaxt = "n",yaxt = "n")
   points(try.N.clust, optk2$gap, pch = 19, col = ggplot2::alpha("#E51718",0.8), cex = 1.5)
   lines(try.N.clust, optk2$gap, col = "#E51718", lwd = 2, lty = 4)
