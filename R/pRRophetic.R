@@ -567,8 +567,9 @@ pRRopheticPredict <- function(testMatrix, drug, tissueType="all", batchCorrect="
 {
   cgpTrainData <- getCGPinfo(drug, tissueType, dataset) # get the IC50 and expression data for this drug/tissueType
 
-  if(!all(!duplicated(colnames(cgpTrainData$trainDataOrd)))) { # duplicated gene expression in the same cell lines
+  if(!all(!duplicated(colnames(cgpTrainData$trainDataOrd)))) { # remove duplicated gene expression and IC50 in the same cell lines
     cgpTrainData$trainDataOrd <- cgpTrainData$trainDataOrd[,!duplicated(colnames(cgpTrainData$trainDataOrd))]
+    cgpTrainData$ic50sOrd <- cgpTrainData$ic50sOrd[!duplicated(names(cgpTrainData$ic50sOrd))]
   }
 
   predictedPtype <- calcPhenotype(cgpTrainData$trainDataOrd, cgpTrainData$ic50sOrd, testMatrix, batchCorrect=batchCorrect, powerTransformPhenotype=powerTransformPhenotype, removeLowVaryingGenes=removeLowVaryingGenes, minNumSamples=minNumSamples, selection=selection, printOutput=printOutput, removeLowVaringGenesFrom=removeLowVaringGenesFrom)
