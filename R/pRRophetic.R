@@ -72,9 +72,10 @@ calcPhenotype <- function(trainingExprData, trainingPtype, testExprData, batchCo
 {
 
   # check if the supplied data are of the correct classes
+  testExprData <- as.matrix(testExprData)
   if(class(testExprData)[1] != "matrix") stop("ERROR: \"testExprData\" must be a matrix.");
   if(class(trainingExprData)[1] != "matrix") stop("ERROR: \"trainingExprData\" must be a matrix.");
-  if(class(trainingPtype) != "numeric") stop("ERROR: \"trainingPtype\" must be a numeric vector.");
+  if(class(trainingPtype)[1] != "numeric") stop("ERROR: \"trainingPtype\" must be a numeric vector.");
   if(ncol(trainingExprData) != length(trainingPtype)) stop("The training phenotype must be of the same length as the number of columns of the training expressin matrix.");
 
   # check if an adequate number of training and test samples have been supplied.
@@ -144,7 +145,7 @@ calcPhenotype <- function(trainingExprData, trainingPtype, testExprData, batchCo
   # predict the new phenotype for the test data.
   # if there is a single test sample, there may be problems in predicting using the predict() function for the linearRidge package
   # This "if" statement provides a workaround
-  if(class(homData$test) == "numeric")
+  if(class(homData$test)[1] == "numeric")
   {
     n <- names(homData$test)
     homData$test <- matrix(homData$test, ncol=1)
