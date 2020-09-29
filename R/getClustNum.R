@@ -144,7 +144,7 @@ getClustNum <- function(data        = NULL,
   points(try.N.clust, optk2$gap, pch = 19, col = ggplot2::alpha("#E51718",0.8), cex = 1.5)
   lines(try.N.clust, optk2$gap, col = "#E51718", lwd = 2, lty = 4)
   #axis(side = 4, at = pretty(range(optk2$gap), n = 6))
-  axis(side = 4, at = seq(0,1,0.2), labels = seq(0,1,0.2))
+  axis(side = 4, at = seq(0,1,0.2), labels = c("0.0","0.2","0.4","0.6","0.8","1.0"))
   mtext("Gap-statistics", side = 4, line = 2,las = 3, cex = 1.5, col = "#E51718")
 
   # abline(v = optk3$`Eigen-gap best`, col = "#008B8A", lwd = 2, lty = 4)
