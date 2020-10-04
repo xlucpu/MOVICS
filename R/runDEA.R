@@ -95,6 +95,8 @@ twoclassdeseq2 <- function(moic.res    = NULL,
 
     if(sort.p) {
       resData <- as.data.frame(res[order(res$padj),])
+    } else {
+      resData <- as.data.frame(res)
     }
     resData$id <- rownames(resData)
     resData <- resData[,c("id","baseMean","log2FoldChange","lfcSE","stat","pvalue","padj")]
@@ -219,6 +221,8 @@ twoclassedger <- function(moic.res    = NULL,
 
     if(sort.p) {
       resData <- as.data.frame(resData[order(resData$padj),])
+    } else {
+      resData <- as.data.frame(resData)
     }
     if(verbose) {
       resData <- resData[,c("id","fc","log2fc","pvalue","padj")]
@@ -340,6 +344,8 @@ twoclasslimma <- function(moic.res  = NULL,
 
     if(sort.p) {
       resData <- resData[order(resData$padj),]
+    } else {
+      resData <- as.data.frame(resData)
     }
     if(verbose) {
       resData <- resData[,c("id","fc","log2fc","pvalue","padj")]
