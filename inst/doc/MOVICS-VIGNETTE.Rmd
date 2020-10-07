@@ -89,7 +89,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 if (!require("devtools")) 
     install.packages("devtools")
-devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
+devtools::install_github("xlucpu/MOVICS")
 ```
 
 ```{r, echo=FALSE, eval=TRUE, warning=FALSE, message=FALSE}
@@ -506,7 +506,7 @@ mut.brca %>%
 ```
 
 #### <a id="Section.4.2.2.4" style="color:#159957;">4) compare total mutation burden</a>
-Needless to say, immunotherapy is becoming a pillar of modern cancer treatment. Recent analyses have linked the tumoral genomic landscape with antitumor immunity. In particular, it has been proposed that overall mutational load might drive T-cell responses<sup>8</sup>, whereas tumor aneuploidy correlates with markers of immune evasion and reduced response to immunotherapy<sup>9</sup>. To quantify these genomic alterations that may affect immunotherapy, MOVICS provides two functions to calculate total mutation burden (TMB) and fraction genome altered (FGA). To be specific, Total Mutations Burden (TMB) refers to the number of mutations that are found in the tumor genome, while FGA is the percentage of genome that has been affected by copy number gains or losses. Both attributes are useful for genetic researchers as they provide them with more in-depth information on the genomic make-up of the tumors. Let me show you how to use these two functions by starting with `compTMB()`. First of all, the input maf data for this function must have the following 10 columns at least:
+Needless to say, immunotherapy is becoming a pillar of modern cancer treatment. Recent analyses have linked the tumoral genomic landscape with antitumor immunity. In particular, an emerging picture suggests that tumor-specific genomic lesions are associated with immune checkpoint activation and the extent and duration of responses for patients to immunotherapy. These lesions contains high mutation burdens <sup>8</sup> and aneuploidy<sup>9</sup>. To quantify these genomic alterations that may affect immunotherapy, MOVICS provides two functions to calculate total mutation burden (TMB) and fraction genome altered (FGA). To be specific, TMB refers to the number of mutations that are found in the tumor genome, while FGA is the percentage of genome that has been affected by copy number gains or losses. Both attributes are useful for genetic researchers as they provide them with more in-depth information on the genomic make-up of the tumors. Let me show you how to use these two functions by starting with `compTMB()`. First of all, the input maf data for this function must have the following 10 columns at least:
 ```{r, eval=TRUE}
 head(maf)
 ```
@@ -788,7 +788,7 @@ Above an object `yau.ntp.pred` is prepared which is similar in structure of obje
 # compare survival outcome in Yau cohort
 surv.yau <- compSurv(moic.res         = yau.ntp.pred,
                      surv.info        = brca.yau$clin.info,
-                     convt.time       = "m", # switch to year
+                     convt.time       = "m", # switch to month
                      surv.median.line = "hv", # switch to both
                      fig.name         = "KAPLAN-MEIER CURVE OF NTP FOR YAU") 
 

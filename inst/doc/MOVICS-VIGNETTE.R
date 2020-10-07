@@ -12,7 +12,7 @@ Sys.setenv(LANGUAGE = "en")
 #      install.packages("BiocManager")
 #  if (!require("devtools"))
 #      install.packages("devtools")
-#  devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
+#  devtools::install_github("xlucpu/MOVICS")
 
 ## ---- echo=FALSE, eval=TRUE, warning=FALSE, message=FALSE---------------------
 library("dplyr")
@@ -544,7 +544,7 @@ head(yau.ntp.pred$ntp.res) %>%
 # compare survival outcome in Yau cohort
 surv.yau <- compSurv(moic.res         = yau.ntp.pred,
                      surv.info        = brca.yau$clin.info,
-                     convt.time       = "m", # switch to year
+                     convt.time       = "m", # switch to month
                      surv.median.line = "hv", # switch to both
                      fig.name         = "KAPLAN-MEIER CURVE OF NTP FOR YAU") 
 
