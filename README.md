@@ -49,7 +49,7 @@ which gsl-config
 Then retry installing ridge, it should be fine.
 
 ## Guidance
-![pipeline](https://user-images.githubusercontent.com/57204704/97841708-5b6e1780-1d21-11eb-9683-00a4cf552ca0.jpg)
+![pipeline](https://user-images.githubusercontent.com/57204704/97842685-f7e4e980-1d22-11eb-9c06-46e3ff17882d.jpg)
 MOVICS Pipeline diagram above outlines the concept for this package, and a detailed guide of how to use MOVICS could be find directly in the [HTML vignette](https://xlucpu.github.io/MOVICS/MOVICS-VIGNETTE.html), or by typing the following code to R session.
 ```{r}
 browseVignettes("MOVICS")
