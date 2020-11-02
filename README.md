@@ -17,9 +17,9 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 if (!require("devtools")) 
     install.packages("devtools")
-devtools::install_github("xlucpu/MOVICS", host = "https://api.github.com")
+devtools::install_github("xlucpu/MOVICS")
 ```
-When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, you can refer to the `Imports` in the [DESCRIPTION](https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION) file, try to install all the R dependencies, and then install MOVICS.
+When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, you can refer to the `Imports` in the [DESCRIPTION](https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION) file, try to install all the R dependencies, and then reinstall MOVICS.
 
 ### Troubleshooting
 This package has been tested for installation in Windows 10 and macOS Catalina 10.15.6. Windows users may encounter network problems (*e.g.*, `Failed to connect to api.github.com port 443: Connection refused`) when installing dependencies that are stored in GitHub (*e.g.*, CMScaller, ComplexHeatmap, CIMLR, officer), please be very patient and try a few more times. In addition to network problems, Mac users may encounter error messages when installing CIMLR and ridge packages, which is most likely due to the R setup. The following are the solutions to the problems I met during the installation test on macOS.
@@ -42,14 +42,14 @@ If the Terminal tells you that `–bash: brew: command not found`, which means y
 ```{bash}
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
-Afterwards would be nice if you could post the Mac OS Terminal output of 
+Afterwards would be nice if you could post the macOS Terminal output of 
 ```{bash}
 which gsl-config
 ```
 Then retry installing ridge, it should be fine.
 
 ## Guidance
-![pkg_pipeline](https://user-images.githubusercontent.com/57204704/93575148-d9719b80-f9cb-11ea-8ceb-5a7d1178377c.jpg)
+![pipeline](https://user-images.githubusercontent.com/57204704/97841708-5b6e1780-1d21-11eb-9683-00a4cf552ca0.jpg)
 MOVICS Pipeline diagram above outlines the concept for this package, and a detailed guide of how to use MOVICS could be find directly in the [HTML vignette](https://xlucpu.github.io/MOVICS/MOVICS-VIGNETTE.html), or by typing the following code to R session.
 ```{r}
 browseVignettes("MOVICS")
