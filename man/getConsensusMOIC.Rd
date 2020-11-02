@@ -46,6 +46,8 @@ A consensus heatmap  and a list contains the following components:
 
         \code{similarity}   a similary matrix for pair-wise samples with entries ranging from 0 to 1
 
+        \code{sil}          a silhouette object that can be further passed to \link[MOVICS]{getSilhouette}
+
         \code{clust.res}    a data.frame storing sample ID and corresponding clusters
 
         \code{clust.dend}   a dendrogram of sample clustering
