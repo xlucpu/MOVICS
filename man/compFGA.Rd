@@ -12,7 +12,7 @@ compFGA(
   test.method = "nonparametric",
   barcolor = c("#008B8A", "#F2042C", "#21498D"),
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627",
-    "#023E8A", "9D4EDD"),
+    "#023E8A", "#9D4EDD"),
   fig.path = getwd(),
   fig.name = NULL,
   width = 8,
@@ -28,7 +28,7 @@ compFGA(
 
 \item{cnathreshold}{A numeric value to indicate the cutoff for identifying copy-number gain or loss. 0.2 by default.}
 
-\item{test.method}{A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison.}
+\item{test.method}{A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison; "nonparametric" by default.}
 
 \item{barcolor}{A string vector to indicate the mapping color for bars of FGA, FGG and FGL.}
 
@@ -45,15 +45,21 @@ compFGA(
 \value{
 A list contains the following components:
 
-        \code{summary}     a table summarizing the measurements of FGA, FGG, and FGL per sample
+        \code{summary}           a table summarizing the measurements of FGA, FGG, and FGL per sample
 
-        \code{FGA.p.value} a nominal p value quantifying the difference of FGA among current subtypes
+        \code{FGA.p.value}       a nominal p value quantifying the difference of FGA among current subtypes
 
-        \code{FGG.p.value} a nominal p value quantifying the difference of FGG among current subtypes
+        \code{pairwise.FGA.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGA
 
-        \code{FGL.p.value} a nominal p value quantifying the difference of FGL among current subtypes
+        \code{FGG.p.value}       a nominal p value quantifying the difference of FGG among current subtypes
 
-        \code{test.method} a string value indicating the statistical testing method to calculate p values
+        \code{pairwise.FGG.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGG
+
+        \code{FGL.p.value}       a nominal p value quantifying the difference of FGL among current subtypes
+
+        \code{pairwise.FGL.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGL
+
+        \code{test.method}       a string value indicating the statistical testing method to calculate p values
 }
 \description{
 This function calculates Fraction Genome Altered (FGA), Fraction Genome Gained (FGG), and Fraction Genome Lost (FGL) seperately, and compares them among curent subtypes identified from multi-omics integrative clustering algorithms.

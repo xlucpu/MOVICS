@@ -8,7 +8,7 @@
 #' @param rmFLAGS A logical value to indicate if removing possible FLAGS. These FLAGS genes are often non-pathogenic and passengers, but are frequently mutated in most of the public exome studies, some of which are fishy. Examples of such genes include TTN, MUC16, etc. FALSE by default.
 #' @param nonSyn A string vector to indicate a list of variant claccifications that should be considered as non-synonymous and the rest will be considered synonymous (silent) variants. Default value of NULL uses Variant Classifications with High/Moderate variant consequences, including c('Frame_Shift_Del', 'Frame_Shift_Ins', 'Splice_Site', 'Translation_Start_Site', 'Nonsense_Mutation', 'Nonstop_Mutation', 'In_Frame_Del', 'In_Frame_Ins', 'Missense_Mutation'). See details at \url{http://asia.ensembl.org/Help/Glossary?id=535}
 #' @param clust.col A string vector storing colors for annotating each Subtype.
-#' @param test.method A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison.
+#' @param test.method A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison; "nonparametric" by default.
 #' @param show.size A logical value to indicate if showing the sample size within each subtype at the top of the figure. TRUE by default.
 #' @param fig.name  A string value to indicate the name of the boxviolin plot.
 #' @param fig.path A string value to indicate the output path for storing the boxviolin plot.
@@ -46,7 +46,7 @@ compTMB <- function(moic.res    = NULL,
                     rmFLAGS     = FALSE,
                     nonSyn      = NULL,
                     exome.size  = 38,
-                    clust.col   = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","9D4EDD"),
+                    clust.col   = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","#9D4EDD"),
                     test.method = "nonparametric",
                     show.size   = TRUE,
                     fig.path    = getwd(),
@@ -89,8 +89,6 @@ compTMB <- function(moic.res    = NULL,
   n.moic <- length(unique(clust.res$clust))
   colvec <- clust.col[1:n.moic]
   names(colvec) <- paste0("CS",unique(clust.res$clust))
-  #col.titv <- c("#E64B35B2", "#4DBBD5B2", "#00A087B2", "#3C5488B2", "#F39B7FB2", "#8491B4B2")
-  #col.titv <- c("#E64B35E5", "#4DBBD5E5", "#00A087E5", "#3C5488E5", "#F39B7FE5", "#8491B4E5")
   col.titv <- c("#E64B35CC", "#4DBBD5CC", "#00A087CC", "#3C5488CC", "#F39B7FCC", "#8491B4CC")
   names(col.titv) <- c("C>T", "T>C", "C>A", "C>G", "T>A", "T>G")
 
@@ -281,21 +279,32 @@ compTMB <- function(moic.res    = NULL,
   if(n.moic == 2 & test.method == "nonparametric") {
     statistic <- "wilcox.test"
     TMB.test  <- wilcox.test(TMB.dat$log10TMB ~ TMB.dat$Subtype)$p.value
+    cat(paste0("Wilcoxon rank sum test p value = ", formatC(TMB.test, format = "e", digits = 2)))
   }
 
   if(n.moic == 2 & test.method == "parametric") {
     statistic <- "t.test"
     TMB.test  <- t.test(TMB.dat$log10TMB ~ TMB.dat$Subtype)$p.value
+    cat(paste0("Student's t test p value = ", formatC(TMB.test, format = "e", digits = 2)))
   }
 
   if(n.moic > 2 & test.method == "nonparametric") {
     statistic <- "kruskal.test"
     TMB.test  <- kruskal.test(TMB.dat$log10TMB ~ TMB.dat$Subtype)$p.value
+    pairwise.TMB.test <- pairwise.wilcox.test(TMB.dat$log10TMB,TMB.dat$Subtype,p.adjust.method = "BH")
+    # pairwise.TMB.test <- dunnTest(log10TMB ~ as.factor(Subtype),
+    #                               data = TMB.dat,
+    #                               method = "bh")
+    cat(paste0("Kruskal-Wallis rank sum test p value = ", formatC(TMB.test, format = "e", digits = 2),"\npost-hoc pairwise wilcoxon rank sum test with Benjamini-Hochberg adjustment presents below:"))
+    print(formatC(pairwise.TMB.test$p.value, format = "e", digits = 2))
   }
 
   if(n.moic > 2 & test.method == "parametric") {
     statistic <- "anova"
     TMB.test  <- summary(aov(TMB.dat$log10TMB ~ TMB.dat$Subtype))[[1]][["Pr(>F)"]][1]
+    pairwise.TMB.test <- pairwise.t.test(TMB.dat$log10TMB,TMB.dat$Subtype,p.adjust.method = "BH")
+    cat(paste0("One-way anova test p value = ", formatC(TMB.test, format = "e", digits = 2),"\npost-hoc pairwise Student's t test with Benjamini-Hochberg adjustment presents below:"))
+    print(formatC(pairwise.TMB.test$p.value, format = "e", digits = 2))
   }
 
   # start illustration
@@ -305,7 +314,7 @@ compTMB <- function(moic.res    = NULL,
     outFig <- paste0(fig.name,".pdf")
   }
 
-  #base layout
+  # base layout
   n1 <- seq(from = 0.105, to = 0.97-(0.97-0.05)*0.04, length.out = n.moic + 1)
   n2 <- n1[2:length(n1)]
   n  <- data.frame(n1 = n1[1:n.moic], n2 = n2, n3 = 0.05, n4 = 0.2) %>%

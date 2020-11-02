@@ -8,8 +8,8 @@
 #' @param p.adj.method A string value to indicate the correction method for multiple comparision. Allowed values contain c('holm', 'hochberg', 'hommel', 'bonferroni', 'BH', 'BY', 'fdr'); BH by default.
 #' @param tab.name A string value to indicate the name of the output table.
 #' @param res.path A string value to indicate the path for saving the table.
-#' @param doWord A logic value to indicate if transformating the .txt outfile to a .docx WORD file (.txt file will be also kept).
-#' @param doPlot A logic value to indicate if generating oncoprint.
+#' @param doWord A logic value to indicate if transformating the .txt outfile to a .docx WORD file (.txt file will be also kept); TRUE by default.
+#' @param doPlot A logic value to indicate if generating oncoprint; TRUE by default.
 #' @param innerclust A logic value to indicate if perform clustering within each subtype; TRUE by default.
 #' @param fig.path A string value to indicate the output path for storing the oncoprint.
 #' @param fig.name A string value to indicate the name of the oncoprint.
@@ -48,7 +48,7 @@ compMut <- function(moic.res     = NULL,
                     bg.col       = "#dcddde",
                     p.cutoff     = 0.05,
                     p.adj.cutoff = 0.05,
-                    clust.col    = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","9D4EDD"),
+                    clust.col    = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","#9D4EDD"),
                     width        = 8,
                     height       = 4) {
 

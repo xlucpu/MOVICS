@@ -15,16 +15,16 @@
 #' @param annCol A data.frame storing annotation information for samples.
 #' @param annColors A list of string vectors for colors matched with annCol.
 #' @param clust.col A string vector storing colors for annotating each subtype at the top of heatmap.
-#' @param halfwidth A numeric vector to assign marginal cutoff for truncating values in data
-#' @param centerFlag A logical vector to indicate if each subdata should be centered
-#' @param scaleFlag A logical vector to indicate if each subdata should be scaled
+#' @param halfwidth A numeric vector to assign marginal cutoff for truncating values in data; 3 by default.
+#' @param centerFlag A logical vector to indicate if expression data should be centered; TRUE by default.
+#' @param scaleFlag A logical vector to indicate if expression data should be scaled; TRUE by default.
 #' @param color A string vector storing colors for heatmap.
 #' @param fig.path A string value to indicate the output path for storing the marker heatmap.
 #' @param fig.name A string value to indicate the name of the marker heatmap.
 #' @param width A numeric value to indicate the width of output figure.
 #' @param height A numeric value to indicate the height of output figure.
-#' @param show_rownames A logic value to indicate if showing rownames (feature names) in heatmap.
-#' @param show_colnames A logic value to indicate if showing colnames (sample ID) in heatmap.
+#' @param show_rownames A logic value to indicate if showing rownames (feature names) in heatmap; FALSE by default.
+#' @param show_colnames A logic value to indicate if showing colnames (sample ID) in heatmap; FALSE by default.
 #' @param ... Additional parameters pass to \link[ComplexHeatmap]{pheatmap}.
 #' @return A figure of subtype-specific marker heatmap (.pdf) if \code{doPlot = TRUE} and a list with the following components:
 #'
@@ -51,7 +51,7 @@ runMarker <- function(moic.res      = NULL,
                       norm.expr     = NULL,
                       annCol        = NULL,
                       annColors     = NULL,
-                      clust.col     = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","9D4EDD"),
+                      clust.col     = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","#9D4EDD"),
                       halfwidth     = 3,
                       centerFlag    = TRUE,
                       scaleFlag     = TRUE,

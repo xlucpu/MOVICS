@@ -14,11 +14,11 @@ getStdiz(
 \arguments{
 \item{data}{A list of data.frame or matrix storing raw multiple omics data with rows for features and columns for samples.}
 
-\item{halfwidth}{A numeric vector to assign marginal cutoff for truncating values in data}
+\item{halfwidth}{A numeric vector to assign marginal cutoff for truncating values in data; 1 by default.}
 
-\item{centerFlag}{A logical vector to indicate if each subdata should be centered}
+\item{centerFlag}{A logical vector to indicate if each subdata should be centered; TRUE by default.}
 
-\item{scaleFlag}{A logical vector to indicate if each subdata should be scaled}
+\item{scaleFlag}{A logical vector to indicate if each subdata should be scaled; TRUE by default.}
 }
 \value{
 A standardized data.frame containing multi-omics data.

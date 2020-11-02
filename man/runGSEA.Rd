@@ -18,11 +18,11 @@ runGSEA(
   minGSSize = 10,
   maxGSSize = 500,
   p.cutoff = 0.05,
-  p.adj.cutoff = 0.25,
+  p.adj.cutoff = 0.05,
   gsva.method = "gsva",
   norm.method = "mean",
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627",
-    "#023E8A", "9D4EDD"),
+    "#023E8A", "#9D4EDD"),
   color = NULL,
   fig.name = NULL,
   fig.path = getwd(),
@@ -43,7 +43,7 @@ runGSEA(
 
 \item{res.path}{A string value to indicate the path for saving the results for identifying subtype-specific functional pathways.}
 
-\item{dirct}{A string value to indicate the direction of identifying significant pathway. Allowed values contain c('up', 'down'); `up` means up-regulated pathway, and `down` means down-regulated pathway}
+\item{dirct}{A string value to indicate the direction of identifying significant pathway. Allowed values contain c('up', 'down'); `up` means up-regulated pathway, and `down` means down-regulated pathway; "up" by default.}
 
 \item{n.path}{A integer value to indicate how many top pathways sorted by NES should be identified for each subtypes; 10 by default.}
 
@@ -78,11 +78,11 @@ runGSEA(
 \value{
 A figure of subtype-specific pathway heatmap (.pdf) and a list with the following components:
 
-        \code{gsea.list}  a list storing gses object returned by \link[clusterProfiler]{GSEA} for each subtype.
+        \code{gsea.list}  a list storing gsea object returned by \link[clusterProfiler]{GSEA} for each subtype.
 
         \code{raw.es}     a data.frame storing raw enrichment score of identified subtype-specific pathways by using specified \code{gsva.method}.
 
-        \code{scaled.es}  a data.frame storing scaled enrichment score of identified subtype-specific pathways by using specified \code{gsva.method}.
+        \code{scaled.es}  a data.frame storing z-scored enrichment score of identified subtype-specific pathways by using specified \code{gsva.method}.
 
         \code{grouped.es} a data.frame storing grouped enrichment score (mean or median value among each subtype) by using specified \code{norm.method}.
 }

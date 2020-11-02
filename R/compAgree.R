@@ -3,13 +3,13 @@
 #' @description Compute the Rand Index, Jaccard Index, Fowlkes-Mallows, and Normalized Mutual Information for agreement of two partitions, and generate alluvial diagrams for visualization.
 #' @param moic.res An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.
 #' @param subt2comp A data.frame of subtypes that need to compare with current subtype with rownames for samples and columns for other subtypes.
-#' @param doPlot A logic value to indicate if generating alluvial diagram to show the agreement of different subtypes.
+#' @param doPlot A logic value to indicate if generating alluvial diagram to show the agreement of different subtypes; TRUE by default.
 #' @param box.width A numeric valur to indicate the width for box in alluvial diagram.
 #' @param clust.col A string vector storing colors for each cluster.
 #' @param width A numeric value to indicate the width of alluvial diagram.
 #' @param height A numeric value to indicate the height of alluvial diagram.
-#' @param fig.path A string value to indicate the output path for storing the figure
-#' @param fig.name A string value to indicate the name of the figure
+#' @param fig.path A string value to indicate the output path for storing the figure.
+#' @param fig.name A string value to indicate the name of the figure.
 #' @return A figure of agreement (.pdf) if \code{doPlot = TRUE} and a data.frame storing four agreement measurements, including Rand Index (RI), Adjusted Mutual Information (AMI), Jaccard Index (JI), and Fowlkes-Mallows (FM).
 #' @export
 #' @import ggplot2
@@ -24,7 +24,7 @@
 compAgree <- function(moic.res  = NULL,
                       subt2comp = NULL,
                       doPlot    = TRUE,
-                      clust.col = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","9D4EDD"),
+                      clust.col = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","#9D4EDD"),
                       box.width = 0.1,
                       fig.name  = NULL,
                       fig.path  = getwd(),

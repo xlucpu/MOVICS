@@ -4,17 +4,20 @@
 #' @param moic.res An object returned by `getMOIC()` with one specified algorithm or `get\%algorithm_name\%` or `getConsensusMOIC()` with a list of multiple algorithms.
 #' @param surv.info A data.frame with rownames of observations and with at least two columns of `futime` for survival time and `fustat` for survival status (0: censoring; 1: event)
 #' @param clust.col A string vector storing colors for each subtype.
-#' @param p.adjust.method A string value for indicating method for adjusting p values (see \link[stats]{p.adjust}). Allowed values include one of c(`holm`, `hochberg`, `hommel`, `bonferroni`, `BH`, `BY`, `fdr`, `none`).
+#' @param p.adjust.method A string value for indicating method for adjusting p values (see \link[stats]{p.adjust}). Allowed values include one of c(`holm`, `hochberg`, `hommel`, `bonferroni`, `BH`, `BY`, `fdr`, `none`); "BH" by default.
 #' @param fig.name A string value to indicate the output path for storing the kaplan-meier curve.
 #' @param fig.path A string value to indicate the name of the kaplan-meier curve.
-#' @param convt.time A string value to indicate how to convert the survival time; value of `d` for days, `m` for months and `y` for years.
-#' @param surv.median.line A string value for drawing a horizontal/vertical line at median survival. Allowed values include one of c(`none`, `hv`, `h`, `v`). v: vertical, h:horizontal.
+#' @param convt.time A string value to indicate how to convert the survival time; value of `d` for days, `m` for months and `y` for years; "d" by default.
+#' @param surv.median.line A string value for drawing a horizontal/vertical line at median survival. Allowed values include one of c(`none`, `hv`, `h`, `v`). v: vertical, h:horizontal; "none" by default.
+#' @param xyrs.est An integer vector to estimate probability of surviving beyond a certain number (x) of years (Estimating x-year survival); NULL by default.
 #' @param surv.cut A numeric value to indicate the x-axis cutoff for showing the maximal survival time.
 #' @return A figure of multi-omics Kaplan-Meier curve (.pdf) and a list with the following components:
 #'
 #'         \code{fitd}       an object returned by \link[survival]{survdiff}.
 #'
 #'         \code{fid}        an object returned by \link[survival]{survfit}.
+#'
+#'         \code{xyrs.est}   x-year probability of survival and the associated lower and upper bounds of the 95% confidence interval are also displayed if argument of `xyrs.est` was set by users.
 #'
 #'         \code{overall.p}  a nominal p.value calculated by Kaplain-Meier estimator with log-rank test.
 #'
@@ -31,7 +34,8 @@ compSurv <- function(moic.res         = NULL,
                      surv.info        = NULL,
                      convt.time       = "d",
                      surv.cut         = NULL,
-                     clust.col        = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","9D4EDD"),
+                     xyrs.est         = NULL,
+                     clust.col        = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","#9D4EDD"),
                      p.adjust.method  = "BH",
                      surv.median.line = "none",
                      fig.name         = NULL,
@@ -66,6 +70,15 @@ compSurv <- function(moic.res         = NULL,
   # create new variable of Subtype
   mosurv.res$Subtype <- paste0("CS", mosurv.res$clust)
   mosurv.res <- mosurv.res[order(mosurv.res$Subtype),]
+
+  # estimate x-year survival probability
+  if(!is.null(xyrs.est)) {
+    if(max(xyrs.est) * 365 < max(mosurv.res$futime)) {
+      xyrs <- summary(survfit(Surv(futime, fustat) ~ Subtype, data = mosurv.res), times = xyrs.est * 365)
+    } else {
+      stop("the maximal survival time is less than the time point you want to estimate!")
+    }
+  }
 
   # convert survival time
   mosurv.res$futime <- switch(convt.time,
@@ -202,8 +215,8 @@ compSurv <- function(moic.res         = NULL,
   print(p)
 
   if(n.moic > 2) {
-    return(list(fitd = fitd, fit = fit, overall.p = p.val, pairwise.p = ps))
+    return(list(fitd = fitd, fit = fit, xyrs.est = xyrs, overall.p = p.val, pairwise.p = ps))
   } else {
-    return(list(fitd = fitd, fit = fit, overall.p = p.val))
+    return(list(fitd = fitd, fit = fit, xyrs.est = xyrs, overall.p = p.val))
   }
 }

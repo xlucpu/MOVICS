@@ -5,7 +5,7 @@
 #' @param segment A data frame containing segmented copy number and columns must exactly include the following elements: c('sample','chrom','start','end','value'). Column of `value` should be segments value when \code{iscopynumber = FALSE} but copy-number value when \code{iscopynumber = TRUE}. Copy-number will be converted to segments by log2(copy-number/2).
 #' @param iscopynumber A logical value to indicate if the fifth column of segment input is copy-number. If segment file derived from CNV calling provides copy number instead of segment_mean value, this argument must be switched to TRUE. FALSE by default.
 #' @param cnathreshold A numeric value to indicate the cutoff for identifying copy-number gain or loss. 0.2 by default.
-#' @param test.method A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison.
+#' @param test.method A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison; "nonparametric" by default.
 #' @param barcolor A string vector to indicate the mapping color for bars of FGA, FGG and FGL.
 #' @param clust.col A string vector storing colors for each subtype.
 #' @param fig.path A string value to indicate the output path for storing the barplot.
@@ -14,15 +14,21 @@
 #' @param height A numeric value to indicate the height of barplot.
 #' @return A list contains the following components:
 #'
-#'         \code{summary}     a table summarizing the measurements of FGA, FGG, and FGL per sample
+#'         \code{summary}           a table summarizing the measurements of FGA, FGG, and FGL per sample
 #'
-#'         \code{FGA.p.value} a nominal p value quantifying the difference of FGA among current subtypes
+#'         \code{FGA.p.value}       a nominal p value quantifying the difference of FGA among current subtypes
 #'
-#'         \code{FGG.p.value} a nominal p value quantifying the difference of FGG among current subtypes
+#'         \code{pairwise.FGA.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGA
 #'
-#'         \code{FGL.p.value} a nominal p value quantifying the difference of FGL among current subtypes
+#'         \code{FGG.p.value}       a nominal p value quantifying the difference of FGG among current subtypes
 #'
-#'         \code{test.method} a string value indicating the statistical testing method to calculate p values
+#'         \code{pairwise.FGG.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGG
+#'
+#'         \code{FGL.p.value}       a nominal p value quantifying the difference of FGL among current subtypes
+#'
+#'         \code{pairwise.FGL.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGL
+#'
+#'         \code{test.method}       a string value indicating the statistical testing method to calculate p values
 #'
 #' @export
 #' @import ggplot2
@@ -39,7 +45,7 @@ compFGA <- function(moic.res     = NULL,
                     cnathreshold = 0.2,
                     test.method  = "nonparametric",
                     barcolor     = c("#008B8A", "#F2042C", "#21498D"),
-                    clust.col    = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","9D4EDD"),
+                    clust.col    = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","#9D4EDD"),
                     fig.path     = getwd(),
                     fig.name     = NULL,
                     width        = 8,
@@ -146,6 +152,9 @@ compFGA <- function(moic.res     = NULL,
     FGA.test  <- kruskal.test(outTab$FGA ~ outTab$Subtype)$p.value
     FGG.test  <- kruskal.test(outTab$FGG ~ outTab$Subtype)$p.value
     FGL.test  <- kruskal.test(outTab$FGL ~ outTab$Subtype)$p.value
+    pairwise.FGA.test <- pairwise.wilcox.test(outTab$FGA,outTab$Subtype,p.adjust.method = "BH")
+    pairwise.FGG.test <- pairwise.wilcox.test(outTab$FGG,outTab$Subtype,p.adjust.method = "BH")
+    pairwise.FGL.test <- pairwise.wilcox.test(outTab$FGL,outTab$Subtype,p.adjust.method = "BH")
   }
 
   if(n.moic > 2 & test.method == "parametric") {
@@ -153,6 +162,9 @@ compFGA <- function(moic.res     = NULL,
     FGA.test  <- summary(aov(outTab$FGA ~ outTab$Subtype))[[1]][["Pr(>F)"]][1]
     FGG.test  <- summary(aov(outTab$FGG ~ outTab$Subtype))[[1]][["Pr(>F)"]][1]
     FGL.test  <- summary(aov(outTab$FGL ~ outTab$Subtype))[[1]][["Pr(>F)"]][1]
+    pairwise.FGA.test <- pairwise.t.test(outTab$FGA,outTab$Subtype,p.adjust.method = "BH")
+    pairwise.FGG.test <- pairwise.t.test(outTab$FGG,outTab$Subtype,p.adjust.method = "BH")
+    pairwise.FGL.test <- pairwise.t.test(outTab$FGL,outTab$Subtype,p.adjust.method = "BH")
   }
 
   # generate barplot
@@ -253,5 +265,12 @@ compFGA <- function(moic.res     = NULL,
   # print to screen
   print(pal)
 
-  return(list(summary = outTab, FGA.p.value = FGA.test, FGG.p.value = FGG.test, FGL.p.value = FGL.test, test.method = statistic))
+  return(list(summary = outTab,
+              FGA.p.value = FGA.test,
+              pairwise.FGA.test = pairwise.FGA.test,
+              FGG.p.value = FGG.test,
+              pairwise.FGG.test = pairwise.FGG.test,
+              FGL.p.value = FGL.test,
+              pairwise.FGL.test = pairwise.FGL.test,
+              test.method = statistic))
 }

@@ -7,8 +7,8 @@
 runNTP(
   expr = NULL,
   templates = NULL,
-  scale = TRUE,
-  center = TRUE,
+  scaleFlag = TRUE,
+  centerFlag = TRUE,
   nPerm = 1000,
   distance = "cosine",
   seed = 123456,
@@ -25,19 +25,19 @@ runNTP(
 
 \item{templates}{A data frame with at least two columns; class (coerced to factor) and probe (coerced to character).}
 
-\item{scale}{A logic value to indicate if the expr should be further scaled. FALSE by default.}
+\item{scaleFlag}{A logic value to indicate if the expression data should be further scaled. TRUE by default.}
 
-\item{center}{A logic value to indicate if the expr should be further centered. FALSE by default.}
+\item{centerFlag}{A logic value to indicate if the expression data should be further centered. TRUE by default.}
 
 \item{nPerm}{An integer value to indicate the permutations for p-value estimation.}
 
-\item{distance}{A string value to indicate the distance measurement. Allowed values contain c('cosine', 'pearson', 'spearman', 'kendall').}
+\item{distance}{A string value to indicate the distance measurement. Allowed values contain c('cosine', 'pearson', 'spearman', 'kendall'); "cosine" by default.}
 
 \item{seed}{An integer value for p-value reproducibility.}
 
-\item{verbose}{A logic value to indicate whether console messages are to be displayed.}
+\item{verbose}{A logic value to indicate whether console messages are to be displayed; TRUE by default.}
 
-\item{doPlot}{A logic value to indicate whether to produce prediction heatmap.}
+\item{doPlot}{A logic value to indicate whether to produce prediction heatmap; FALSE by default.}
 
 \item{fig.path}{A string value to indicate the output path for storing the nearest template prediction heatmap.}
 

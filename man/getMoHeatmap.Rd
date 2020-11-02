@@ -18,7 +18,7 @@ getMoHeatmap(
   clust.dist.row = c("pearson", "pearson", "pearson", "pearson", "pearson", "pearson"),
   clust.method.row = c("ward.D", "ward.D", "ward.D", "ward.D", "ward.D", "ward.D"),
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627",
-    "#023E8A", "9D4EDD"),
+    "#023E8A", "#9D4EDD"),
   color = rep(list(c("#00FF00", "#000000", "#FF0000")), length(data)),
   annCol = NULL,
   annColors = NULL,

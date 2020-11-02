@@ -14,6 +14,7 @@ getElites(
   p.cutoff = 0.05,
   elite.pct = NULL,
   elite.num = NULL,
+  pca.ratio = 0.9,
   scaleFlag = FALSE,
   centerFlag = FALSE
 )
@@ -23,11 +24,11 @@ getElites(
 
 \item{surv.info}{A data.frame with rownames of observations and with at least two columns of `futime` for survival time and `fustat` for survival status (0: censoring; 1: event)}
 
-\item{method}{A string value to indicate the filtering method for selecting elites. Allowed values contain c('mad', 'sd', 'cox', 'freq'). 'mad' means median absolute deviation, 'sd' means standard deviation, 'cox' means univariate Cox proportional hazards regression which needs surv.info also, 'freq' only works for binary data.}
+\item{method}{A string value to indicate the filtering method for selecting elites. Allowed values contain c('mad', 'sd', 'pca', 'cox', 'freq'). 'mad' means median absolute deviation, 'sd' means standard deviation, 'pca' means principal components analysis, 'cox' means univariate Cox proportional hazards regression which needs surv.info also, 'freq' only works for binary data; "mad" by default.}
 
-\item{na.action}{A string value to indicate the action for handling NA missing value. Allowed values contain c('rm', 'impute'). 'rm' means removal of all features containing any missing values, 'impute' means imputation for missing values by k-nearest neighbors}
+\item{na.action}{A string value to indicate the action for handling NA missing value. Allowed values contain c('rm', 'impute'). 'rm' means removal of all features containing any missing values, 'impute' means imputation for missing values by k-nearest neighbors; "rm" by default.}
 
-\item{doLog2}{A logic value to indicate if performing log2 transformation for data before calculating statistics (e.g., sd, mad and cox). FALSE by default.}
+\item{doLog2}{A logic value to indicate if performing log2 transformation for data before calculating statistics (e.g., sd, mad , pca and cox). FALSE by default.}
 
 \item{lowpct}{A numeric cutoff for removing low expression values. NULL by default; 0.1 is recommended for continuous data which means features that have no expression in more than 10\% samples will be removed. Otherwise default value of NULL should be kept for binary data.}
 
@@ -36,6 +37,8 @@ getElites(
 \item{elite.pct}{A numeric cutoff of percentage for selecting elites. NOTE: epite.pct works for all methods except for 'cox', but two scenarios exist. 1) when using method of 'mad' or 'sd', features will be descending sorted by mad or sd, and top elites.pct \* feature size of elites (features) will be selected; 2) when using method of 'freq' for binary data, frequency for value of 1 will be calculated for each feature, and features that have value of 1 in greater than elites.pct \* sample size will be considered elites. This argument will be discarded if elite.num is provided simultaneously. Set this argument with 1 and leave elite.num NULL will return all the features as elites after dealing with NA values.}
 
 \item{elite.num}{A integer cutoff of exact number for selecting elites. NOTE: elite.num works for all methods except for 'cox', but two scenarios exist. 1) when using method of 'mad' or 'sd', features will be descending sorted by mad or sd, and top elite.num of elites (features) will be selected; 2) when using method of 'freq' for binary data, frequency for value of 1 will be calculated for each feature, and features that have value of 1 in greater than elite.num of sample size will be considered elites.}
+
+\item{pca.ratio}{A numeric value ranging from 0 to 1 which represents the ratio of principal components is selected; 0.9 by default.}
 
 \item{scaleFlag}{A logic value to indicate if scaling the data after filtering. FALSE by default.}
 
@@ -46,10 +49,12 @@ A list containing the following components:
 
         \code{elite.dat} a data.frame containing data for selected elites (features).
 
+        \code{pca.res} a data.frame containing results for principal components analysis if \code{method == 'pca'}
+
         \code{unicox.res} a data.frame containing results for univariate Cox proportional hazards regression if \code{method == 'cox'}
 }
 \description{
-This function provides several methods to help selecting elites from input features, which aims to reduce data dimention for multi-omics integrative clustering analysis.
+This function provides several methods to help selecting elites from input features, which aims to reduce data dimension for multi-omics integrative clustering analysis.
 }
 \examples{
 # There is no example and please refer to vignette.

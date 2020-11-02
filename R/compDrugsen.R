@@ -11,7 +11,7 @@
 #' @param seed A integer value to indicate the seed for reproducing ridge regression.
 #' @param width A numeric value to indicate the width of boxviolin plot.
 #' @param height A numeric value to indicate the height of boxviolin plot.
-#' @param test.method A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison.
+#' @param test.method A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison; "nonparametric" by default.
 #' @return Data.frame(s) storing the estimated IC50 of specified drugs per sample within each Subtype.
 #' @export
 #' @import ggplot2
@@ -25,7 +25,7 @@ compDrugsen <- function(moic.res    = NULL,
                         drugs       = c("Cisplatin", "Paclitaxel"),
                         tissueType  = "all",
                         test.method = "nonparametric",
-                        clust.col   = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","9D4EDD"),
+                        clust.col   = c("#2EC4B6","#E71D36","#FF9F1C","#BDD5EA","#FFA5AB","#011627","#023E8A","#9D4EDD"),
                         prefix      = NULL,
                         seed        = 123456,
                         fig.path    = getwd(),
@@ -90,15 +90,27 @@ compDrugsen <- function(moic.res    = NULL,
     # generate boxviolin plot with statistical testing
     if(n.moic == 2 & test.method == "nonparametric") {
       statistic = "wilcox.test"
+      ic50.test  <- wilcox.test(predictedBoxdat[[drug]]$Est.IC50 ~ predictedBoxdat[[drug]]$Subtype)$p.value
+      cat(paste0("Wilcoxon rank sum test p value = ", formatC(ic50.test, format = "e", digits = 2), " for ", drug))
     }
     if(n.moic == 2 & test.method == "parametric") {
       statistic = "t.test"
+      ic50.test  <- t.test(predictedBoxdat[[drug]]$Est.IC50 ~ predictedBoxdat[[drug]]$Subtype)$p.value
+      cat(paste0("Student's t test p value = ", formatC(ic50.test, format = "e", digits = 2), " for ", drug))
     }
     if(n.moic > 2 & test.method == "nonparametric") {
       statistic = "kruskal.test"
+      ic50.test  <- kruskal.test(predictedBoxdat[[drug]]$Est.IC50 ~ predictedBoxdat[[drug]]$Subtype)$p.value
+      pairwise.ic50.test <- pairwise.wilcox.test(predictedBoxdat[[drug]]$Est.IC50,predictedBoxdat[[drug]]$Subtype,p.adjust.method = "BH")
+      cat(paste0(drug,": Kruskal-Wallis rank sum test p value = ", formatC(TMB.test, format = "e", digits = 2),"\npost-hoc pairwise wilcoxon rank sum test with Benjamini-Hochberg adjustment presents below:"))
+      print(formatC(pairwise.ic50.test$p.value, format = "e", digits = 2))
     }
     if(n.moic > 2 & test.method == "parametric") {
       statistic = "anova"
+      ic50.test  <- summary(aov(predictedBoxdat[[drug]]$Est.IC50 ~ predictedBoxdat[[drug]]$Subtype))[[1]][["Pr(>F)"]][1]
+      pairwise.ic50.test <- pairwise.t.test(predictedBoxdat[[drug]]$Est.IC50,predictedBoxdat[[drug]]$Subtype,p.adjust.method = "BH")
+      cat(paste0(drug,": One-way anova test p value = ", formatC(ic50.test, format = "e", digits = 2),"\npost-hoc pairwise Student's t test with Benjamini-Hochberg adjustment presents below:"))
+      print(formatC(pairwise.ic50.test$p.value, format = "e", digits = 2))
     }
 
     p <- ggplot(data = predictedBoxdat[[drug]],

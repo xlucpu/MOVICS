@@ -9,7 +9,7 @@ compAgree(
   subt2comp = NULL,
   doPlot = TRUE,
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627",
-    "#023E8A", "9D4EDD"),
+    "#023E8A", "#9D4EDD"),
   box.width = 0.1,
   fig.name = NULL,
   fig.path = getwd(),
@@ -22,15 +22,15 @@ compAgree(
 
 \item{subt2comp}{A data.frame of subtypes that need to compare with current subtype with rownames for samples and columns for other subtypes.}
 
-\item{doPlot}{A logic value to indicate if generating alluvial diagram to show the agreement of different subtypes.}
+\item{doPlot}{A logic value to indicate if generating alluvial diagram to show the agreement of different subtypes; TRUE by default.}
 
 \item{clust.col}{A string vector storing colors for each cluster.}
 
 \item{box.width}{A numeric valur to indicate the width for box in alluvial diagram.}
 
-\item{fig.name}{A string value to indicate the name of the figure}
+\item{fig.name}{A string value to indicate the name of the figure.}
 
-\item{fig.path}{A string value to indicate the output path for storing the figure}
+\item{fig.path}{A string value to indicate the output path for storing the figure.}
 
 \item{width}{A numeric value to indicate the width of alluvial diagram.}
 

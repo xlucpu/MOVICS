@@ -19,7 +19,7 @@ runMarker(
   annCol = NULL,
   annColors = NULL,
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627",
-    "#023E8A", "9D4EDD"),
+    "#023E8A", "#9D4EDD"),
   halfwidth = 3,
   centerFlag = TRUE,
   scaleFlag = TRUE,
@@ -62,15 +62,15 @@ runMarker(
 
 \item{clust.col}{A string vector storing colors for annotating each subtype at the top of heatmap.}
 
-\item{halfwidth}{A numeric vector to assign marginal cutoff for truncating values in data}
+\item{halfwidth}{A numeric vector to assign marginal cutoff for truncating values in data; 3 by default.}
 
-\item{centerFlag}{A logical vector to indicate if each subdata should be centered}
+\item{centerFlag}{A logical vector to indicate if expression data should be centered; TRUE by default.}
 
-\item{scaleFlag}{A logical vector to indicate if each subdata should be scaled}
+\item{scaleFlag}{A logical vector to indicate if expression data should be scaled; TRUE by default.}
 
-\item{show_rownames}{A logic value to indicate if showing rownames (feature names) in heatmap.}
+\item{show_rownames}{A logic value to indicate if showing rownames (feature names) in heatmap; FALSE by default.}
 
-\item{show_colnames}{A logic value to indicate if showing colnames (sample ID) in heatmap.}
+\item{show_colnames}{A logic value to indicate if showing colnames (sample ID) in heatmap; FALSE by default.}
 
 \item{color}{A string vector storing colors for heatmap.}
 

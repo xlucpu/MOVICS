@@ -10,7 +10,7 @@ getConsensusMOIC(
   linkage = "ward.D",
   mapcolor = c("#000004FF", "#56106EFF", "#BB3754FF", "#F98C0AFF", "#FCFFA4FF"),
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627",
-    "#023E8A", "9D4EDD"),
+    "#023E8A", "#9D4EDD"),
   showID = FALSE,
   fig.path = getwd(),
   fig.name = "consensusheatmap",
@@ -29,7 +29,7 @@ getConsensusMOIC(
 
 \item{clust.col}{A string vector storing colors for annotating each cluster at the top of heatmap.}
 
-\item{showID}{A logic value to indicate if showing the sample ID.}
+\item{showID}{A logic value to indicate if showing the sample ID; FALSE by default.}
 
 \item{fig.path}{A string value to indicate the output path for storing the consensus heatmap.}
 
@@ -40,7 +40,7 @@ getConsensusMOIC(
 \item{height}{A numeric value to indicate the height of output figure.}
 }
 \value{
-A list contains the following components:
+A consensus heatmap  and a list contains the following components:
 
         \code{consensus.hm} an object returned by \link[ComplexHeatmap]{pheatmap}
 

@@ -3,13 +3,13 @@
 #' @description Using Nearest Template Prediction (NTP) based on predefined templates derived from current identified subtypes to assign potential subtype label on external cohort.
 #' @param expr A numeric matrix with row features and sample columns; data is recommended to be z-scored.
 #' @param templates A data frame with at least two columns; class (coerced to factor) and probe (coerced to character).
-#' @param scale A logic value to indicate if the expr should be further scaled. FALSE by default.
-#' @param center A logic value to indicate if the expr should be further centered. FALSE by default.
+#' @param scaleFlag A logic value to indicate if the expression data should be further scaled. TRUE by default.
+#' @param centerFlag A logic value to indicate if the expression data should be further centered. TRUE by default.
 #' @param nPerm An integer value to indicate the permutations for p-value estimation.
-#' @param distance A string value to indicate the distance measurement. Allowed values contain c('cosine', 'pearson', 'spearman', 'kendall').
+#' @param distance A string value to indicate the distance measurement. Allowed values contain c('cosine', 'pearson', 'spearman', 'kendall'); "cosine" by default.
 #' @param seed An integer value for p-value reproducibility.
-#' @param verbose A logic value to indicate whether console messages are to be displayed.
-#' @param doPlot A logic value to indicate whether to produce prediction heatmap.
+#' @param verbose A logic value to indicate whether console messages are to be displayed; TRUE by default.
+#' @param doPlot A logic value to indicate whether to produce prediction heatmap; FALSE by default.
 #' @param fig.path A string value to indicate the output path for storing the nearest template prediction heatmap.
 #' @param fig.name A string value to indicate the name of the nearest template prediction heatmap.
 #' @param width A numeric value to indicate the width of output figure.
@@ -26,19 +26,19 @@
 #' @importFrom grDevices dev.copy2pdf
 #' @examples # There is no example and please refer to vignette.
 #' @references Hoshida, Y. (2010). Nearest Template Prediction: A Single-Sample-Based Flexible Class Prediction with Confidence Assessment. PLoS ONE 5, e15543.
-runNTP <- function(expr      = NULL,
-                   templates = NULL,
-                   scale     = TRUE,
-                   center    = TRUE,
-                   nPerm     = 1000,
-                   distance  = "cosine",
-                   seed      = 123456,
-                   verbose   = TRUE,
-                   doPlot    = FALSE,
-                   fig.path  = getwd(),
-                   fig.name  = "ntpheatmap",
-                   width     = 5,
-                   height    = 5) {
+runNTP <- function(expr       = NULL,
+                   templates  = NULL,
+                   scaleFlag  = TRUE,
+                   centerFlag = TRUE,
+                   nPerm      = 1000,
+                   distance   = "cosine",
+                   seed       = 123456,
+                   verbose    = TRUE,
+                   doPlot     = FALSE,
+                   fig.path   = getwd(),
+                   fig.name   = "ntpheatmap",
+                   width      = 5,
+                   height     = 5) {
 
   # message("Using up- or down-regulated biomarkers (templates) are highly recommended.\n")
 
@@ -55,7 +55,7 @@ runNTP <- function(expr      = NULL,
     stop("at least one class has no probes/genes matched in template file!")
   }
 
-  emat <- t(scale(t(expr), scale = scale, center = center))
+  emat <- t(scale(t(expr), scale = scaleFlag, center = centerFlag))
   if(doPlot) {
     outFig <- paste0(fig.name,".pdf")
     ntp.res <- ntp(emat      = emat,

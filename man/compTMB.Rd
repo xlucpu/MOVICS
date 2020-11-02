@@ -12,7 +12,7 @@ compTMB(
   nonSyn = NULL,
   exome.size = 38,
   clust.col = c("#2EC4B6", "#E71D36", "#FF9F1C", "#BDD5EA", "#FFA5AB", "#011627",
-    "#023E8A", "9D4EDD"),
+    "#023E8A", "#9D4EDD"),
   test.method = "nonparametric",
   show.size = TRUE,
   fig.path = getwd(),
@@ -36,7 +36,7 @@ compTMB(
 
 \item{clust.col}{A string vector storing colors for annotating each Subtype.}
 
-\item{test.method}{A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison.}
+\item{test.method}{A string value to indicate the method for statistical testing. Allowed values contain c('nonparametric', 'parametric'); nonparametric means two-sample wilcoxon rank sum test for two subtypes and Kruskal-Wallis rank sum test for multiple subtypes; parametric means two-sample t-test when only two subtypes are identified, and anova for multiple subtypes comparison; "nonparametric" by default.}
 
 \item{show.size}{A logical value to indicate if showing the sample size within each subtype at the top of the figure. TRUE by default.}
 
