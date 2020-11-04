@@ -84,7 +84,7 @@ Sys.setenv(LANGUAGE = "en")
 Recent advances in next-generation sequencing, microarrays and mass spectrometry for omics data production have enabled the generation and collection of different modalities of high-dimensional molecular data<sup>1</sup>. Clustering multi-omic data has the potential to reveal further systems-level insights, but raises computational and biological challenges<sup>2</sup>. This vignette aims to show how to use the package named MOVICS to perform multi-omics integrative clustering and visualization for cancer subtyping researches. This R package provides a unified interface for 10 state-of-the-art multi-omics clustering algorithms, and standardizes the output for each algorithm so as to form a pipeline for downstream analyses. Ten algorithms are CIMLR, iClusterBayes, MoCluster, COCA, ConsensusClustering, IntNMF, LRAcluster, NEMO, PINSPlus, and SNF where the former three methods can also perform the process of feature selection. For cancer subtyping studies, MOVICS also forms a pipeline for most commonly used downstream analyses for further subtype characterization and creates editable publication-quality illustrations (see more details below). Please note that MOVICS currently supports up to 6 omics data for jointly clustering and users must provide at least 2 omics datasets as input. Okay then, let us make our hands dirty to figure out how MOVICS works.
 
 # <a id="Section.2" style="color:#159957;">2. Installation</a>
-It is essential that you have R 4.0.2 or above already installed on your computer or server. MOVICS is a pipeline that utilizes many other R packages that are currently available from CRAN and Bioconductor. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version (BiocManager v3.11).
+It is essential that you have R 4.0.1 or above already installed on your computer or server. MOVICS is a pipeline that utilizes many other R packages that are currently available from CRAN, Bioconductor and GitHub. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version (BiocManager v3.11).
 After you have R and Bioconductor installed properly, you can start to install MOVICS. The easiest way to install it is by typing the following code into your R session:
 ```{r, warning=FALSE, message=FALSE, echo=TRUE, eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -102,7 +102,7 @@ library("kableExtra")
 #load_all()
 ```
 
-When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, we highly suggest that you referred to the `Imports` in the [DESCRIPTION](https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION) file, try to install all the R dependencies, and then install MOVICS. After installation, you should be able to load the MOVICS package in your R session:
+When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` or `devtools::install_github("username/YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, we highly suggest that you referred to the `Imports` in the [DESCRIPTION](https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION) file, try to install all the R dependencies, and then install MOVICS. We also summarized several common problems that you may meet when installing MOVICS, please refer to [Troubleshooting](https://github.com/xlucpu/MOVICS) if applicable. After installation, you should be able to load the MOVICS package in your R session:
 ```{r, eval=TRUE, warning=FALSE, message=FALSE}
 library("MOVICS")
 ```
@@ -130,6 +130,7 @@ MOVICS Pipeline diagram above outlines the concept for this package and such pip
     * `get%algorithm_name%()`: get results from one specific multi-omics integrative clustering algorithm with detailed parameters
     * `getMOIC()`: get a list of results from multiple multi-omics integrative clustering algorithm with parameters by default
     * `getConsensusMOIC()`: get a consensus matrix that indicates the clustering robustness across different clustering algorithms and generate a consensus heatmap
+    * `getSilhouette()`: get quantification of sample similarity using silhoutte score approach
     * `getStdiz()`: get a standardized data for generating comprehensive multi-omics heatmap
     * `getMoHeatmap()`: get a comprehensive multi-omics heatmap based on clustering results  
 </br>
@@ -146,9 +147,10 @@ MOVICS Pipeline diagram above outlines the concept for this package and such pip
     * `runDEA()`: run differential expression analysis with three popular methods for choosing, including edgeR, DESeq2, and limma
     * `runMarker()`: run biomarker identification to determine uniquely and significantly differential expressed genes for each subtype
     * `runGSEA()`: run gene set enrichment analysis (GSEA), calculate activity of functional pathways and generate a pathway-specific heatmap 
+    * `runGSVA()`: run gene set variation analysis to calculate enrichment score of each sample based on given gene set list of interest
     * `runNTP()`: run nearest template prediction based on identified biomarkers to evaluate subtypes in external cohorts
     * `runPAM()`: run partition around medoids classifier based on discovery cohort to predict subtypes in external cohorts
-    * `runKappa()`: run consistency evaluation using Kappa statistics between two appraisements that identify or predict current subtypes.
+    * `runKappa()`: run consistency evaluation using Kappa statistics between two appraisements that identify or predict current subtypes
     
 ## <a id="Section.4.2" style="color:#159957;">4.2 Steps of Pipeline</a>
 Basically, the above three connected modules explain the workflow of this R package. MOVICS first identifies the cancer subtype (CS) by using one or multiple clustering algorithms; if multiple clustering algorithms are specified, it is highly recommended to perform a consensus clustering based on different subtyping results in order to derive stable and robust subtypes. Second, after having subtypes it is natural to exploit the heterogeneity of subtypes from as many angles as possible. Third, each subtype should have a list of subtype-specific biomarkers for reproducing such subtype in external cohorts. Therefore, let us follow this analytic pipeline and step into each module and each function in MOVICS. 

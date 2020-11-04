@@ -10,7 +10,7 @@ The goal of MOVICS is to provide a unified interface for 10 state-of-the-art mul
 
 ## Installation
 ### Basic instruction
-It is essential that you have [R 4.0.2](https://www.r-project.org/) or above already installed on your computer. MOVICS is a pipeline that utilizes many other R packages that are currently available from CRAN and Bioconductor. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version ([BiocManager v3.11](https://www.bioconductor.org/install/)).
+It is essential that you have [R 4.0.1](https://www.r-project.org/) or above already installed on your computer. MOVICS is a pipeline that utilizes many other R packages that are currently available from CRAN, Bioconductor and GitHub. For all of the steps of the pipeline to work, make sure that you have upgraded Bioconductor to newest version ([BiocManager v3.11](https://www.bioconductor.org/install/)).
 After you have R and Bioconductor installed properly, type the following code into your R session:
 ``` {r}
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -19,7 +19,7 @@ if (!require("devtools"))
     install.packages("devtools")
 devtools::install_github("xlucpu/MOVICS")
 ```
-When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, you can refer to the `Imports` in the [DESCRIPTION](https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION) file, try to install all the R dependencies, and then reinstall MOVICS.
+When you are installing MOVICS, you may encounter some errors saying that some packages are not installed. These errors are caused by recursively depending on R packages, so if one package was not installed properly on your computer, MOVICS would fail. To solve these errors, you simply need to check those error messages, find out which packages required are missing, then install it with command `BiocManager::install("YourErrorPackage")` or `install.packages("YourErrorPackage")` or `devtools::install_github("username/YourErrorPackage")` directly. After that, retry installing MOVICS, it may take several times, but eventually it should work. Or, we highly suggest that you referred to the `Imports` in the [DESCRIPTION](https://github.com/xlucpu/MOVICS/blob/master/DESCRIPTION) file, try to install all the R dependencies (especially for those from GitHub), and then reinstall MOVICS.
 
 ### Troubleshooting
 This package has been tested for installation in Windows 10 and macOS Catalina 10.15.6. Windows users may encounter network problems (*e.g.*, `Failed to connect to api.github.com port 443: Connection refused`) when installing dependencies that are stored in GitHub (*e.g.*, CMScaller, ComplexHeatmap, CIMLR, officer), please be very patient and try a few more times. In addition to network problems, Mac users may encounter error messages when installing CIMLR and ridge packages, which is most likely due to the R setup. The following are the solutions to the problems I met during the installation test on macOS.
@@ -47,6 +47,8 @@ Afterwards would be nice if you could post the macOS Terminal output of
 which gsl-config
 ```
 Then retry installing ridge, it should be fine.
+
+Please set `Sys.setenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS" = "true")` from your R session if you encounter `Error: (converted from warning)` that prevents package from installation when dependency was built under newer R version. 
 
 ## Guidance
 ![pipeline](https://user-images.githubusercontent.com/57204704/97842685-f7e4e980-1d22-11eb-9c06-46e3ff17882d.jpg)
