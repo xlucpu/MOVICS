@@ -1,3 +1,5 @@
-# MOVICS 0.0.0.9000
+# MOVICS 0.99.5
 
-* Added a `NEWS.md` file to track changes to the package.
+* Minimal version of R was declined to 4.0.1.
+* Two functions were added. 
+* Troubleshooting section was updated.
