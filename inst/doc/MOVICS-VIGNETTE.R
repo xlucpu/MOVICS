@@ -84,7 +84,15 @@ elite.tmp <- getElites(dat       = tmp,
                        elite.pct = 0.1) # this time elite.pct argument will be disabled because elite.num has been already indicated.
 dim(elite.tmp$elite.dat) # get 100 elites left
 
-# scenario 3: considering we are dealing with data and use cox to select elite
+# scenario 3: 
+# considering we are dealing with continuous data and use pca to select elites
+tmp       <- brca.tcga$mRNA.expr # get expression data with 500 features
+elite.tmp <- getElites(dat       = tmp,
+                       method    = "pca",
+                       pca.ratio = 0.95) # ratio of PCs is selected
+dim(elite.tmp$elite.dat) # get 204 elite (PCs) left
+
+# scenario 4: considering we are dealing with data and use cox to select elite
 tmp       <- brca.tcga$mRNA.expr # get expression data 
 elite.tmp <- getElites(dat       = tmp,
                        method    = "cox",
@@ -103,7 +111,7 @@ elite.tmp <- getElites(dat       = tmp,
 dim(elite.tmp$elite.dat) # get 3 elites
 table(elite.tmp$unicox$pvalue < 0.05) # 3 mutations have nominal pvalue < 0.05
 
-# scenario 4: considering we are dealing with mutation data using freq to select elites
+# scenario 5: considering we are dealing with mutation data using freq to select elites
 tmp       <- brca.tcga$mut.status # get mutation data 
 rowSums(tmp) # check mutation frequency
 elite.tmp <- getElites(dat       = tmp,
@@ -174,6 +182,13 @@ cmoic.brca <- getConsensusMOIC(moic.res.list = moic.res.list,
                                distance      = "euclidean",
                                linkage       = "average")
 
+## ---- fig.align="center", fig.width=5, fig.height=5.5, fig.cap="Figure 3. Quantification of sample similarity using silhoutte score based on consensus ensembles result.", eval=TRUE----
+getSilhouette(sil      = cmoic.brca$sil, # a sil object returned by getConsensusMOIC()
+              fig.path = getwd(),
+              fig.name = "SILHOUETTE",
+              height   = 5.5,
+              width    = 5)
+
 ## ---- eval=TRUE---------------------------------------------------------------
 # convert beta value to M value for stronger signal
 indata <- mo.data
@@ -193,7 +208,7 @@ feat3  <- feat[which(feat$dataset == "meth.beta"),][1:10,"feature"]
 feat4  <- feat[which(feat$dataset == "mut.status"),][1:10,"feature"]
 annRow <- list(feat1, feat2, feat3, feat4)
 
-## ---- fig.align="center", fig.width=9, fig.height=8.5, fig.cap="Figure 3. Comprehensive heatmap of multi-omics integrative clustering by iClusterBayes with annotation of potential drivers.", eval=TRUE----
+## ---- fig.align="center", fig.width=9, fig.height=8.5, fig.cap="Figure 4. Comprehensive heatmap of multi-omics integrative clustering by iClusterBayes with annotation of potential drivers.", eval=TRUE----
 # set color for each omics data
 # if no color list specified all subheatmaps will be unified to green and red color pattern
 mRNA.col   <- c("#00FF00", "#008000", "#000000", "#800000", "#FF0000")
@@ -219,7 +234,7 @@ getMoHeatmap(data          = plotdata,
              height        = 5, # height of each subheatmap
              fig.name      = "COMPREHENSIVE HEATMAP OF ICLUSTERBAYES")
 
-## ---- fig.align="center", fig.width=9, fig.height=9, fig.cap="Figure 4. Comprehensive heatmap of multi-omics integrative clustering by COCA with dendrogram for samples.", eval=TRUE----
+## ---- fig.align="center", fig.width=9, fig.height=9, fig.cap="Figure 5. Comprehensive heatmap of multi-omics integrative clustering by COCA with dendrogram for samples.", eval=TRUE----
 # comprehensive heatmap (may take a while)
 getMoHeatmap(data          = plotdata,
              row.title     = c("mRNA","lncRNA","Methylation","Mutation"),
@@ -232,7 +247,7 @@ getMoHeatmap(data          = plotdata,
              height        = 5, # height of each subheatmap
              fig.name      = "COMPREHENSIVE HEATMAP OF COCA")
 
-## ---- fig.align="center", fig.width=9, fig.height=9.5, fig.cap="Figure 5. Comprehensive heatmap based on consensus across 10 algorithms with clinicopathological annotation.", eval=TRUE----
+## ---- fig.align="center", fig.width=9, fig.height=9.5, fig.cap="Figure 6. Comprehensive heatmap based on consensus across 10 algorithms with clinicopathological annotation.", eval=TRUE----
 # extract PAM50, pathologic stage and age for sample annotation
 annCol    <- surv.info[,c("PAM50", "pstage", "age"), drop = FALSE]
 
@@ -270,12 +285,13 @@ getMoHeatmap(data          = plotdata,
              height        = 5, # height of each subheatmap
              fig.name      = "COMPREHENSIVE HEATMAP OF CONSENSUSMOIC")
 
-## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 6. Kaplan-Meier survival curve of 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 7. Kaplan-Meier survival curve of 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
 # survival comparison
 surv.brca <- compSurv(moic.res         = cmoic.brca,
                       surv.info        = surv.info,
                       convt.time       = "m", # convert day unit to month
                       surv.median.line = "h", # draw horizontal line at median survival
+                      xyrs.est         = c(5,10), # estimate 5 and 10-year survival
                       fig.name         = "KAPLAN-MEIER CURVE OF CONSENSUSMOIC")
 
 print(surv.brca)
@@ -299,7 +315,7 @@ clin.brca$compTab %>%
   kbl(caption = "Table 1. Comparison of clinical features among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- fig.align="center", fig.width=8, fig.height=3, fig.cap="Figure 7. Mutational OncoPrint of 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=8, fig.height=3, fig.cap="Figure 8. Mutational OncoPrint of 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
 # mutational frequency comparison
 mut.brca <- compMut(moic.res     = cmoic.brca,
                     mut.matrix   = brca.tcga$mut.status, # binary somatic mutation matrix
@@ -331,7 +347,7 @@ head(maf)
 #    kbl(caption = "Table . Demo of MAF data with eligible column names.") %>%
 #    kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- fig.align="center", fig.width=6, fig.height=6, fig.cap="Figure 8. Comparison of TMB and TiTv among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=6, fig.height=6, fig.cap="Figure 9. Comparison of TMB and TiTv among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
 # compare TMB
 tmb.brca <- compTMB(moic.res     = cmoic.brca,
                     maf          = maf,
@@ -361,7 +377,7 @@ head(segment)
 #    kbl(caption = "Table . Demo of segmented copy number data with eligible column names.") %>%
 #    kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- fig.align="center", fig.width=10, fig.height=2.5, fig.cap="Figure 9. Barplot of fraction genome altered among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=10, fig.height=2.5, fig.cap="Figure 10. Barplot of fraction genome altered among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
 # compare FGA, FGG, and FGL
 fga.brca <- compFGA(moic.res     = cmoic.brca,
                     segment      = segment,
@@ -378,7 +394,7 @@ head(fga.brca$summary) %>%
   kbl(caption = "Table 4. Demo of comparison of fraction genome altered among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- fig.show = "hold", out.width = "50%", fig.align = "default", fig.width=8, fig.height=6, fig.cap="Figure 10. Boxviolins for estimated IC50 of Cisplatin and Paclitaxel among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.show = "hold", out.width = "50%", fig.align = "default", fig.width=8, fig.height=6, fig.cap="Figure 11. Boxviolins for estimated IC50 of Cisplatin and Paclitaxel among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.", eval=TRUE----
 # drug sensitivity comparison
 drug.brca <- compDrugsen(moic.res    = cmoic.brca,
                          norm.expr   = fpkm[,cmoic.brca$clust.res$samID], # double guarantee sample order
@@ -395,7 +411,7 @@ head(drug.brca$Cisplatin) %>%
   kbl(caption = "Table 5. Demo of estimated IC50 for Cisplatin among 5 identified subtype of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- fig.align="center", fig.width=8, fig.height=5, fig.cap="Figure 11. Agreement of 5 identified subtypes of breast cancer with PAM50 classification and pathological stage in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=8, fig.height=5, fig.cap="Figure 12. Agreement of 5 identified subtypes of breast cancer with PAM50 classification and pathological stage in TCGA-BRCA cohort.", eval=TRUE----
 # customize the factor level for pstage
 surv.info$pstage <- factor(surv.info$pstage, levels = c("TX","T1","T2","T3","T4"))
 
@@ -433,7 +449,7 @@ runDEA(dea.method = "limma",
        moic.res   = cmoic.brca,
        prefix     = "TCGA-BRCA")
 
-## ---- fig.align="center", fig.width=7, fig.height=6, fig.cap="Figure 12. Heatmap of subtype-specific upregulated biomarkers using edgeR for 5 identified subtypes in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=7, fig.height=6, fig.cap="Figure 13. Heatmap of subtype-specific upregulated biomarkers using edgeR for 5 identified subtypes in TCGA-BRCA cohort.", eval=TRUE----
 # choose edgeR result to identify subtype-specific up-regulated biomarkers
 marker.up <- runMarker(moic.res      = cmoic.brca,
                        dea.method    = "edger", # name of DEA method
@@ -460,7 +476,7 @@ head(marker.up$templates) %>%
   kbl(caption = "Table 7. Demo of subtype-specific upregulated biomarkers for 5 identified subtypes of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- fig.align="center", fig.width=7, fig.height=6, fig.cap="Figure 13. Heatmap of subtype-specific downregulated biomarkers using limma for 5 identified subtypes in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=7, fig.height=6, fig.cap="Figure 14. Heatmap of subtype-specific downregulated biomarkers using limma for 5 identified subtypes in TCGA-BRCA cohort.", eval=TRUE----
 # choose limma result to identify subtype-specific down-regulated biomarkers
 marker.dn <- runMarker(moic.res      = cmoic.brca,
                        dea.method    = "limma",
@@ -477,7 +493,7 @@ marker.dn <- runMarker(moic.res      = cmoic.brca,
 # MUST locate ABSOLUTE path of msigdb file
 MSIGDB.FILE <- system.file("extdata", "c5.bp.v7.1.symbols.xls", package = "MOVICS", mustWork = TRUE)
 
-## ---- fig.align="center", fig.width=10, fig.height=8, fig.cap="Figure 14. Heatmap of subtype-specific upregulated pathways using edgeR algorithm for 5 identified subtypes in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=10, fig.height=8, fig.cap="Figure 15. Heatmap of subtype-specific upregulated pathways using edgeR algorithm for 5 identified subtypes in TCGA-BRCA cohort.", eval=TRUE----
 # run GSEA to identify up-regulated GO pathways using results from edgeR
 gsea.up <- runGSEA(moic.res     = cmoic.brca,
                    dea.method   = "edger", # name of DEA method
@@ -509,7 +525,7 @@ head(round(gsea.up$grouped.es,3)) %>%
   kbl(caption = "Table 9. Demo of subtype-specific enrichment scores among 5 identified subtypes of breast cancer in TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- fig.align="center", fig.width=10, fig.height=8, fig.cap="Figure 15. Heatmap of subtype-specific downregulated pathways using limma algorithm for 5 identified subtypes in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=10, fig.height=8, fig.cap="Figure 16. Heatmap of subtype-specific downregulated pathways using limma algorithm for 5 identified subtypes in TCGA-BRCA cohort.", eval=TRUE----
 # run GSEA to identify down-regulated GO pathways using results from DESeq2
 gsea.dn <- runGSEA(moic.res     = cmoic.brca,
                    dea.method   = "deseq2",
@@ -523,14 +539,39 @@ gsea.dn <- runGSEA(moic.res     = cmoic.brca,
                    norm.method  = "median", # switch to median
                    fig.name     = "DOWNREGULATED PATHWAY HEATMAP") 
 
-## ---- fig.align="center", fig.width=6, fig.height=6, fig.cap="Figure 16. Heatmap of NTP in Yau cohort using subtype-specific upregulated biomarkers identified from TCGA-BRCA cohort", eval=TRUE----
+## ---- eval=TRUE---------------------------------------------------------------
+# MUST locate ABSOLUTE path of gene set file
+GSET.FILE <- 
+  system.file("extdata", "gene sets of interest.gmt", package = "MOVICS", mustWork = TRUE)
+
+## ---- fig.align="center", fig.width=8, fig.height=5, fig.cap="Figure 17. Heatmap of enrichment score of gene set of interest for 5 identified subtypes in TCGA-BRCA cohort.", eval=TRUE----
+# run GSVA to estimate single sample enrichment score based on given gene set of interest
+gsva.res <- 
+  runGSVA(moic.res      = cmoic.brca,
+          norm.expr     = fpkm,
+          gset.gmt.path = GSET.FILE, # ABSOLUTE path of gene set file
+          gsva.method   = "gsva", # method to calculate single sample enrichment score
+          annCol        = annCol,
+          annColors     = annColors,
+          fig.path      = getwd(),
+          fig.name      = "GENE SETS OF INTEREST HEATMAP",
+          height        = 5,
+          width         = 8)
+
+# check raw enrichment score
+print(gsva.res$raw.es[1:3,1:3])
+
+# check z-scored and truncated enrichment score
+print(gsva.res$scaled.es[1:3,1:3])
+
+## ---- fig.align="center", fig.width=6, fig.height=6, fig.cap="Figure 18. Heatmap of NTP in Yau cohort using subtype-specific upregulated biomarkers identified from TCGA-BRCA cohort", eval=TRUE----
 # run NTP in Yau cohort by using up-regulated biomarkers
-yau.ntp.pred <- runNTP(expr      = brca.yau$mRNA.expr,
-                       templates = marker.up$templates, # the template has been already prepared in runMarker()
-                       scale     = TRUE, # scale input data (by default)
-                       center    = TRUE, # center input data (by default)
-                       doPlot    = TRUE, # to generate heatmap
-                       fig.name  = "NTP HEATMAP FOR YAU") 
+yau.ntp.pred <- runNTP(expr       = brca.yau$mRNA.expr,
+                       templates  = marker.up$templates, # the template has been already prepared in runMarker()
+                       scaleFlag  = TRUE, # scale input data (by default)
+                       centerFlag = TRUE, # center input data (by default)
+                       doPlot     = TRUE, # to generate heatmap
+                       fig.name   = "NTP HEATMAP FOR YAU") 
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  head(yau.ntp.pred$ntp.res)
@@ -540,7 +581,7 @@ head(yau.ntp.pred$ntp.res) %>%
   kbl(caption = "Table 10. Demo of predicted subtypes in Yau cohort by NTP using subtype-specific upregulated biomarkers identified from TCGA-BRCA cohort.") %>%
   kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 17. Kaplan-Meier survival curve of predicted 5 subtypes of breast cancer in Yau cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 19. Kaplan-Meier survival curve of predicted 5 subtypes of breast cancer in Yau cohort.", eval=TRUE----
 # compare survival outcome in Yau cohort
 surv.yau <- compSurv(moic.res         = yau.ntp.pred,
                      surv.info        = brca.yau$clin.info,
@@ -550,7 +591,7 @@ surv.yau <- compSurv(moic.res         = yau.ntp.pred,
 
 print(surv.yau)
 
-## ---- fig.align="center", fig.width=8, fig.height=5, fig.cap="Figure 18. Agreement of predicted 5 subtypes of breast cancer with PAM50 classification in Yau cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=8, fig.height=5, fig.cap="Figure 20. Agreement of predicted 5 subtypes of breast cancer with PAM50 classification in Yau cohort.", eval=TRUE----
 # compare agreement in Yau cohort
 agree.yau <- compAgree(moic.res  = yau.ntp.pred,
                        subt2comp = brca.yau$clin.info[, "PAM50", drop = FALSE],
@@ -574,7 +615,7 @@ yau.pam.pred <- runPAM(train.expr  = fpkm,
 ## ---- eval=TRUE---------------------------------------------------------------
 print(yau.pam.pred$IGP)
 
-## ---- fig.show = "hold", out.width = "33.3%", fig.align = "default", fig.width=10, fig.height=9, fig.cap="Figure 19. Consistency heatmap using Kappa statistics.", eval=TRUE----
+## ---- fig.show = "hold", out.width = "33.3%", fig.align = "default", fig.width=10, fig.height=9, fig.cap="Figure 21. Consistency heatmap using Kappa statistics.", eval=TRUE----
 # predict subtype in discovery cohort using NTP
 tcga.ntp.pred <- runNTP(expr      = fpkm,
                         templates = marker.up$templates,
@@ -631,7 +672,7 @@ head(pseudo.moic.res$clust.res)
 #    kbl(caption = "Table . Demo of pseudo object for downstream analyses in MOVICS.") %>%
 #    kable_classic(full_width = TRUE, html_font = "Calibri")
 
-## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 20. Kaplan-Meier survival curve of PAM50 subtypes of breast cancer with pseudo input in TCGA-BRCA cohort.", eval=TRUE----
+## ---- fig.align="center", fig.width=6, fig.height=7, fig.cap="Figure 22. Kaplan-Meier survival curve of PAM50 subtypes of breast cancer with pseudo input in TCGA-BRCA cohort.", eval=TRUE----
 # survival comparison
 pam50.brca <- compSurv(moic.res         = pseudo.moic.res,
                        surv.info        = surv.info,
