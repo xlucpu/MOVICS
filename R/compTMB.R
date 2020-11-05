@@ -295,7 +295,7 @@ compTMB <- function(moic.res    = NULL,
     # pairwise.TMB.test <- dunnTest(log10TMB ~ as.factor(Subtype),
     #                               data = TMB.dat,
     #                               method = "bh")
-    cat(paste0("Kruskal-Wallis rank sum test p value = ", formatC(TMB.test, format = "e", digits = 2),"\npost-hoc pairwise wilcoxon rank sum test with Benjamini-Hochberg adjustment presents below:"))
+    cat(paste0("Kruskal-Wallis rank sum test p value = ", formatC(TMB.test, format = "e", digits = 2),"\npost-hoc pairwise wilcoxon rank sum test with Benjamini-Hochberg adjustment presents below:\n"))
     print(formatC(pairwise.TMB.test$p.value, format = "e", digits = 2))
   }
 
@@ -303,7 +303,7 @@ compTMB <- function(moic.res    = NULL,
     statistic <- "anova"
     TMB.test  <- summary(aov(TMB.dat$log10TMB ~ TMB.dat$Subtype))[[1]][["Pr(>F)"]][1]
     pairwise.TMB.test <- pairwise.t.test(TMB.dat$log10TMB,TMB.dat$Subtype,p.adjust.method = "BH")
-    cat(paste0("One-way anova test p value = ", formatC(TMB.test, format = "e", digits = 2),"\npost-hoc pairwise Student's t test with Benjamini-Hochberg adjustment presents below:"))
+    cat(paste0("One-way anova test p value = ", formatC(TMB.test, format = "e", digits = 2),"\npost-hoc pairwise Student's t test with Benjamini-Hochberg adjustment presents below:\n"))
     print(formatC(pairwise.TMB.test$p.value, format = "e", digits = 2))
   }
 
