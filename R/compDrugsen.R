@@ -102,7 +102,7 @@ compDrugsen <- function(moic.res    = NULL,
       statistic = "kruskal.test"
       ic50.test  <- kruskal.test(predictedBoxdat[[drug]]$Est.IC50 ~ predictedBoxdat[[drug]]$Subtype)$p.value
       pairwise.ic50.test <- pairwise.wilcox.test(predictedBoxdat[[drug]]$Est.IC50,predictedBoxdat[[drug]]$Subtype,p.adjust.method = "BH")
-      cat(paste0(drug,": Kruskal-Wallis rank sum test p value = ", formatC(TMB.test, format = "e", digits = 2),"\npost-hoc pairwise wilcoxon rank sum test with Benjamini-Hochberg adjustment presents below:"))
+      cat(paste0(drug,": Kruskal-Wallis rank sum test p value = ", formatC(ic50.test, format = "e", digits = 2),"\npost-hoc pairwise wilcoxon rank sum test with Benjamini-Hochberg adjustment presents below:"))
       print(formatC(pairwise.ic50.test$p.value, format = "e", digits = 2))
     }
     if(n.moic > 2 & test.method == "parametric") {
