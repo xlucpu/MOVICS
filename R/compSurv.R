@@ -78,6 +78,8 @@ compSurv <- function(moic.res         = NULL,
     } else {
       stop("the maximal survival time is less than the time point you want to estimate!")
     }
+  } else {
+    xyrs <- "[Not Available]: argument of xyrs.est was not specified."
   }
 
   # convert survival time
