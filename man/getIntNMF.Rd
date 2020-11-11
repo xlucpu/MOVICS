@@ -4,12 +4,7 @@
 \alias{getIntNMF}
 \title{Get subtypes from IntNMF}
 \usage{
-getIntNMF(
-  data = NULL,
-  N.clust = NULL,
-  type = rep("gaussian", length(data)),
-  is.binary = rep(FALSE, length(data))
-)
+getIntNMF(data = NULL, N.clust = NULL, type = rep("gaussian", length(data)))
 }
 \arguments{
 \item{data}{List of matrices.}
@@ -17,8 +12,6 @@ getIntNMF(
 \item{N.clust}{Number of clusters.}
 
 \item{type}{Data type corresponding to the list of matrics, which can be gaussian, binomial or possion.}
-
-\item{is.binary}{A logical vector to indicate if the input for a subset is binary of 0 and 1.}
 }
 \value{
 A list with the following components:

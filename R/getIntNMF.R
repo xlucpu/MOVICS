@@ -3,7 +3,6 @@
 #' @description This function wraps the IntNMF (Integrative Clustering via Non-negative Matrix Factorization) algorithm and provides standard output for `getMoHeatmap()` and `getConsensusMOIC()`.
 #' @param data List of matrices.
 #' @param N.clust Number of clusters.
-#' @param is.binary A logical vector to indicate if the input for a subset is binary of 0 and 1.
 #' @param type Data type corresponding to the list of matrics, which can be gaussian, binomial or possion.
 #' @return A list with the following components:
 #'
@@ -19,8 +18,7 @@
 #' @references Chalise P, Fridley BL (2017). Integrative clustering of multi-level omic data based on non-negative matrix factorization algorithm. PLoS One, 12(5):e0176278.
 getIntNMF <- function(data      = NULL,
                       N.clust   = NULL,
-                      type      = rep("gaussian", length(data)),
-                      is.binary = rep(FALSE, length(data))){
+                      type      = rep("gaussian", length(data))){
 
   # check data
   n_dat <- length(data)
@@ -31,10 +29,9 @@ getIntNMF <- function(data      = NULL,
     stop('current verision of MOVICS needs at least 2 omics data.')
   }
 
-  useless.argument <- type
   # remove features that made of categories not equal to 2 otherwise Error in svd(X) : a dimension is zero
-  if(!all(!is.binary)) {
-    bindex <- which(is.binary == TRUE)
+  if(is.element("binomial",type)) {
+    bindex <- which(type == "binomial")
     for (i in bindex) {
       a <- which(rowSums(data[[i]]) == 0)
       b <- which(rowSums(data[[i]]) == ncol(data[[i]]))
