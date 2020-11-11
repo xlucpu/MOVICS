@@ -21,6 +21,15 @@ getNEMO <- function(data          = NULL,
                     type          = rep("gaussian", length(data)),
                     num.neighbors = NA) {
 
+  # check data
+  n_dat <- length(data)
+  if(n_dat > 6){
+    stop('current verision of MOVICS can support up to 6 datasets.')
+  }
+  if(n_dat < 2){
+    stop('current verision of MOVICS needs at least 2 omics data.')
+  }
+
   useless.argument <- type
   fit <- nemo.clustering(omics.list    = data,
                          num.clusters  = N.clust,

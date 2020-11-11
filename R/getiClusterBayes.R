@@ -31,7 +31,15 @@ getiClusterBayes <- function(data        = NULL,
                              prior.gamma = rep(0.5,length(data)),
                              sdev        = 0.05,
                              thin        = 3) {
+
+  # check data
   n_dat <- length(data)
+  if(n_dat > 6){
+    stop('current verision of MOVICS can support up to 6 datasets.')
+  }
+  if(n_dat < 2){
+    stop('current verision of MOVICS needs at least 2 omics data.')
+  }
 
   # remove features that made of categories not equal to 2
   if(is.element("binomial",type)) {

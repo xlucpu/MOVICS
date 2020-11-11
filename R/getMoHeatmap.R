@@ -57,14 +57,17 @@ getMoHeatmap <- function(data             = NULL,
   defaultW <- getOption("warn")
   options(warn = -1)
 
+  # check data
   if(is.null(names(data))){
     names(data) <- sprintf("dat%s", 1:length(data))
   }
 
   n_dat <- length(data)
-
   if(n_dat > 6){
     stop('current verision of MOVICS can support up to 6 datasets.')
+  }
+  if(n_dat < 2){
+    stop('current verision of MOVICS needs at least 2 omics data.')
   }
 
   colvec <- clust.col[1:length(unique(clust.res$clust))]

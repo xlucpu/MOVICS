@@ -28,6 +28,15 @@ getPINSPlus <- function(data             = NULL,
                         iterMin          = 50,
                         iterMax          = 500){
 
+  # check data
+  n_dat <- length(data)
+  if(n_dat > 6){
+    stop('current verision of MOVICS can support up to 6 datasets.')
+  }
+  if(n_dat < 2){
+    stop('current verision of MOVICS needs at least 2 omics data.')
+  }
+
   useless.argument <- type
   if(is.null(norMethod)) {
     d <- do.call(rbind, data)

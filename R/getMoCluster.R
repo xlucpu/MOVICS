@@ -38,6 +38,15 @@ getMoCluster <- function(data       = NULL,
                          scale      = TRUE,
                          clusterAlg = "ward.D"){
 
+  # check data
+  n_dat <- length(data)
+  if(n_dat > 6){
+    stop('current verision of MOVICS can support up to 6 datasets.')
+  }
+  if(n_dat < 2){
+    stop('current verision of MOVICS needs at least 2 omics data.')
+  }
+
   useless.argument <- type
   if(!is.element(method, c("CPCA","GCCA","MCIA"))) {
     stop("method should be one of CPCA [consensus PCA], GCCA [generalized canonical correlation analysis], or MCIA [multiple co-inertia analysis]!")

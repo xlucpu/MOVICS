@@ -87,7 +87,6 @@ getMOIC <- function(data        = NULL,
   if(n_dat > 6){
     stop('current verision of MOVICS can support up to 6 omics data.')
   }
-
   if(n_dat < 2){
     stop('current verision of MOVICS needs at least 2 omics data.')
   }

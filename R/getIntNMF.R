@@ -22,22 +22,33 @@ getIntNMF <- function(data      = NULL,
                       type      = rep("gaussian", length(data)),
                       is.binary = rep(FALSE, length(data))){
 
+  # check data
+  n_dat <- length(data)
+  if(n_dat > 6){
+    stop('current verision of MOVICS can support up to 6 datasets.')
+  }
+  if(n_dat < 2){
+    stop('current verision of MOVICS needs at least 2 omics data.')
+  }
+
   useless.argument <- type
   # remove features that made of categories not equal to 2 otherwise Error in svd(X) : a dimension is zero
   if(!all(!is.binary)) {
     bindex <- which(is.binary == TRUE)
-    a <- which(rowSums(data[[bindex]]) == 0)
-    b <- which(rowSums(data[[bindex]]) == ncol(data[[bindex]]))
-    if(length(a) > 0) {
-      data[[bindex]] <- data[[bindex]][which(rowSums(data[[bindex]]) != 0),] # remove all zero
-    }
+    for (i in bindex) {
+      a <- which(rowSums(data[[i]]) == 0)
+      b <- which(rowSums(data[[i]]) == ncol(data[[i]]))
+      if(length(a) > 0) {
+        data[[i]] <- data[[i]][which(rowSums(data[[i]]) != 0),] # remove all zero
+      }
 
-    if(length(b) > 0) {
-      data[[bindex]] <- data[[bindex]][which(rowSums(data[[bindex]]) != ncol(data[[bindex]])),] # remove all one
-    }
+      if(length(b) > 0) {
+        data[[i]] <- data[[i]][which(rowSums(data[[i]]) != ncol(data[[i]])),] # remove all one
+      }
 
-    if(length(a) + length(b) > 0) {
-      message(paste0("remove a total of ",length(a) + length(b), " features because their categories are not equal to 2!"))
+      if(length(a) + length(b) > 0) {
+        message(paste0("--", names(data)[i],": a total of ",length(a) + length(b), " features were removed due to the categories were not equal to 2!"))
+      }
     }
   }
 

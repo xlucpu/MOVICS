@@ -13,14 +13,17 @@ getStdiz <- function(data       = NULL,
                      centerFlag = rep(TRUE, length(data)),
                      scaleFlag  = rep(TRUE, length(data))) {
 
+  # check data
   if(is.null(names(data))){
     names(data) <- sprintf("dat%s", 1:length(data))
   }
 
   n_dat <- length(data)
-
   if(n_dat > 6){
     stop("current version of MOVICS can support up to 6 datasets.")
+  }
+  if(n_dat < 2){
+    stop('current verision of MOVICS needs at least 2 omics data.')
   }
 
   outdata <- list()

@@ -26,6 +26,15 @@ getCOCA <- function(data      = NULL,
                     methods   = "hclust",
                     distances = "euclidean") {
 
+  # check data
+  n_dat <- length(data)
+  if(n_dat > 6){
+    stop('current verision of MOVICS can support up to 6 datasets.')
+  }
+  if(n_dat < 2){
+    stop('current verision of MOVICS needs at least 2 omics data.')
+  }
+
   useless.argument <- type
   data <- lapply(data, t)
 
