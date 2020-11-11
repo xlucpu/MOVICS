@@ -52,7 +52,7 @@ Please set `Sys.setenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS" = "true")` from your 
 
 ## Guidance
 ![pipeline](https://user-images.githubusercontent.com/57204704/97842685-f7e4e980-1d22-11eb-9c06-46e3ff17882d.jpg)
-MOVICS Pipeline diagram above outlines the concept for this package, and a detailed guide of how to use MOVICS could be find directly in the [HTML vignette](https://xlucpu.github.io/MOVICS/MOVICS-VIGNETTE.html), or by typing the following code to R session.
+MOVICS pipeline diagram above outlines the concept for this package, and a detailed guide of how to use MOVICS could be find directly in the [HTML vignette](https://xlucpu.github.io/MOVICS/MOVICS-VIGNETTE.html), or by typing the following code to R session.
 ```{r}
 browseVignettes("MOVICS")
 ```
