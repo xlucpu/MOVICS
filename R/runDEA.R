@@ -73,7 +73,7 @@ twoclassdeseq2 <- function(moic.res    = NULL,
       outfile <- file.path(res.path, paste(mo.method ,"_deseq2_test_result.", compname, ".txt", sep = ""))
     }
     if (file.exists(outfile) & (overwt == FALSE)) {
-      message(k, ":", compname, " exists and skipped;")
+      cat(paste0("deseq2 of ",compname, " exists and skipped...\n"))
       next
     }
 
@@ -191,7 +191,7 @@ twoclassedger <- function(moic.res    = NULL,
       outfile <- file.path(res.path, paste(mo.method,"_edger_test_result.", compname, ".txt", sep = ""))
     }
     if (file.exists(outfile) & (overwt==FALSE)) {
-      message(k, ":", compname, " exists and skipped;")
+      cat(paste0("edger of ",compname, " exists and skipped...\n"))
       next
     }
 
@@ -321,7 +321,7 @@ twoclasslimma <- function(moic.res  = NULL,
     }
 
     if (file.exists(outfile) & (overwt == FALSE)) {
-      message(k, ":", compname, " exists and skipped;")
+      cat(paste0("limma of ",compname, " exists and skipped...\n"))
       next
     }
 
