@@ -81,20 +81,20 @@ getConsensusClustering <- function(data         = NULL,
     }
   }
 
-  fit <-  ConsensusClusterPlus(d            = as.matrix(d),
-                               maxK         = N.clust,
-                               reps         = reps,
-                               pItem        = pItem,
-                               pFeature     = pFeature,
-                               clusterAlg   = clusterAlg,
-                               innerLinkage = innerLinkage,
-                               finalLinkage = finalLinkage,
-                               distance     = distance,
-                               seed         = seed,
-                               verbose      = verbose,
-                               plot         = plot,
-                               writeTable   = writeTable,
-                               title        = title)
+    fit <-  ConsensusClusterPlus(d            = as.matrix(d),
+                                 maxK         = ifelse(N.clust == 2, 3, N.clust), # cannot set as 2
+                                 reps         = reps,
+                                 pItem        = pItem,
+                                 pFeature     = pFeature,
+                                 clusterAlg   = clusterAlg,
+                                 innerLinkage = innerLinkage,
+                                 finalLinkage = finalLinkage,
+                                 distance     = distance,
+                                 seed         = seed,
+                                 verbose      = verbose,
+                                 plot         = plot,
+                                 writeTable   = writeTable,
+                                 title        = title)
   res <- fit[[N.clust]]
 
   clustres <- data.frame(samID = colnames(data[[1]]),
