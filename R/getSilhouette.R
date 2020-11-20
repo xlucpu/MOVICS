@@ -27,5 +27,5 @@ getSilhouette <- function(sil       = NULL,
   plot(sil,
        border = NA,
        col = colvec)
-  dev.copy2pdf(file = outFig, width = width, height = height)
+  dev.copy2pdf(file = file.path(fig.path, outFig), width = width, height = height)
 }

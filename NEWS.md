@@ -13,3 +13,7 @@
 # MOVICS 0.99.7
 
 * Fix bugs when setting argument of `N.clust` as 2 in `getConsensusClustering()`.
+
+# MOVICS 0.99.8
+
+* Fix bugs where argument of `fig.path` is useless in `getSilhouette()`.
