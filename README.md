@@ -60,9 +60,9 @@ Please email to <xlu.cpu@foxmail.com> if you have any questions, bug reports, or
 
 ## Citation
 
-For now, if you use MOVICS R package in published research, please cite:
+If you use MOVICS R package in published research, please cite:
 
-  - Lu, X., Meng, J., Zhou, Y., Jiang, L., and Yan, F. (2020). MOVICS: an R package for multi-omics integration and visualization in cancer subtyping. bioRxiv, 2020.2009.2015.297820. [doi.org/10.1101/2020.09.15.297820]
+  - Lu, X., Meng, J., Zhou, Y., Jiang, L., and Yan, F. (2020). MOVICS: an R package for multi-omics integration and visualization in cancer subtyping. Bioinformatics, btaa1018. [doi.org/10.1093/bioinformatics/btaa1018]
 
 ## Acknowledgement
 
