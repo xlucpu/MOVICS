@@ -362,7 +362,7 @@ compTMB <- function(moic.res    = NULL,
   # modify axis
   axis(side = 1, at = seq(0.5, length(TMB.plot) - 0.5, 1), labels = names(TMB.plot),
        las = 1, tick = TRUE, line = 0)
-  axis(side = 2, at = y_at, las = 2, line = 0, tick = TRUE, labels = c(0, 1, 2, 3))
+  axis(side = 2, at = y_at, las = 2, line = 0, tick = TRUE, labels = y_at)
   if(show.size) {
     axis(side = 3, at = seq(0.5, length(TMB.plot) - 0.5, 1), labels = paste0("n = ",x_top_label),
          tick = TRUE, line = 0, cex.axis = 0.9)

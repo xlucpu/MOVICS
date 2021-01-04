@@ -17,3 +17,7 @@
 # MOVICS 0.99.8
 
 * Fix bugs where argument of `fig.path` is useless in `getSilhouette()`.
+
+# MOVICS 0.99.9
+
+* Fix bugs in `compTMB()` if the maximum number of x-axis is less than 3.
