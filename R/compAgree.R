@@ -204,7 +204,7 @@ compAgree <- function(moic.res  = NULL,
     }
 
     # 4 subtypes
-    if(n.var == 4) {
+    if(n.var == 5) {
       var2 <- var[2]
       var3 <- var[3]
       var4 <- var[4]
@@ -239,7 +239,7 @@ compAgree <- function(moic.res  = NULL,
     }
 
     # 5 subtypes
-    if(n.var == 5) {
+    if(n.var == 6) {
       var2 <- var[2]
       var3 <- var[3]
       var4 <- var[4]

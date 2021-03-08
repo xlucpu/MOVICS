@@ -33,6 +33,8 @@
 #'         \code{templates} a data.frame storing the the template information for nearest template prediction, which is used for verification in external cohort.
 #'
 #'         \code{dirct}     a string value indicating the direction for identifying subtype-specific markers.
+#'
+#'         \code{heatmap}   a complexheatmap object.
 #' @export
 #' @importFrom grDevices pdf dev.off colorRampPalette
 #' @importFrom ComplexHeatmap pheatmap draw
@@ -226,11 +228,11 @@ runMarker <- function(moic.res      = NULL,
 
     # save to pdf
     pdf(file.path(fig.path, outFig), width = width, height = height)
-    draw(hm)
+    draw(hm,annotation_legend_side = "left",heatmap_legend_side = "left")
     invisible(dev.off())
 
     # print to screen
-    draw(hm)
+    draw(hm,annotation_legend_side = "left",heatmap_legend_side = "left")
   }
-  return(list(unqlist = unqlist, templates = templates, dirct = dirct))
+  return(list(unqlist = unqlist, templates = templates, dirct = dirct, heatmap = hm))
 }

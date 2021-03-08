@@ -92,6 +92,8 @@ A figure of subtype-specific marker heatmap (.pdf) if \code{doPlot = TRUE} and a
         \code{templates} a data.frame storing the the template information for nearest template prediction, which is used for verification in external cohort.
 
         \code{dirct}     a string value indicating the direction for identifying subtype-specific markers.
+
+        \code{heatmap}   a complexheatmap object.
 }
 \description{
 This function aims to identify uniquely and significantly expressed (overexpressed or downexpressed) biomarkers for each subtype identified by multi-omics integrative clustering algorithms. Top markers will be chosen to generate a template so as to run nearest template prediction for subtype verification.

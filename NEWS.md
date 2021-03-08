@@ -21,3 +21,8 @@
 # MOVICS 0.99.9
 
 * Fix bugs in `compTMB()` if the maximum number of x-axis is less than 3.
+
+# MOVICS 0.99.10
+
+* Fix bugs in `compAgree()` if argument of `subt2comp` has more than 2 variables.
+* Move heatmap legend and annotation legend to the left in `runMarker()` and `runGSVA()`, and return the complexheatmap object for further modification if necessary.

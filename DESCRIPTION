@@ -1,6 +1,6 @@
 Package: MOVICS
 Title: Multi-Omics integration and VIsualization in Cancer Subtyping
-Version: 0.99.8
+Version: 0.99.10
 Authors@R: 
     person(given = "Xiaofan",
            family = "Lu",

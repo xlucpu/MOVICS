@@ -85,6 +85,8 @@ A figure of subtype-specific pathway heatmap (.pdf) and a list with the followin
         \code{scaled.es}  a data.frame storing z-scored enrichment score of identified subtype-specific pathways by using specified \code{gsva.method}.
 
         \code{grouped.es} a data.frame storing grouped enrichment score (mean or median value among each subtype) by using specified \code{norm.method}.
+
+        \code{heatmap}    a complexheatmap object.
 }
 \description{
 Use gene set enrichment analysis to identify subtype-specific (overexpressed or downexpressed) functional pathways for each subtype identified by multi-omics clustering algorithms.

@@ -32,6 +32,8 @@
 #'         \code{scaled.es}  a data.frame storing z-scored enrichment score of identified subtype-specific pathways by using specified \code{gsva.method}.
 #'
 #'         \code{grouped.es} a data.frame storing grouped enrichment score (mean or median value among each subtype) by using specified \code{norm.method}.
+#'
+#'         \code{heatmap}    a complexheatmap object.
 #' @export
 #' @importFrom grDevices pdf dev.off colorRampPalette
 #' @importFrom ComplexHeatmap pheatmap draw
@@ -264,7 +266,7 @@ runGSEA <- function(moic.res     = NULL,
                                  cellwidth            = 15,
                                  cellheight           = 10)
   # print to screen
-  draw(hm, heatmap_legend_side = "left")
+  draw(hm, annotation_legend_side = "left",heatmap_legend_side = "left")
 
   # save to pdf
   if(is.null(fig.name)) {
@@ -273,10 +275,10 @@ runGSEA <- function(moic.res     = NULL,
     outFig <- paste0(fig.name, "_using_", dirct,"regulated_pathways.pdf")
   }
   pdf(file.path(fig.path,outFig), width = width, height = height)
-  draw(hm, heatmap_legend_side = "left")
+  draw(hm, annotation_legend_side = "left",heatmap_legend_side = "left")
   invisible(dev.off())
 
   message("heatmap done...")
 
-  return(list(gsea.list = gsea.list, raw.es = es.backup, scaled.es = es, grouped.es = esm))
+  return(list(gsea.list = gsea.list, raw.es = es.backup, scaled.es = es, grouped.es = esm, heatmap = hm))
 }
