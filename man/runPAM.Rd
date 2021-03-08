@@ -18,22 +18,24 @@ runPAM(
 
 \item{test.expr}{A matrix of normalized expression testing data with rows for genes and columns for samples; FPKM or TPM without log2 transformation is recommended.}
 
-\item{gene.subset}{A string vector to indicate a subset of genes to be used.
-#' @return A list with the following components:
+\item{gene.subset}{A string vector to indicate a subset of genes to be used.}
+}
+\value{
+A list with the following components:
 
         \code{IGP}        a named numeric vector storing the in-group proportion (see \link[clusterRepro]{IGP.clusterRepro}).
 
         \code{clust.res}  similar to `clust.res` returned by `getMOIC()` or `get%algorithm_name%` or `getConsensusMOIC()`.
 
-        \code{mo.method}  a string value indicating the method used for prediction.}
+        \code{mo.method}  a string value indicating the method used for prediction.
 }
 \description{
 Using partition around medoids (PAM) classifier to predict potential subtype label on external cohort and calculate in-group proportions (IGP) statistics.
 }
 \details{
 This function first trains a partition around medoids (PAM) classifier in the discovery (training) cohort
- to predict the subtype for patients in the external validation (testing) cohort, 
- and each sample in the validation cohort was assigned to a subtype label whose centroid had the highest Pearson correlation with the sample. 
+ to predict the subtype for patients in the external validation (testing) cohort,
+ and each sample in the validation cohort was assigned to a subtype label whose centroid had the highest Pearson correlation with the sample.
  Finally, the in-group proportion (IGP) statistic will be performed to evaluate the similarity and reproducibility of the acquired subtypes between discovery and validation cohorts.
 }
 \examples{
