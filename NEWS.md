@@ -26,3 +26,7 @@
 
 * Fix bugs in `compAgree()` if argument of `subt2comp` has more than 2 variables.
 * Move heatmap legend and annotation legend to the left in `runMarker()` and `runGSVA()`, and return the complexheatmap object for further modification if necessary.
+
+# MOVICS 0.99.11
+
+* Fix bugs in `compFGA()` that poses error when only 2 subtypes were identified.

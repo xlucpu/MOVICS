@@ -18,15 +18,15 @@
 #'
 #'         \code{FGA.p.value}       a nominal p value quantifying the difference of FGA among current subtypes
 #'
-#'         \code{pairwise.FGA.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGA
+#'         \code{pairwise.FGA.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGA if more than 2 subtypes were identified
 #'
 #'         \code{FGG.p.value}       a nominal p value quantifying the difference of FGG among current subtypes
 #'
-#'         \code{pairwise.FGG.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGG
+#'         \code{pairwise.FGG.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGG if more than 2 subtypes were identified
 #'
 #'         \code{FGL.p.value}       a nominal p value quantifying the difference of FGL among current subtypes
 #'
-#'         \code{pairwise.FGL.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGL
+#'         \code{pairwise.FGL.test} a pairwise BH adjusted p value matrix for multiple comparisons of FGL if more than 2 subtypes were identified
 #'
 #'         \code{test.method}       a string value indicating the statistical testing method to calculate p values
 #'
@@ -265,12 +265,20 @@ compFGA <- function(moic.res     = NULL,
   # print to screen
   print(pal)
 
-  return(list(summary = outTab,
-              FGA.p.value = FGA.test,
-              pairwise.FGA.test = pairwise.FGA.test,
-              FGG.p.value = FGG.test,
-              pairwise.FGG.test = pairwise.FGG.test,
-              FGL.p.value = FGL.test,
-              pairwise.FGL.test = pairwise.FGL.test,
-              test.method = statistic))
+  if(n.moic > 2) {
+    return(list(summary = outTab,
+                FGA.p.value = FGA.test,
+                pairwise.FGA.test = pairwise.FGA.test,
+                FGG.p.value = FGG.test,
+                pairwise.FGG.test = pairwise.FGG.test,
+                FGL.p.value = FGL.test,
+                pairwise.FGL.test = pairwise.FGL.test,
+                test.method = statistic))
+  } else {
+    return(list(summary = outTab,
+                FGA.p.value = FGA.test,
+                FGG.p.value = FGG.test,
+                FGL.p.value = FGL.test,
+                test.method = statistic))
+  }
 }
