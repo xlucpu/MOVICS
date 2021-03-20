@@ -30,3 +30,7 @@
 # MOVICS 0.99.11
 
 * Fix bugs in `compFGA()` that poses error when only 2 subtypes were identified.
+
+# MOVICS 0.99.12
+
+* Correct help document of `drugs` argument in `compDrugsen()`.
