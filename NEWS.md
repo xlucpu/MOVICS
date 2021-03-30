@@ -34,3 +34,7 @@
 # MOVICS 0.99.12
 
 * Correct help document of `drugs` argument in `compDrugsen()`.
+
+# MOVICS 0.99.13
+
+* Fix bug in `compClinvar()` if the column `clust` stored in `moic.res$clust` is not located in the second.

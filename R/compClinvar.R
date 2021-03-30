@@ -31,7 +31,7 @@ compClinvar <- function(moic.res      = NULL,
                         ...){
 
   dat <- moic.res$clust.res
-  colnames(dat)[2] <- "Subtype"
+  colnames(dat)[which(colnames(dat) == "clust")] <- "Subtype"
   dat$Subtype <- paste0("CS", dat$Subtype)
   com_sam <- intersect(dat$samID,rownames(var2comp))
 
