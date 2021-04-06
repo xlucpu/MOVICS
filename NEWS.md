@@ -38,3 +38,7 @@
 # MOVICS 0.99.13
 
 * Fix bug in `compClinvar()` if the column `clust` stored in `moic.res$clust` is not located in the second.
+
+# MOVICS 0.99.14
+
+* Solve the issue where R package of `SNFtool` was no longer stored by CRAN repository (https://cran.r-project.org/web/packages/SNFtool/index.html).
