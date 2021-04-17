@@ -42,3 +42,8 @@
 # MOVICS 0.99.14
 
 * Solve the issue where R package of `SNFtool` was no longer stored by CRAN repository (https://cran.r-project.org/web/packages/SNFtool/index.html).
+
+# MOVICS 0.99.15
+
+* Since error occurs when I use the GitHub version of `ComplexHeatmap` to concatenate heatmaps, I replace the requirement for this package by using its Bioconductor version.
+* R package of `SNFtool` has been removed from the CRAN repository, I replaced this by using GitHub version (https://github.com/maxconway/SNFtool).
