@@ -47,3 +47,7 @@
 
 * Since error occurs when I use the GitHub version of `ComplexHeatmap` to concatenate heatmaps, I replace the requirement for this package by using its Bioconductor version.
 * R package of `SNFtool` has been removed from the CRAN repository, I replaced this by using GitHub version (https://github.com/maxconway/SNFtool).
+
+# MOVICS 0.99.16
+
+* Fix bug in `runMarker()` if argument of `doPlot` was set as `FALSE`.

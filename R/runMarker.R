@@ -233,6 +233,8 @@ runMarker <- function(moic.res      = NULL,
 
     # print to screen
     draw(hm,annotation_legend_side = "left",heatmap_legend_side = "left")
+    return(list(unqlist = unqlist, templates = templates, dirct = dirct, heatmap = hm))
+  } else {
+    return(list(unqlist = unqlist, templates = templates, dirct = dirct))
   }
-  return(list(unqlist = unqlist, templates = templates, dirct = dirct, heatmap = hm))
 }
