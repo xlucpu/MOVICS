@@ -10,7 +10,7 @@
 #' @param convt.time A string value to indicate how to convert the survival time; value of `d` for days, `m` for months and `y` for years; "d" by default.
 #' @param surv.median.line A string value for drawing a horizontal/vertical line at median survival. Allowed values include one of c(`none`, `hv`, `h`, `v`). v: vertical, h:horizontal; "none" by default.
 #' @param xyrs.est An integer vector to estimate probability of surviving beyond a certain number (x) of years (Estimating x-year survival); NULL by default.
-#' @param surv.cut A numeric value to indicate the x-axis cutoff for showing the maximal survival time.
+#' @param surv.cut A numeric value to indicate the x-axis cutoff for showing the maximal survival time. NULL by default (show 0-maximum survival time range).
 #' @return A figure of multi-omics Kaplan-Meier curve (.pdf) and a list with the following components:
 #'
 #'         \code{fitd}       an object returned by \link[survival]{survdiff}.
@@ -25,8 +25,8 @@
 #' @import survival
 #' @import survminer
 #' @import ggplot2
-#' @importFrom ggpmisc geom_table
 #' @importFrom grDevices pdf dev.off pdf.options
+#' @importFrom ggpp geom_table
 #' @importFrom tibble tibble
 #' @export
 #' @examples # There is no example and please refer to vignette.
@@ -95,34 +95,42 @@ compSurv <- function(moic.res         = NULL,
 
   # truncate survival time
   if(date.lab == "Days" & max(mosurv.res$futime) > 3650) {
-    xlim = c(0, 3650)
+    #xlim = c(0, 3650)
     brk = 365
   }
   if(date.lab == "Days" & max(mosurv.res$futime) <= 3650) {
-    xlim = c(0, max(mosurv.res$futime))
+    #xlim = c(0, max(mosurv.res$futime))
     brk = floor(max(mosurv.res$futime)/10)
   }
   if(date.lab == "Months" & max(mosurv.res$futime) > 120) {
-    xlim = c(0, 120)
+    #xlim = c(0, 120)
     brk = 12
   }
   if(date.lab == "Months" & max(mosurv.res$futime) <= 120) {
-    xlim = c(0, max(mosurv.res$futime))
+    #xlim = c(0, max(mosurv.res$futime))
     brk = floor(max(mosurv.res$futime)/10)
   }
   if(date.lab == "Years" & max(mosurv.res$futime) > 10) {
-    xlim = c(0, 10)
+    #xlim = c(0, 10)
     brk = 1
   }
   if(date.lab == "Years" & max(mosurv.res$futime) <= 10) {
-    xlim = c(0, max(mosurv.res$futime))
+    #xlim = c(0, max(mosurv.res$futime))
     brk = 1
   }
 
-  if(!is.null(surv.cut)) {
+  if(is.null(surv.cut)) {
+    xlim = c(0, max(mosurv.res$futime))
+  } else {
+    message(paste0("--cut survival curve up to ",surv.cut," ",tolower(date.lab)))
     xlim = c(0, surv.cut)
-    brk = surv.cut/10
-  } else {message("--cut survival curve up to 10 years.")}
+  }
+
+
+  # if(!is.null(surv.cut)) {
+  #   xlim = c(0, surv.cut)
+  #   brk = surv.cut/10
+  # } else {message("--cut survival curve up to 10 years.")}
 
   n.moic <- length(unique(mosurv.res$Subtype))
 

@@ -51,3 +51,8 @@
 # MOVICS 0.99.16
 
 * Fix bug in `runMarker()` if argument of `doPlot` was set as `FALSE`.
+
+# MOVICS 0.99.17
+
+* Fix bug in installing `MOVICS` regarding the latest version of `ggpmisc`. The dependency `ggpmisc` was replaced by `ggpp` for using `geom_table()`.
+* Modify `compSurv()` and by default the survival curve will present the entire survival time range instead of 10-year cutoff unless specified by the user.

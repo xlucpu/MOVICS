@@ -25,7 +25,7 @@ compSurv(
 
 \item{convt.time}{A string value to indicate how to convert the survival time; value of `d` for days, `m` for months and `y` for years; "d" by default.}
 
-\item{surv.cut}{A numeric value to indicate the x-axis cutoff for showing the maximal survival time.}
+\item{surv.cut}{A numeric value to indicate the x-axis cutoff for showing the maximal survival time. NULL by default (show 0-maximum survival time range).}
 
 \item{xyrs.est}{An integer vector to estimate probability of surviving beyond a certain number (x) of years (Estimating x-year survival); NULL by default.}
 
